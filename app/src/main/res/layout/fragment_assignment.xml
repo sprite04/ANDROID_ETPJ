@@ -13,6 +13,7 @@
         android:textSize="25sp"
         android:id="@+id/tv_title"
         android:text="Add Assignment"
+        android:fontFamily="@font/alternate_gothic"
         android:gravity="center"/>
 
     <TextView

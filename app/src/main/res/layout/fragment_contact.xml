@@ -17,6 +17,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:textSize="13sp"
+            android:typeface="serif"
             android:text="FPT FEEDBACK MANAGEMENT"/>
 
         <TextView
@@ -24,6 +25,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:paddingStart="20dp"
+            android:typeface="serif"
             android:textSize="20sp"
             android:text="We are ready for challenge vuhung1908@gmail.com"/>
 
@@ -31,6 +33,7 @@
             android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:typeface="serif"
             android:textSize="13sp"
             android:text="SAY HELLO"/>
 
@@ -39,6 +42,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
             android:paddingStart="20dp"
+            android:typeface="serif"
             android:textSize="20sp"
             android:text="497 Evergreen Rd Rosevile CA 95673 \n+44 345 678 903"/>
 
@@ -46,6 +50,7 @@
             android:layout_marginTop="30dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:typeface="serif"
             android:textSize="13sp"
             android:text="JOSS"/>
 
@@ -53,6 +58,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:typeface="serif"
             android:paddingStart="20dp"
             android:textSize="20sp"
             android:text="We are always looking for talent adobexd@gmail.com"/>

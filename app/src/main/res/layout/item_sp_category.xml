@@ -4,13 +4,15 @@
     android:layout_height="wrap_content"
     android:orientation="vertical"
     >
+
     <TextView
+        android:id="@+id/tv_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/tv_category"
-        android:textSize="18sp"
         android:padding="10dp"
-        android:text="hihiii"/>
+        android:text="hihiii"
+        android:textSize="18sp"
+        android:typeface="serif" />
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

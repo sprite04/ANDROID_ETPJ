@@ -20,6 +20,6 @@
     <string name="menu_join">JOIN</string>
     <string name="menu_logout">LOG OUT</string>
 
-    <string name="tv_assignment">ASSIGNMENT</string>
+    <string name="tv_assignment">Assignment</string>
 
 </resources>
