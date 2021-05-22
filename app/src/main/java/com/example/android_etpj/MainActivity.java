@@ -62,7 +62,10 @@ public class MainActivity extends AppCompatActivity {
 
         //checklogin
         setNavigationView();
-    }
+
+
+
+        }
 
     private void setNavigationView(){
 
