@@ -1,6 +1,6 @@
 package com.example.android_etpj.api;
 
-import com.example.android_etpj.models.Feedback;
+import com.example.android_etpj.models.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -15,11 +15,13 @@ import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
 
     Gson gson=new GsonBuilder()
-            .setDateFormat("yyyy-MM-dd HH:mm:ss")
+            //.setDateFormat("yyyy-MM-dd")
+            .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
             .create();
 
     ApiService apiService = new Retrofit.Builder()
@@ -42,5 +44,16 @@ public interface ApiService {
 
     @DELETE("feedback/{id}")
     Call<Boolean> deleteFeedback(@Path("id") int id);
+
+
+    @GET("module")
+    Call<List<Module>> getModules();
+
+    @GET("module")
+    Call<Boolean> checkModuleUsed(@Query("idUsed") int idUsed);
+
+    @DELETE("module/{id}")
+    Call<Boolean> deleteModule(@Path("id") int id);
+
 
 }

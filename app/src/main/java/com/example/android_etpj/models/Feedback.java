@@ -14,8 +14,8 @@ public class Feedback implements Serializable {
     @SerializedName("AdminID")
     private String adminID;
 
-    @SerializedName("isDeleted")
-    private boolean IsDeleted;
+    @SerializedName("IsDeleted")
+    private boolean isDeleted;
 
     @SerializedName("TypeFeedbackID")
     private int typeFeedbackID;
@@ -29,7 +29,7 @@ public class Feedback implements Serializable {
     public Feedback(String title, String adminID, int typeFeedbackID) {
         this.title = title;
         this.adminID = adminID;
-        this.IsDeleted=false;
+        this.isDeleted=false;
         this.typeFeedbackID = typeFeedbackID;
     }
 
@@ -45,7 +45,7 @@ public class Feedback implements Serializable {
     }
 
     public boolean isDeleted() {
-        return IsDeleted;
+        return isDeleted;
     }
 
     public String getTitle() {
@@ -78,7 +78,7 @@ public class Feedback implements Serializable {
                 "feedbackID=" + feedbackID +
                 ", title='" + title + '\'' +
                 ", adminID='" + adminID + '\'' +
-                ", IsDeleted=" + IsDeleted +
+                ", IsDeleted=" + isDeleted +
                 ", typeFeedbackID=" + typeFeedbackID +
                 ", admin=" + admin +
                 ", typeFeedback=" + typeFeedback +

@@ -28,7 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import com.example.android_etpj.models.Feedback;
+import com.example.android_etpj.models.*;
 public class HomeFragment extends Fragment {
 
     View view1;
@@ -70,20 +70,24 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        ApiService.apiService.getFeedbacks().enqueue(new Callback<List<Feedback>>() {
+        ApiService.apiService.getModules().enqueue(new Callback<List<Module>>() {
             @Override
-            public void onResponse(Call<List<Feedback>> call, Response<List<Feedback>> response) {
-                ArrayList<Feedback> feedbackList = (ArrayList<Feedback>) response.body();
-                if(feedbackList.size()>0){
-                    tvRetrofit2.setText(String.valueOf(feedbackList.size()));
+            public void onResponse(Call<List<Module>> call, Response<List<Module>> response) {
+                ArrayList<Module> modules = (ArrayList<Module>) response.body();
+                if(modules.size()>0){
+                    tvRetrofit2.setText(modules.get(0).toString());
+                }
+                else{
+                    tvRetrofit2.setText("0");
                 }
             }
 
             @Override
-            public void onFailure(Call<List<Feedback>> call, Throwable t) {
+            public void onFailure(Call<List<Module>> call, Throwable t) {
 
             }
         });
+
 
 
         /*spinner.setAdapter(spinnerAdapter);
