@@ -1,13 +1,11 @@
 package com.example.android_etpj.ui;
 
 import android.os.Bundle;
-import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageButton;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -16,12 +14,12 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.android_etpj.LoadData;
+import com.example.android_etpj.ExchangeModule;
+import com.example.android_etpj.MainActivity;
 import com.example.android_etpj.ModuleAdapter;
 import com.example.android_etpj.R;
 import com.example.android_etpj.api.ApiService;
-import com.example.android_etpj.models.Feedback;
-import com.example.android_etpj.models.Module;
+import com.example.android_etpj.models.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,13 +28,15 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ModuleFragment extends Fragment implements LoadData {
+public class ModuleFragment extends Fragment implements ExchangeModule {
 
     private RecyclerView rcvModule;
     private ModuleAdapter moduleAdapter;
     private TextView tvTitle;
     private ImageButton btnAdd;
     private List<Module> moduleList;
+
+    private MainActivity mainActivity;
 
     public ModuleFragment() {
 
@@ -46,6 +46,8 @@ public class ModuleFragment extends Fragment implements LoadData {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_common,container,false);
+
+        mainActivity=(MainActivity)getActivity();
 
         rcvModule=view.findViewById(R.id.rcv_common);
         tvTitle=view.findViewById(R.id.tv_title);
@@ -60,23 +62,20 @@ public class ModuleFragment extends Fragment implements LoadData {
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
         rcvModule.setLayoutManager(linearLayoutManager);
         rcvModule.setAdapter(moduleAdapter);
-        //setRecyclerView();
 
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainActivity.addModuleFragment();
+            }
+        });
 
 
 
         return view;
     }
 
-    private void setRecyclerView() {
-        moduleAdapter=new ModuleAdapter(this);
-        moduleAdapter.setData(moduleList);
 
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
-
-        rcvModule.setLayoutManager(linearLayoutManager);
-        rcvModule.setAdapter(moduleAdapter);
-    }
 
     @Override
     public void loadData() {
@@ -87,8 +86,6 @@ public class ModuleFragment extends Fragment implements LoadData {
                 tvTitle.setText("Module List");
 
                 moduleAdapter.setData(moduleList);
-
-
             }
 
             @Override
@@ -97,4 +94,11 @@ public class ModuleFragment extends Fragment implements LoadData {
             }
         });
     }
+
+    @Override
+    public void editData(Module module) {
+
+        mainActivity.editModuleFragment(module);
+    }
+
 }

@@ -14,21 +14,15 @@ import androidx.annotation.Nullable;
 import java.util.List;
 
 public class SpinnerAdapter extends ArrayAdapter<Object> {
-    private Context context;
-    private int resourceSelected;
-    private int resourceCategory;
-    private List<Object> objects;
+
     public SpinnerAdapter(@NonNull Context context, int resource, @NonNull List<Object> objects) {
         super(context, resource, objects);
-        this.context=context;
-        this.resourceSelected=resource;
-        this.objects=objects;
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        convertView= LayoutInflater.from(parent.getContext()).inflate(resourceSelected,parent,false);
+        convertView= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sp_selected,parent,false);
         TextView tvSelected=convertView.findViewById(R.id.tv_selected);
 
         Object object=this.getItem(position);
@@ -38,15 +32,11 @@ public class SpinnerAdapter extends ArrayAdapter<Object> {
         return convertView;
     }
 
-    @Override
-    public void setDropDownViewResource(int resource) {
-        super.setDropDownViewResource(resource);
-        this.resourceCategory=resource;
-    }
+
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        convertView= LayoutInflater.from(parent.getContext()).inflate(resourceCategory,parent,false);
+        convertView= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sp_category,parent,false);
         TextView tvCategory=convertView.findViewById(R.id.tv_category);
 
         Object object=this.getItem(position);

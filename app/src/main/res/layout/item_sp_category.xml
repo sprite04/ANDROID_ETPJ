@@ -9,9 +9,9 @@
         android:id="@+id/tv_category"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:padding="10dp"
+        android:padding="5dp"
         android:text="hihiii"
-        android:textSize="18sp"
+        android:textSize="15sp"
         android:typeface="serif" />
     <View
         android:layout_width="match_parent"

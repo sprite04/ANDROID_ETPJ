@@ -30,6 +30,8 @@ public interface ApiService {
             .build()
             .create(ApiService.class);
 
+
+    //Feedback
     @GET("feedback")
     Call<List<Feedback>> getFeedbacks();
 
@@ -46,6 +48,7 @@ public interface ApiService {
     Call<Boolean> deleteFeedback(@Path("id") int id);
 
 
+    //Module
     @GET("module")
     Call<List<Module>> getModules();
 
@@ -54,6 +57,17 @@ public interface ApiService {
 
     @DELETE("module/{id}")
     Call<Boolean> deleteModule(@Path("id") int id);
+
+    @POST("module")
+    Call<Boolean> addModule(@Body Module m);
+
+    @PUT("module")
+    Call<Boolean> editModule(@Body Module m);
+
+
+    //Admin
+    @GET("admin")
+    Call<List<Admin>> getAdmins();
 
 
 }

@@ -1,12 +1,11 @@
 package com.example.android_etpj;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.DialogInterface;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ import com.example.android_etpj.models.*;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.util.List;
 
 import retrofit2.Call;
@@ -35,7 +33,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
 
     private List<Module> moduleList;
     private Activity activity;
-    private LoadData loadData;
+    private ExchangeModule exchange;
 
 
     public void setData(List<Module> list){
@@ -43,8 +41,8 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         notifyDataSetChanged();
     }
 
-    public ModuleAdapter(LoadData loadData) {
-        this.loadData=loadData;
+    public ModuleAdapter(ExchangeModule exchange) {
+        this.exchange=exchange;
     }
 
     @NonNull
@@ -93,6 +91,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
             }
         });
 
+
     }
 
     private void setDelete(Module module) {
@@ -127,28 +126,11 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
                                     Boolean deleted=response.body();
                                     if(deleted==true){
                                         dialog.cancel();
-                                        Dialog dialogSuccess=new Dialog(activity);
-                                        dialogSuccess.setContentView(R.layout.dialog_notification);
-                                        dialogSuccess.setCancelable(false);
 
-                                        Window window=dialogSuccess.getWindow();
-                                        if(window==null)
-                                            return ;
-                                        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
-                                        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                        //create dialog success
+                                        dialogSuccess();
 
-                                        TextView tvTitleSuccess=dialogSuccess.findViewById(R.id.tv_title);
-                                        tvTitleSuccess.setText("Delete Success!");
-
-                                        Button btnOk=dialogSuccess.findViewById(R.id.btn_ok);
-                                        btnOk.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                dialogSuccess.cancel();
-                                            }
-                                        });
-                                        loadData.loadData();
-
+                                        exchange.loadData();
                                     }
                                 }
 
@@ -197,28 +179,11 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
                                     Boolean deleted=response.body();
                                     if(deleted==true){
                                         dialog.cancel();
-                                        Dialog dialogSuccess=new Dialog(activity);
-                                        dialogSuccess.setContentView(R.layout.dialog_notification);
-                                        dialogSuccess.setCancelable(false);
 
-                                        Window window=dialogSuccess.getWindow();
-                                        if(window==null)
-                                            return ;
-                                        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
-                                        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                                        //create dialog success
+                                        dialogSuccess();
 
-                                        TextView tvTitleSuccess=dialogSuccess.findViewById(R.id.tv_title);
-                                        tvTitleSuccess.setText("Delete Success!");
-
-                                        Button btnOk=dialogSuccess.findViewById(R.id.btn_ok);
-                                        btnOk.setOnClickListener(new View.OnClickListener() {
-                                            @Override
-                                            public void onClick(View v) {
-                                                dialogSuccess.cancel();
-                                            }
-                                        });
-                                        loadData.loadData();
-
+                                        exchange.loadData();
                                     }
                                 }
 
@@ -252,8 +217,32 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
 
     }
 
+    private void dialogSuccess(){
+        Dialog dialogSuccess=new Dialog(activity);
+        dialogSuccess.setContentView(R.layout.dialog_notification);
+        dialogSuccess.setCancelable(false);
+
+        Window window=dialogSuccess.getWindow();
+        if(window==null)
+            return ;
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView tvTitleSuccess=dialogSuccess.findViewById(R.id.tv_title);
+        tvTitleSuccess.setText("Delete Success!");
+
+        Button btnOk=dialogSuccess.findViewById(R.id.btn_ok);
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogSuccess.cancel();
+            }
+        });
+    }
+
     private void setEdit(Module module) {
 
+        exchange.editData(module);
     }
 
     @Override

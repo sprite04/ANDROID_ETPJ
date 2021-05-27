@@ -12,11 +12,11 @@
         android:layout_centerVertical="true"
         android:layout_toStartOf="@id/img_drop_down"
         android:text="hhhhhhhhhhhh"
-        android:textSize="18sp"
+        android:textSize="15sp"
         android:typeface="serif" />
     <ImageView
-        android:layout_width="35dp"
-        android:layout_height="35dp"
+        android:layout_width="26dp"
+        android:layout_height="26dp"
         android:id="@+id/img_drop_down"
         android:layout_alignParentEnd="true"
         android:src="@drawable/sort"

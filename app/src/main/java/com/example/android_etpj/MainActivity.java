@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
 
+import com.example.android_etpj.models.Module;
 import com.example.android_etpj.ui.AssignmentFragment;
 import com.example.android_etpj.ui.ClassFragment;
 import com.example.android_etpj.ui.ContactFragment;
@@ -19,6 +20,8 @@ import com.example.android_etpj.ui.JoinFragment;
 import com.example.android_etpj.ui.ModuleFragment;
 import com.example.android_etpj.ui.QuestionFragment;
 import com.example.android_etpj.ui.ResultFragment;
+import com.example.android_etpj.ui.add.*;
+import com.example.android_etpj.ui.edit.*;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -163,6 +166,18 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
+    public void addModuleFragment(){
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        AddModuleFragment addModuleFragment=new AddModuleFragment();
+        /*Bundle bundle=new Bundle();
+        bundle.putSerializable("MODULE",module);
+        addModuleFragment.setArguments(bundle);*/
+
+        fragmentTransaction.replace(R.id.content_frame,addModuleFragment);
+        fragmentTransaction.addToBackStack(AddModuleFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
 
 
     private void replaceFragment(Fragment fragment){
@@ -177,6 +192,16 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public void editModuleFragment(Module module) {
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        EditModuleFragment editModuleFragment=new EditModuleFragment();
+        Bundle bundle=new Bundle();
 
+        bundle.putSerializable("MODULE",module);
+        editModuleFragment.setArguments(bundle);
 
+        fragmentTransaction.replace(R.id.content_frame,editModuleFragment);
+        fragmentTransaction.addToBackStack(EditModuleFragment.TAG);
+        fragmentTransaction.commit();
+    }
 }

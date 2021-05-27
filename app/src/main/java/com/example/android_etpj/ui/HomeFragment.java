@@ -88,6 +88,26 @@ public class HomeFragment extends Fragment {
             }
         });
 
+       /* ApiService.apiService.getAdmins().enqueue(new Callback<List<Admin>>() {
+            @Override
+            public void onResponse(Call<List<Admin>> call, Response<List<Admin>> response) {
+                ArrayList<Admin> modules = (ArrayList<Admin>) response.body();
+                if(modules.size()>0){
+                    tvRetrofit2.setText(modules.get(0).toString());
+                }
+                else{
+                    tvRetrofit2.setText("0");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Admin>> call, Throwable t) {
+
+            }
+        });*/
+
+
+
 
 
         /*spinner.setAdapter(spinnerAdapter);

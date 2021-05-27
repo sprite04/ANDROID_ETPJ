@@ -74,14 +74,6 @@ public class Feedback implements Serializable {
 
     @Override
     public String toString() {
-        return "Feedback{" +
-                "feedbackID=" + feedbackID +
-                ", title='" + title + '\'' +
-                ", adminID='" + adminID + '\'' +
-                ", IsDeleted=" + isDeleted +
-                ", typeFeedbackID=" + typeFeedbackID +
-                ", admin=" + admin +
-                ", typeFeedback=" + typeFeedback +
-                '}';
+        return title ;
     }
 }
