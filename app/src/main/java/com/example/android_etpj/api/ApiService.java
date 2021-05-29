@@ -4,6 +4,7 @@ import com.example.android_etpj.models.*;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.lang.Class;
 import java.util.List;
 
 import retrofit2.Call;
@@ -69,5 +70,20 @@ public interface ApiService {
     @GET("admin")
     Call<List<Admin>> getAdmins();
 
+    //Class
+    @GET("class")
+    Call<List<com.example.android_etpj.models.Class>> getClasses();
+
+    @GET("class/{id}")
+    Call<com.example.android_etpj.models.Class> getClassById(@Path("id") int id);
+
+    @POST("class")
+    Call<Boolean> addClass(@Body Class cl);
+
+    @PUT("class")
+    Call<Boolean> editClass(@Body Class cl);
+
+    @DELETE("class/{id}")
+    Call<Boolean> deleteClass(@Path("id") int id);
 
 }

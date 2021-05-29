@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
 
+import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Module;
 import com.example.android_etpj.ui.AssignmentFragment;
 import com.example.android_etpj.ui.ClassFragment;
@@ -166,18 +167,6 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void addModuleFragment(){
-        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-        AddModuleFragment addModuleFragment=new AddModuleFragment();
-        /*Bundle bundle=new Bundle();
-        bundle.putSerializable("MODULE",module);
-        addModuleFragment.setArguments(bundle);*/
-
-        fragmentTransaction.replace(R.id.content_frame,addModuleFragment);
-        fragmentTransaction.addToBackStack(AddModuleFragment.TAG);
-        fragmentTransaction.commit();
-    }
-
 
 
     private void replaceFragment(Fragment fragment){
@@ -191,6 +180,14 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public void addModuleFragment(){
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        AddModuleFragment addModuleFragment=new AddModuleFragment();
+
+        fragmentTransaction.replace(R.id.content_frame,addModuleFragment);
+        fragmentTransaction.addToBackStack(AddModuleFragment.TAG);
+        fragmentTransaction.commit();
+    }
 
     public void editModuleFragment(Module module) {
         FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
@@ -204,4 +201,29 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack(EditModuleFragment.TAG);
         fragmentTransaction.commit();
     }
+
+    public void addClassFragment(){
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        AddModuleFragment addModuleFragment=new AddModuleFragment();
+
+        fragmentTransaction.replace(R.id.content_frame,addModuleFragment);
+        fragmentTransaction.addToBackStack(AddModuleFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    public void editClassFragment(Class clss) {
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        EditModuleFragment editModuleFragment=new EditModuleFragment();
+        Bundle bundle=new Bundle();
+
+        bundle.putSerializable("CLASS",clss);
+        editModuleFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_frame,editModuleFragment);
+        fragmentTransaction.addToBackStack(EditModuleFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+
+
 }
