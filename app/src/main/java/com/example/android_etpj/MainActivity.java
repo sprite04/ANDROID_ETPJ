@@ -204,10 +204,10 @@ public class MainActivity extends AppCompatActivity {
 
     public void addClassFragment(){
         FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-        AddModuleFragment addModuleFragment=new AddModuleFragment();
+        AddClassFragment addClassFragment=new AddClassFragment();
 
-        fragmentTransaction.replace(R.id.content_frame,addModuleFragment);
-        fragmentTransaction.addToBackStack(AddModuleFragment.TAG);
+        fragmentTransaction.replace(R.id.content_frame,addClassFragment);
+        fragmentTransaction.addToBackStack(AddClassFragment.TAG);
         fragmentTransaction.commit();
     }
 

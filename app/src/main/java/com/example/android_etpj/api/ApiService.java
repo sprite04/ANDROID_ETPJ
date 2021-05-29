@@ -78,10 +78,10 @@ public interface ApiService {
     Call<com.example.android_etpj.models.Class> getClassById(@Path("id") int id);
 
     @POST("class")
-    Call<Boolean> addClass(@Body Class cl);
+    Call<Boolean> addClass(@Body com.example.android_etpj.models.Class cl);
 
     @PUT("class")
-    Call<Boolean> editClass(@Body Class cl);
+    Call<Boolean> editClass(@Body com.example.android_etpj.models.Class cl);
 
     @DELETE("class/{id}")
     Call<Boolean> deleteClass(@Path("id") int id);

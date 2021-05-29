@@ -24,6 +24,9 @@ public class Class implements Serializable {
     @SerializedName("IsDeleted")
     private boolean isDeleted;
 
+    public Class() {
+    }
+
     public Class(int classID, String className, int capacity, Date startTime, Date endTime, boolean isDeleted) {
         this.classID = classID;
         this.className = className;
