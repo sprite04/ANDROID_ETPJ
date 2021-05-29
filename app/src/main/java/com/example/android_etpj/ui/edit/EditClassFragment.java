@@ -1,4 +1,4 @@
-package com.example.android_etpj.ui.add;
+package com.example.android_etpj.ui.edit;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
@@ -31,8 +31,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddClassFragment extends Fragment {
-    public static final String TAG=AddClassFragment.class.getName();
+public class EditClassFragment extends Fragment {
+    public static final String TAG= EditModuleFragment.class.getName();
 
     private ImageView btnStartDate;
     private ImageView btnEndDate;
@@ -58,6 +58,8 @@ public class AddClassFragment extends Fragment {
     private EditText edtName;
     private EditText edtCapicity;
 
+    private TextView tvTitle;
+
     private Class clss;
 
     @Nullable
@@ -65,43 +67,59 @@ public class AddClassFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_class,container,false);
 
+        Bundle bundle=getArguments();
+        clss= (Class) bundle.get("CLASS");
+
+
+        tvTitle=view.findViewById(R.id.tv_title);
+        tvTitle.setText("Edit Class");
+
         btnStartDate=view.findViewById(R.id.img_start_date);
         btnEndDate=view.findViewById(R.id.img_end_date);
 
         tvStartDate=view.findViewById(R.id.tv_start_date);
         tvEndDate=view.findViewById(R.id.tv_end_date);
+        tvStartDate.setEnabled(false);
 
         edtName=view.findViewById(R.id.edt_name);
-        edtCapicity=view.findViewById(R.id.edt_capacity);
-
+        edtName.setText(clss.getClassName());
+        edtCapicity = view.findViewById(R.id.edt_capacity);
+        edtCapicity.setText(String.valueOf(clss.getCapacity()));
 
         formatterDate= new SimpleDateFormat("dd/MM/yyyy");
 
         calendarStartDate=Calendar.getInstance();
+        if(clss.getStartTime()!=null){
+            calendarStartDate.setTime(clss.getStartTime());
+            tvStartDate.setText(formatterDate.format(calendarStartDate.getTime()));
+        }
         calendarEndDate=Calendar.getInstance();
+        if(clss.getEndTime()!=null){
+            calendarEndDate.setTime(clss.getEndTime());
+            tvEndDate.setText(formatterDate.format(calendarEndDate.getTime()));
+        }
         calendarPresent=Calendar.getInstance();
 
         tvErrorName=view.findViewById(R.id.tv_error_name);
-        tvErrorCapicity=view.findViewById(R.id.tv_error_capacity);
         tvErrorStartDate=view.findViewById(R.id.tv_error_start_date);
         tvErrorEndDate=view.findViewById(R.id.tv_error_end_date);
+        tvErrorCapicity=view.findViewById(R.id.tv_error_capacity);
 
         tvErrorName.setVisibility(View.GONE);
-        tvErrorCapicity.setVisibility(View.GONE);
         tvErrorStartDate.setVisibility(View.GONE);
         tvErrorEndDate.setVisibility(View.GONE);
+        tvErrorCapicity.setVisibility(View.GONE);
 
         btnSave=view.findViewById(R.id.btn_save);
         btnBack=view.findViewById(R.id.btn_back);
 
-        clss = new Class();
-
-        btnStartDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setDate(calendarStartDate,tvStartDate,formatterDate,1);
-            }
-        });
+//        btnStartDate.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                setDate(calendarStartDate,tvStartDate,formatterDate,1);
+//
+//            }
+//        });
 
         btnEndDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -122,7 +140,6 @@ public class AddClassFragment extends Fragment {
         });
 
         btnSave.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 boolean success=true;
@@ -159,34 +176,34 @@ public class AddClassFragment extends Fragment {
                     }
                 }
 
-                if(clss.getStartTime()==null){
-                    tvErrorStartDate.setText("Please choose date or fill mm/dd/yyyy");
-                    tvErrorStartDate.setVisibility(View.VISIBLE);
-                    success=false;
-                }
-                else{
-                    String strPresent=formatterDate.format(calendarPresent.getTime());
-                    String strStartDate=formatterDate.format(clss.getStartTime());
-
-                    Date present= null;
-                    Date startDate= null;
-                    try {
-                        present = formatterDate.parse(strPresent);
-                        startDate = formatterDate.parse(strStartDate);
-
-                        if(startDate.compareTo(present)<0){
-                            tvErrorStartDate.setText("Please choose date after now date");
-                            tvErrorStartDate.setVisibility(View.VISIBLE);
-                            success=false;
-                        }
-                        else {
-                            tvErrorStartDate.setVisibility(View.GONE);
-                        }
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                        success=false;
-                    }
-                }
+//                if(clss.getStartTime()==null){
+//                    tvErrorStartDate.setText("Please choose date or fill mm/dd/yyyy");
+//                    tvErrorStartDate.setVisibility(View.VISIBLE);
+//                    success=false;
+//                }
+//                else{
+//                    String strPresent=formatterDate.format(calendarPresent.getTime());
+//                    String strStartDate=formatterDate.format(clss.getStartTime());
+//
+//                    Date present= null;
+//                    Date startDate= null;
+//                    try {
+//                        present = formatterDate.parse(strPresent);
+//                        startDate = formatterDate.parse(strStartDate);
+//
+//                        if(startDate.compareTo(present)<0){
+//                            tvErrorStartDate.setText("Please choose date after now date");
+//                            tvErrorStartDate.setVisibility(View.VISIBLE);
+//                            success=false;
+//                        }
+//                        else {
+//                            tvErrorStartDate.setVisibility(View.GONE);
+//                        }
+//                    } catch (ParseException e) {
+//                        e.printStackTrace();
+//                        success=false;
+//                    }
+//                }
 
                 if(clss.getEndTime()==null){
                     tvErrorEndDate.setText("Please choose date or fill mm/dd/yyyy");
@@ -246,7 +263,7 @@ public class AddClassFragment extends Fragment {
 
                 }
                 if(success==true){
-                    ApiService.apiService.addClass(clss).enqueue(new Callback<Boolean>() {
+                    ApiService.apiService.editClass(clss).enqueue(new Callback<Boolean>() {
                         @Override
                         public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                             if(response.body()==true){

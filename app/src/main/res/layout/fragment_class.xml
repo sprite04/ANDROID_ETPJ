@@ -68,6 +68,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="30dp"
                 android:id="@+id/edt_capacity"
+                android:inputType="number"
                 android:textSize="15sp"
                 android:typeface="serif"
                 android:background="@drawable/background_border_white"

@@ -213,13 +213,13 @@ public class MainActivity extends AppCompatActivity {
 
     public void editClassFragment(Class clss) {
         FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-        EditModuleFragment editModuleFragment=new EditModuleFragment();
+        EditClassFragment editClassFragment=new EditClassFragment();
         Bundle bundle=new Bundle();
 
         bundle.putSerializable("CLASS",clss);
-        editModuleFragment.setArguments(bundle);
+        editClassFragment.setArguments(bundle);
 
-        fragmentTransaction.replace(R.id.content_frame,editModuleFragment);
+        fragmentTransaction.replace(R.id.content_frame,editClassFragment);
         fragmentTransaction.addToBackStack(EditModuleFragment.TAG);
         fragmentTransaction.commit();
     }
