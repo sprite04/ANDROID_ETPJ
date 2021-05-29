@@ -73,4 +73,20 @@ public interface ApiService {
             @Query("username") String username,
             @Query("password") String password);
 
+    //Trainer
+    @GET("trainer")
+    Call<List<Trainer>> getTrainers();
+    @GET("trainer")
+    Call<Trainer> loginTrainer(
+            @Query("username") String username,
+            @Query("password") String password);
+
+    //Trainee
+    @GET("trainee")
+    Call<List<Trainee>> getTrainees();
+    @GET("trainee")
+    Call<Trainee> loginTrainee(
+            @Query("username") String username,
+            @Query("password") String password);
+
 }

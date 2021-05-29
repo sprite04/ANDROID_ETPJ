@@ -1,7 +1,6 @@
 package com.example.android_etpj;
 
 import android.content.Context;
-import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,17 +12,16 @@ import androidx.annotation.Nullable;
 
 import java.util.List;
 
-public class SpinnerAdapter extends ArrayAdapter<Object> {
-
-    public SpinnerAdapter(@NonNull Context context, int resource, @NonNull List<Object> objects) {
+public class SpinnerRoleAdapter extends ArrayAdapter<String> {
+    public SpinnerRoleAdapter(@NonNull Context context, int resource, @NonNull List<String> objects) {
         super(context, resource, objects);
     }
 
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sp_selected,parent,false);
-        TextView tvSelected=convertView.findViewById(R.id.tv_selected);
+        convertView = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sp_login_selected,parent,false);
+        TextView tvSelected = convertView.findViewById(R.id.tv_role_selected);
 
         Object object=this.getItem(position);
         if(object!=null){
@@ -36,23 +34,15 @@ public class SpinnerAdapter extends ArrayAdapter<Object> {
 
     @Override
     public View getDropDownView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        convertView= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sp_category,parent,false);
-        TextView tvCategory=convertView.findViewById(R.id.tv_category);
+        convertView= LayoutInflater.from(parent.getContext()).inflate(R.layout.item_sp_role,parent,false);
+        TextView tvRole=convertView.findViewById(R.id.tv_role);
 
         Object object=this.getItem(position);
         if(object!=null){
-            tvCategory.setText(object.toString());
+            tvRole.setText(object.toString());
         }
         return convertView;
     }
 
-
-    /*
-    * my adding start here
-    * */
-
-    /*
-     * my adding end here
-     * */
 
 }

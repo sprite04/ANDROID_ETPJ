@@ -8,6 +8,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -16,9 +17,12 @@ import androidx.appcompat.widget.PopupMenu;
 
 import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.models.Admin;
+import com.example.android_etpj.models.Trainee;
+import com.example.android_etpj.models.Trainer;
 import com.example.android_etpj.sharedpreference.DataLocal;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -33,6 +37,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText edtPassword;
     private CheckBox chkRememberMe;
     private TextView txtErrorUsername;
+    private Spinner spRole;
     private ImageView imgvRoleMenu;
     private TextView txtErrorPassword;
     public LoginActivity() {
@@ -50,10 +55,18 @@ public class LoginActivity extends AppCompatActivity {
         chkRememberMe = findViewById(R.id.remember_me);
         txtErrorUsername = findViewById(R.id.username_error);
         txtErrorPassword = findViewById(R.id.password_error);
+        spRole = findViewById(R.id.sp_role);
         txtErrorUsername.setVisibility(View.INVISIBLE);
         txtErrorPassword.setVisibility(View.INVISIBLE);
 
         setBtnLogin();
+
+        setRoleSpinner();
+
+
+
+
+
         //setImgvRoleMenu();
         //setSignInButton();
         //setExitButton();
@@ -61,7 +74,64 @@ public class LoginActivity extends AppCompatActivity {
 
     }
 
+    private void setRoleSpinner(){
+        ArrayList<String> roles= new ArrayList<String>();
+        roles.add(Role.ADMIN.name());
+        roles.add(Role.TRAINER.name());
+        roles.add(Role.TRAINEE.name());
 
+        SpinnerRoleAdapter spinnerAdapter=new SpinnerRoleAdapter(this,R.layout.item_sp_login_selected,roles);
+        spinnerAdapter.setDropDownViewResource(R.layout.item_sp_role);
+        spRole.setAdapter(spinnerAdapter);
+    }
+
+    private void roleLogin(String role, String username, String password){
+        if (role == Role.ADMIN.name()){
+            Callback<Admin> call_admin = new Callback<Admin>() {
+                @Override
+                public void onResponse(Call<Admin> call, Response<Admin> response) {
+                    edtPassword.setText(response.body().getEmail());
+                }
+
+                @Override
+                public void onFailure(Call<Admin> call, Throwable t) {
+                    edtPassword.setText("fail");
+                }
+            };
+            ApiService.apiService.loginAdmin(username, password).enqueue(call_admin);
+        }
+        else if (role == Role.TRAINER.name()){
+            Callback<Trainer> callTrainer = new Callback<Trainer>() {
+                @Override
+                public void onResponse(Call<Trainer> call, Response<Trainer> response) {
+                    edtPassword.setText(response.body().getEmail());
+                }
+
+                @Override
+                public void onFailure(Call<Trainer> call, Throwable t) {
+                    edtPassword.setText("fail");
+                }
+            };
+            ApiService.apiService.loginTrainer(username, password).enqueue(callTrainer);
+        }
+        else{
+            Callback<Trainee> callTrainee = new Callback<Trainee>() {
+                @Override
+                public void onResponse(Call<Trainee> call, Response<Trainee> response) {
+                    edtPassword.setText(response.body().getEmail());
+                }
+
+                @Override
+                public void onFailure(Call<Trainee> call, Throwable t) {
+                    edtPassword.setText("fail");
+                }
+            };
+            ApiService.apiService.loginTrainee(username, password).enqueue(callTrainee);
+        }
+
+
+
+    }
 
     private void setBtnLogin(){
         txtvLogin.setOnClickListener(
@@ -88,76 +158,10 @@ public class LoginActivity extends AppCompatActivity {
                     txtErrorUsername.setVisibility(View.INVISIBLE);
                     txtErrorPassword.setVisibility(View.INVISIBLE);
 
-                    //Admin admin;
+
+                    roleLogin(spRole.getSelectedItem().toString(),username,password);
 
 
-
-
-                    ApiService.apiService.loginAdmin(username, password).enqueue(new Callback<Admin>() {
-                        @Override
-                        public void onResponse(Call<Admin> call, Response<Admin> response) {
-                            //response.body().getEmail();
-                            //admin = (Admin) response;
-/*                            String userID = response.body().getUsername();
-                            String userRole = "Admin";
-                            DataLocal.setIsLogin(true);
-                            DataLocal.setDateLogin(Calendar.getInstance().getTime());
-                            DataLocal.setUserLogin(userID);
-                            DataLocal.setUserRole(userRole);
-
-                            DataLocal.setIsRememberMe(chkRememberMe.isChecked());
-
-                            Bundle bundle = new Bundle();
-                            bundle.putSerializable("USER",response.body());
-                            bundle.putString("ROLE","Admin");
-                            Intent intent=getIntent();
-                            intent.putExtras(bundle);
-                            setResult(RESULT_OK,intent);
-                            finish();*/
-                            edtPassword.setText(response.body().getEmail());
-/*                            Snackbar snackbar = Snackbar.make(edtUsername,response.body().toString(), Snackbar.LENGTH_LONG);
-                            snackbar.show();*/
-
-/*                            if (response.body()!=Null){
-                                edtPassword.setText(response.body().getEmail());
-                            }
-                            else{
-                                edtPassword.setText("None");
-                            }*/
-
-
-
-                        }
-
-                        @Override
-                        public void onFailure(Call<Admin> call, Throwable t) {
-                            edtPassword.setText("fail");
-                        }
-                    });
-
-/*                    List<User> userList=NoteDatabase.getInstance(LoginActivity.this).userDAO().getListUser(email,password);
-
-                    if(userList.size()>0){
-                        user=userList.get(0);
-                        DataLocal.setIsLogin(true);
-                        DataLocal.setDateLogin(Calendar.getInstance().getTime());
-                        DataLocal.setUserLogin(user.getId());
-                        DataLocal.setIsRememberMe(chkRememberMe.isChecked());
-
-                        Bundle bundle=new Bundle();
-                        bundle.putSerializable("USER",user);
-
-                        Intent intent=getIntent();
-                        intent.putExtras(bundle);
-                        setResult(RESULT_OK,intent);
-                        finish();
-                    }
-                    else {
-                        hideKeyboard();
-
-                        Snackbar snackbar = Snackbar.make(findViewById(R.id.layout_login),"Username or password is incorrect", Snackbar.LENGTH_LONG);
-                        snackbar.show();
-                    }*/
                 }
             }
         );
