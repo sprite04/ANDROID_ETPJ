@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
 
+import com.example.android_etpj.models.Admin;
 import com.example.android_etpj.models.Module;
 import com.example.android_etpj.ui.AssignmentFragment;
 import com.example.android_etpj.ui.ClassFragment;
@@ -27,6 +28,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
@@ -38,6 +40,7 @@ import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import com.example.android_etpj.sharedpreference.DataLocal;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -45,8 +48,19 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     private NavigationView navigationView;
+    private static final int REQUEST_CODE = 12;
     private DrawerLayout drawer;
     private Type currentFragment=Type.FRAGMENT_HOME;
+    private Admin user;
+
+/*    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==REQUEST_CODE && resultCode==RESULT_OK){
+            user=(User) data.getExtras().get("USER");
+            setNavigationView();
+        }
+    }*/
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -187,7 +201,6 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private boolean checkLogin() {
-
         return true;
     }
 

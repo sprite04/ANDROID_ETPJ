@@ -25,7 +25,7 @@ public interface ApiService {
             .create();
 
     ApiService apiService = new Retrofit.Builder()
-            .baseUrl("http://192.168.0.109/systemfeedback/api/")
+            .baseUrl("http://192.168.129.1/systemfeedback/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
@@ -68,6 +68,9 @@ public interface ApiService {
     //Admin
     @GET("admin")
     Call<List<Admin>> getAdmins();
-
+    @GET("admin")
+    Call<Admin> loginAdmin(
+            @Query("username") String username,
+            @Query("password") String password);
 
 }
