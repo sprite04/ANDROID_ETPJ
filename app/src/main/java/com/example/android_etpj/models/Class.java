@@ -86,13 +86,6 @@ public class Class implements Serializable {
 
     @Override
     public String toString() {
-        return "Class{" +
-                "classID=" + classID +
-                ", className='" + className + '\'' +
-                ", capacity=" + capacity +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", isDeleted=" + isDeleted +
-                '}';
+        return className;
     }
 }
