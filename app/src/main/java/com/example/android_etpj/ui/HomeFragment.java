@@ -19,6 +19,7 @@ import androidx.fragment.app.Fragment;
 import com.example.android_etpj.R;
 import com.example.android_etpj.SpinnerAdapter;
 import com.example.android_etpj.api.ApiService;
+import com.example.android_etpj.sharedpreference.DataLocal;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.util.ArrayList;
@@ -32,7 +33,9 @@ import com.example.android_etpj.models.*;
 public class HomeFragment extends Fragment {
 
     View view1;
-    public HomeFragment() {
+    private Object user;
+    public HomeFragment(Object user) {
+        this.user=user;
     }
 
     @Nullable
@@ -48,6 +51,18 @@ public class HomeFragment extends Fragment {
         TextView tvRetrofit=view.findViewById(R.id.tv_retrofit);
         TextView tvRetrofit2=view.findViewById(R.id.tv_retrofit_2);
         Button btnAdd=view.findViewById(R.id.btn_add);
+
+        /*
+        * My add start here for testing only
+        * */
+        if (this.user != null)
+        {
+            tvRetrofit.setText(((Admin) this.user).getName());
+        }
+
+        /*
+        * My add end here
+        * */
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override

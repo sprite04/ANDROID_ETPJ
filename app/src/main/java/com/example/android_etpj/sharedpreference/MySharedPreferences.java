@@ -45,7 +45,7 @@ public class MySharedPreferences {
     * */
 
     public void putBooleanValue(String key, boolean value){
-        SharedPreferences sharedPreference= context.getSharedPreferences(LOGIN,Context.MODE_PRIVATE);
+        SharedPreferences sharedPreference = context.getSharedPreferences(LOGIN,Context.MODE_PRIVATE);
         SharedPreferences.Editor editor=sharedPreference.edit();
         editor.putBoolean(key,value);
         editor.apply();

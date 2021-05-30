@@ -9,21 +9,26 @@ import java.util.Date;
 
 public class DataLocal {
     private static final String LOGIN ="LOGIN" ;
+    private static final String USERNAME ="USERNAME" ;
+    private static final String PASSWORD ="PASSWORD" ;
     private static final String ROLE ="ROLE" ;
     private static final String LOGIN_DATE ="LOGIN_DATE" ;
-    private static final String LOGIN_USER ="LOGIN_USER_4" ;
+    //private static final String LOGIN_USER ="LOGIN_USER_4" ;
     private static final String REMEMBER_ME = "REMEMBER_ME";
     private static DataLocal instance;
     private MySharedPreferences mySharedPreferences;
 
     public static void init(Context context){
-        instance=new DataLocal();
-        instance.mySharedPreferences=new MySharedPreferences(context);
+        instance = new DataLocal();
+        instance.mySharedPreferences = new MySharedPreferences(context);
     }
 
     public static DataLocal getInstance(){
-        if(instance==null)
-            instance=new DataLocal();
+        if(instance==null){
+            instance = new DataLocal();
+
+        }
+
         return instance;
     }
 
@@ -41,12 +46,21 @@ public class DataLocal {
     }
 
     public static void setUserLogin(String user){
-        DataLocal.getInstance().mySharedPreferences.putStringValue(LOGIN_USER,user);
+        DataLocal.getInstance().mySharedPreferences.putStringValue(USERNAME,user);
     }
 
     public static String getUserLogin(){
-        return DataLocal.getInstance().mySharedPreferences.getStringValue(LOGIN_USER);
+        return DataLocal.getInstance().mySharedPreferences.getStringValue(USERNAME);
     }
+
+    public static void setUserPassword(String password){
+        DataLocal.getInstance().mySharedPreferences.putStringValue(PASSWORD,password);
+    }
+
+    public static String getUserPassword(){
+        return DataLocal.getInstance().mySharedPreferences.getStringValue(PASSWORD);
+    }
+
 
     /*
      * my adding end here

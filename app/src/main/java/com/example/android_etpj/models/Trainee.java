@@ -115,6 +115,10 @@ public class Trainee implements Serializable {
         return resetPasswordCode;
     }
 
+    public String getUsername() {
+        return userId;
+    }
+
     public void setResetPasswordCode(String resetPasswordCode) {
         this.resetPasswordCode = resetPasswordCode;
     }

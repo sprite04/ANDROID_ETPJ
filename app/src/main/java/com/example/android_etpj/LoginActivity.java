@@ -22,6 +22,7 @@ import com.example.android_etpj.models.Trainer;
 import com.example.android_etpj.sharedpreference.DataLocal;
 import com.google.android.material.snackbar.Snackbar;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -43,11 +44,12 @@ public class LoginActivity extends AppCompatActivity {
     public LoginActivity() {
     }
 
-    private Admin admin;
+    private Object user;
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_login);
+        getSupportActionBar().hide();
         //view1 = findViewById(R.id.layout_login);
         edtUsername = findViewById(R.id.username);
         edtPassword = findViewById(R.id.password);
@@ -58,7 +60,7 @@ public class LoginActivity extends AppCompatActivity {
         spRole = findViewById(R.id.sp_role);
         txtErrorUsername.setVisibility(View.INVISIBLE);
         txtErrorPassword.setVisibility(View.INVISIBLE);
-
+        user = new Object();
         setBtnLogin();
 
         setRoleSpinner();
@@ -90,7 +92,25 @@ public class LoginActivity extends AppCompatActivity {
             Callback<Admin> call_admin = new Callback<Admin>() {
                 @Override
                 public void onResponse(Call<Admin> call, Response<Admin> response) {
-                    edtPassword.setText(response.body().getEmail());
+                    user = (Object)  response.body();
+                    //DataLocal.getInstance();
+                    DataLocal.setIsLogin(true);
+                    DataLocal.setDateLogin(Calendar.getInstance().getTime());
+                    DataLocal.setUserLogin(response.body().getUsername());
+                    DataLocal.setUserPassword(response.body().getPassword());
+                    DataLocal.setUserRole(role);
+                    DataLocal.setIsRememberMe(chkRememberMe.isChecked());
+
+                    edtPassword.setText(  ((Admin) user).getEmail());
+
+                    Bundle bundle=new Bundle();
+                    bundle.putSerializable("USER",((Serializable) user));
+                    bundle.putString("ROLE", role);
+                    Intent intent=getIntent();
+                    intent.putExtras(bundle);
+                    setResult(RESULT_OK,intent);
+                    finish();
+
                 }
 
                 @Override
@@ -104,7 +124,24 @@ public class LoginActivity extends AppCompatActivity {
             Callback<Trainer> callTrainer = new Callback<Trainer>() {
                 @Override
                 public void onResponse(Call<Trainer> call, Response<Trainer> response) {
-                    edtPassword.setText(response.body().getEmail());
+                    user = (Object)  response.body();
+                    //DataLocal.getInstance();
+                    DataLocal.setIsLogin(true);
+                    DataLocal.setDateLogin(Calendar.getInstance().getTime());
+                    DataLocal.setUserLogin(response.body().getUsername());
+                    DataLocal.setUserPassword(response.body().getPassword());
+                    DataLocal.setUserRole(role);
+                    DataLocal.setIsRememberMe(chkRememberMe.isChecked());
+
+                    edtPassword.setText(  ((Trainer) user).getEmail());
+
+                    Bundle bundle=new Bundle();
+                    bundle.putSerializable("USER",((Serializable) user));
+                    bundle.putString("ROLE", role);
+                    Intent intent=getIntent();
+                    intent.putExtras(bundle);
+                    setResult(RESULT_OK,intent);
+                    finish();
                 }
 
                 @Override
@@ -118,7 +155,24 @@ public class LoginActivity extends AppCompatActivity {
             Callback<Trainee> callTrainee = new Callback<Trainee>() {
                 @Override
                 public void onResponse(Call<Trainee> call, Response<Trainee> response) {
-                    edtPassword.setText(response.body().getEmail());
+                    user = (Object)  response.body();
+                    //DataLocal.getInstance();
+                    DataLocal.setIsLogin(true);
+                    DataLocal.setDateLogin(Calendar.getInstance().getTime());
+                    DataLocal.setUserLogin(response.body().getUsername());
+                    DataLocal.setUserPassword(response.body().getPassword());
+                    DataLocal.setUserRole(role);
+                    DataLocal.setIsRememberMe(chkRememberMe.isChecked());
+
+                    edtPassword.setText(  ((Trainee) user).getEmail());
+
+                    Bundle bundle=new Bundle();
+                    bundle.putSerializable("USER",((Serializable) user));
+                    bundle.putString("ROLE", role);
+                    Intent intent=getIntent();
+                    intent.putExtras(bundle);
+                    setResult(RESULT_OK,intent);
+                    finish();
                 }
 
                 @Override
@@ -160,7 +214,6 @@ public class LoginActivity extends AppCompatActivity {
 
 
                     roleLogin(spRole.getSelectedItem().toString(),username,password);
-
 
                 }
             }

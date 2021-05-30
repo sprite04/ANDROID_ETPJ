@@ -5,7 +5,9 @@
     android:orientation="vertical"
     android:background="@color/purple_500"
     android:paddingTop="10dp"
+
     android:paddingHorizontal="40dp">
+
 
     <ImageView
         android:id="@+id/imageView"
@@ -65,7 +67,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_border_login_selected"
+        android:background="@drawable/background_orange"
         android:layout_marginTop="20dp"
         android:padding="10dp">
 

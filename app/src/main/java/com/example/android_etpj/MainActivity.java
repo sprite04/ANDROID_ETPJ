@@ -9,6 +9,7 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
 
+import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.models.Admin;
 import com.example.android_etpj.models.Module;
 import com.example.android_etpj.ui.AssignmentFragment;
@@ -42,6 +43,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import com.example.android_etpj.sharedpreference.DataLocal;
 
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -51,16 +53,19 @@ public class MainActivity extends AppCompatActivity {
     private static final int REQUEST_CODE = 12;
     private DrawerLayout drawer;
     private Type currentFragment=Type.FRAGMENT_HOME;
-    private Admin user;
+    private Object user;
+    private String role;
 
-/*    @Override
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==REQUEST_CODE && resultCode==RESULT_OK){
-            user=(User) data.getExtras().get("USER");
+            role = (String) data.getExtras().get("ROLE");
+            user = data.getExtras().get("USER");
             setNavigationView();
         }
-    }*/
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -70,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-
+        //DataLocal = DataLocal.getInstance();
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this, drawer,toolbar,0,0);
         drawer.addDrawerListener(toggle);
@@ -91,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
         Menu nav_Menu = navigationView.getMenu();
         //nav_Menu.findItem(R.id.nav_join).setVisible(false);
 
-        replaceFragment(new HomeFragment());
+        replaceFragment(new HomeFragment(user));
 
         navigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -102,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_home:
                         checkLogin();
                         if(currentFragment!=Type.FRAGMENT_HOME){
-                            replaceFragment(new HomeFragment());
+                            replaceFragment(new HomeFragment(user));
                             currentFragment=Type.FRAGMENT_HOME;
                         }
                         break;
@@ -171,6 +176,7 @@ public class MainActivity extends AppCompatActivity {
                         break;
 
                     case R.id.nav_log_out:
+                        DataLocal.setIsLogin(false);
                         checkLogin();
                         break;
                 }
@@ -200,8 +206,67 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    private Object getUser(String role){
+        Object myuser = new Object();
+        if (role == Role.ADMIN.name()) {
+            try {
+                myuser = ((Object) ApiService.apiService.loginAdmin(DataLocal.getUserLogin(), DataLocal.getUserPassword()).execute());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else  if (role == Role.TRAINER.name()) {
+            try {
+                myuser = ((Object) ApiService.apiService.loginTrainer(DataLocal.getUserLogin(), DataLocal.getUserPassword()).execute());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        else if (role == Role.TRAINEE.name()) {
+            try {
+                myuser = ((Object) ApiService.apiService.loginTrainee(DataLocal.getUserLogin(), DataLocal.getUserPassword()).execute());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return myuser;
+    }
+
     private boolean checkLogin() {
-        return true;
+        if(DataLocal.getIsLogin()==false){
+            Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+            startActivityForResult(intent,REQUEST_CODE);
+        }
+        else if(user==null ){
+            try{
+                //user=NoteDatabase.getInstance(MainActivity.this).userDAO().getUser(DataLocal.getUserLogin()).get(0) ;
+
+                role = DataLocal.getUserRole();
+                user = getUser(role);
+            }
+            catch (Exception ex){
+                Log.e("ERROR_USER",ex.getMessage());
+                DataLocal.setIsLogin(false);
+                checkLogin();
+            }
+        }
+        if(DataLocal.getIsLogin()==true){
+            Date date=DataLocal.getDateLogin();
+            boolean rememberMe=DataLocal.getRememberMe();
+
+            long distance=Calendar.getInstance().getTime().getTime()-date.getTime();
+            if(rememberMe==false && distance>3000000){
+                DataLocal.setIsLogin(false);
+                checkLogin();
+            }
+            else if(rememberMe==true && distance>604800000){
+                DataLocal.setIsLogin(false);
+                checkLogin();
+            }
+            return true;
+        }
+        return false;
+
     }
 
 
