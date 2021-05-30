@@ -27,14 +27,14 @@ public class Class implements Serializable {
     public Class() {
     }
 
-    public Class(int classID, String className, int capacity, Date startTime, Date endTime, boolean isDeleted) {
-        this.classID = classID;
-        this.className = className;
-        this.capacity = capacity;
-        this.startTime = startTime;
-        this.endTime = endTime;
-        this.isDeleted = isDeleted;
-    }
+//    public Class(int classID, String className, int capacity, Date startTime, Date endTime, boolean isDeleted) {
+//        this.classID = classID;
+//        this.className = className;
+//        this.capacity = capacity;
+//        this.startTime = startTime;
+//        this.endTime = endTime;
+//        this.isDeleted = isDeleted;
+//    }
 
     public int getClassID() {
         return classID;

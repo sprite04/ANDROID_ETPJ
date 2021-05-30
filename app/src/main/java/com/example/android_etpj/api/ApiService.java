@@ -86,4 +86,34 @@ public interface ApiService {
     @DELETE("class/{id}")
     Call<Boolean> deleteClass(@Path("id") int id);
 
+    //Question
+    @GET("question")
+    Call<List<Question>> getQuestions();
+
+    @GET("question")
+    Call<List<Question>> getQuestionByIdTopic(@Query("idTopic") int idTopic);
+
+    @GET("question/{id}")
+    Call<Question> getQuestionById(@Path("id") int id);
+
+    @POST("question")
+    Call<Boolean> addQuestion(@Body Question qs);
+
+    @PUT("question")
+    Call<Boolean> editQuestion(@Body Question qs);
+
+    @DELETE("question/{id}")
+    Call<Boolean> deleteQuestion(@Path("id") int id);
+
+    @GET("question")
+    Call<Integer> checkQuestionUsed(@Query("idUsed") int idUsed);
+
+    //Topic
+
+    @GET("topic")
+    Call<List<Topic>> getTopics();
+
+    @GET("topic/{id}")
+    Call<Topic> getTopicById(@Path("id") int id);
+
 }

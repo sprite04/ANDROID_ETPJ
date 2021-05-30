@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Module;
+import com.example.android_etpj.models.Question;
 import com.example.android_etpj.ui.AssignmentFragment;
 import com.example.android_etpj.ui.ClassFragment;
 import com.example.android_etpj.ui.ContactFragment;
@@ -224,6 +225,26 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
+    public void addQuestionFragment(){
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        AddQuestionFragment addQuestionFragment=new AddQuestionFragment();
 
+        fragmentTransaction.replace(R.id.content_frame,addQuestionFragment);
+        fragmentTransaction.addToBackStack(AddQuestionFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    public void editQuestionFragment(Question question) {
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        EditQuestionFragment editQuestionFragment=new EditQuestionFragment();
+        Bundle bundle=new Bundle();
+
+        bundle.putSerializable("QUESTION",question);
+        editQuestionFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_frame,editQuestionFragment);
+        fragmentTransaction.addToBackStack(EditQuestionFragment.TAG);
+        fragmentTransaction.commit();
+    }
 
 }
