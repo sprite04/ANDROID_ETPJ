@@ -25,7 +25,7 @@ public interface ApiService {
             .create();
 
     ApiService apiService = new Retrofit.Builder()
-            .baseUrl("http://192.168.0.109/systemfeedback/api/")
+            .baseUrl("http://192.168.125.12/systemfeedback/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
@@ -39,14 +39,16 @@ public interface ApiService {
     Call<Feedback> getFeedbackById(@Path("id") int id);
 
     @POST("feedback")
-    Call<Boolean> addFeedback(@Body Feedback fb);
+    Call<Boolean> addFeedback(@Body FeedbackQuestion feedbackQuestion);
 
     @PUT("feedback")
-    Call<Boolean> editFeedback(@Body Feedback fb);
+    Call<Boolean> editFeedback(@Body FeedbackQuestion feedbackQuestion);
 
     @DELETE("feedback/{id}")
     Call<Boolean> deleteFeedback(@Path("id") int id);
 
+    @GET("feedback")
+    Call<Integer> checkFeedbackUsed(@Query("idUsed") int idUsed);
 
     //Module
     @GET("module")
@@ -69,5 +71,17 @@ public interface ApiService {
     @GET("admin")
     Call<List<Admin>> getAdmins();
 
+
+    //Topic
+    @GET("topic")
+    Call<List<Topic>> getTopics();
+
+    @GET("topic")
+    Call<List<Topic>> getTopicsByFeedback(@Query("idFeedback") int idFeedback);
+
+
+    //TypeFeedback
+    @GET("typefeedback")
+    Call<List<TypeFeedback>> getTypeFeedbacks();
 
 }

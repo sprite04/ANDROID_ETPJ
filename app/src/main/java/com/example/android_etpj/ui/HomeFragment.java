@@ -52,7 +52,7 @@ public class HomeFragment extends Fragment {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteFeedback();
+
             }
         });
         ApiService.apiService.getFeedbackById(1).enqueue(new Callback<Feedback>() {
@@ -128,58 +128,9 @@ public class HomeFragment extends Fragment {
         return view;
     }
 
-    private void addFeedback(){
-        Feedback feedback=new Feedback("Feedback 6","admin2",2);
 
-        ApiService.apiService.addFeedback(feedback).enqueue(new Callback<Boolean>() {
-            @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
 
-                Snackbar snackbar = Snackbar.make(view1,response.body().toString(), Snackbar.LENGTH_LONG);
-                snackbar.show();
-            }
 
-            @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
-                Snackbar snackbar = Snackbar.make(view1,"Failure", Snackbar.LENGTH_LONG);
-                snackbar.show();
-            }
-        });
-    }
-
-    private void editFeedback(){
-        Feedback feedback=new Feedback(1,"Feedback Edit 22","admin2",2);
-
-        ApiService.apiService.editFeedback(feedback).enqueue(new Callback<Boolean>() {
-            @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                Snackbar snackbar = Snackbar.make(view1,response.body().toString(), Snackbar.LENGTH_LONG);
-                snackbar.show();
-            }
-
-            @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
-
-            }
-        });
-    }
-
-    private void deleteFeedback(){
-        //Feedback feedback=new Feedback(1,"Feedback Edit 22","admin2",2);
-
-        ApiService.apiService.deleteFeedback(2).enqueue(new Callback<Boolean>() {
-            @Override
-            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                Snackbar snackbar = Snackbar.make(view1,response.body().toString(), Snackbar.LENGTH_LONG);
-                snackbar.show();
-            }
-
-            @Override
-            public void onFailure(Call<Boolean> call, Throwable t) {
-
-            }
-        });
-    }
 
    /* private List<Object> getListCategory() {
         List<Feedback> feedbackList=new ArrayList<>();

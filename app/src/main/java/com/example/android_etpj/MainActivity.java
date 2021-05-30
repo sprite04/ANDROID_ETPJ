@@ -166,17 +166,7 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-    public void addModuleFragment(){
-        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
-        AddModuleFragment addModuleFragment=new AddModuleFragment();
-        /*Bundle bundle=new Bundle();
-        bundle.putSerializable("MODULE",module);
-        addModuleFragment.setArguments(bundle);*/
 
-        fragmentTransaction.replace(R.id.content_frame,addModuleFragment);
-        fragmentTransaction.addToBackStack(AddModuleFragment.TAG);
-        fragmentTransaction.commit();
-    }
 
 
 
@@ -191,6 +181,14 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public void addModuleFragment(){
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        AddModuleFragment addModuleFragment=new AddModuleFragment();
+
+        fragmentTransaction.replace(R.id.content_frame,addModuleFragment);
+        fragmentTransaction.addToBackStack(AddModuleFragment.TAG);
+        fragmentTransaction.commit();
+    }
 
     public void editModuleFragment(Module module) {
         FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
@@ -203,5 +201,17 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.content_frame,editModuleFragment);
         fragmentTransaction.addToBackStack(EditModuleFragment.TAG);
         fragmentTransaction.commit();
+    }
+
+    public void addFeedbackFragment() {
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        AddFeedbackFragment addFeedbackFragment=new AddFeedbackFragment();
+
+        fragmentTransaction.replace(R.id.content_frame,addFeedbackFragment);
+        fragmentTransaction.addToBackStack(AddFeedbackFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    public void editFeedbackFragment() {
     }
 }

@@ -3,6 +3,7 @@ package com.example.android_etpj.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Feedback implements Serializable {
     @SerializedName("FeedbackID")
@@ -26,18 +27,41 @@ public class Feedback implements Serializable {
     @SerializedName("TypeFeedback")
     private TypeFeedback typeFeedback;
 
+    @SerializedName("Questions")
+    private List<Question> questions;
+
+
     public Feedback(String title, String adminID, int typeFeedbackID) {
         this.title = title;
         this.adminID = adminID;
-        this.isDeleted=false;
         this.typeFeedbackID = typeFeedbackID;
     }
 
-    public Feedback(int feedbackID, String title, String adminID, int typeFeedbackID) {
-        this.feedbackID = feedbackID;
-        this.title = title;
-        this.adminID = adminID;
-        this.typeFeedbackID = typeFeedbackID;
+    public Feedback() {
+    }
+
+    public Admin getAdmin() {
+        return admin;
+    }
+
+    public void setAdmin(Admin admin) {
+        this.admin = admin;
+    }
+
+    public TypeFeedback getTypeFeedback() {
+        return typeFeedback;
+    }
+
+    public void setTypeFeedback(TypeFeedback typeFeedback) {
+        this.typeFeedback = typeFeedback;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
     }
 
     public int getFeedbackID() {

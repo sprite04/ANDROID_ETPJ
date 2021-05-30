@@ -39,10 +39,6 @@ public class TypeFeedback implements Serializable {
 
     @Override
     public String toString() {
-        return "TypeFeedback{" +
-                "typeID=" + typeID +
-                ", typeName='" + typeName + '\'' +
-                ", IsDeleted=" + IsDeleted +
-                '}';
+        return typeName;
     }
 }
