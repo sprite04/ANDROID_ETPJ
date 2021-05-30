@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.models.Admin;
 import com.example.android_etpj.models.Module;
+import com.example.android_etpj.models.Trainer;
 import com.example.android_etpj.ui.AssignmentFragment;
 import com.example.android_etpj.ui.ClassFragment;
 import com.example.android_etpj.ui.ContactFragment;
@@ -44,17 +45,25 @@ import androidx.appcompat.widget.Toolbar;
 import com.example.android_etpj.sharedpreference.DataLocal;
 
 import java.io.IOException;
+import java.io.Serializable;
+import java.time.Duration;
 import java.util.Calendar;
 import java.util.Date;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
 
     private NavigationView navigationView;
     private static final int REQUEST_CODE = 12;
     private DrawerLayout drawer;
-    private Type currentFragment=Type.FRAGMENT_HOME;
+    private Type currentFragment = Type.FRAGMENT_HOME;
+    private Role currentRole= Role.ADMIN;
     private Object user;
     private String role;
+
 
 
     @Override
@@ -62,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if(requestCode==REQUEST_CODE && resultCode==RESULT_OK){
             role = (String) data.getExtras().get("ROLE");
+            currentRole = Role.valueOf(role);
             user = data.getExtras().get("USER");
             setNavigationView();
         }
@@ -82,19 +92,31 @@ public class MainActivity extends AppCompatActivity {
         toggle.syncState();
         navigationView = findViewById(R.id.nav_view);
 
-        //checklogin
+        checkLogin();
+
+        currentRole = Role.valueOf(DataLocal.getUserRole());
+
+        if (currentRole==Role.ADMIN){
+            user = DataLocal.getAdmin();
+        }
+        else if (currentRole==Role.TRAINER){
+            user = DataLocal.getTrainer();
+        }
+        else  {
+            user = DataLocal.getTrainee();
+        }
         setNavigationView();
 
 
+    }
 
-        }
 
     private void setNavigationView(){
 
         currentFragment= Type.FRAGMENT_HOME;
 
         Menu nav_Menu = navigationView.getMenu();
-        //nav_Menu.findItem(R.id.nav_join).setVisible(false);
+
 
         replaceFragment(new HomeFragment(user));
 
@@ -105,70 +127,70 @@ public class MainActivity extends AppCompatActivity {
 
                 switch (id){
                     case R.id.nav_home:
-                        checkLogin();
+
                         if(currentFragment!=Type.FRAGMENT_HOME){
                             replaceFragment(new HomeFragment(user));
                             currentFragment=Type.FRAGMENT_HOME;
                         }
                         break;
                     case R.id.nav_assignment:
-                        checkLogin();
+
                         if(currentFragment!=Type.FRAGMENT_ASSIGNMENT){
                             replaceFragment(new AssignmentFragment());
                             currentFragment=Type.FRAGMENT_ASSIGNMENT;
                         }
                         break;
                     case R.id.nav_class:
-                        checkLogin();
+
                         if(currentFragment!=Type.FRAGMENT_CLASS){
                             replaceFragment(new ClassFragment());
                             currentFragment=Type.FRAGMENT_CLASS;
                         }
                         break;
                     case R.id.nav_module:
-                        checkLogin();
+
                         if(currentFragment!=Type.FRAGMENT_MODULE){
                             replaceFragment(new ModuleFragment());
                             currentFragment=Type.FRAGMENT_MODULE;
                         }
                         break;
                     case R.id.nav_enrollment:
-                        checkLogin();
+
                         if(currentFragment!=Type.FRAGMENT_ENROLLMENT){
                             replaceFragment(new EnrollmentFragment());
                             currentFragment=Type.FRAGMENT_ENROLLMENT;
                         }
                         break;
                     case R.id.nav_feedback:
-                        checkLogin();
+
                         if(currentFragment!=Type.FRAGMENT_FEEDBACK){
                             replaceFragment(new FeedbackFragment());
                             currentFragment=Type.FRAGMENT_FEEDBACK;
                         }
                         break;
                     case R.id.nav_result:
-                        checkLogin();
+
                         if(currentFragment!=Type.FRAGMENT_RESULT){
                             replaceFragment(new ResultFragment());
                             currentFragment=Type.FRAGMENT_RESULT;
                         }
                         break;
                     case R.id.nav_question:
-                        checkLogin();
+
                         if(currentFragment!=Type.FRAGMENT_QUESTION){
                             replaceFragment(new QuestionFragment());
                             currentFragment=Type.FRAGMENT_QUESTION;
                         }
                         break;
                     case R.id.nav_contact:
-                        checkLogin();
+
                         if(currentFragment!=Type.FRAGMENT_CONTACT){
                             replaceFragment(new ContactFragment());
                             currentFragment=Type.FRAGMENT_CONTACT;
                         }
                         break;
                     case R.id.nav_join:
-                        checkLogin();
+
                         if(currentFragment!=Type.FRAGMENT_JOIN){
                             replaceFragment(new JoinFragment());
                             currentFragment=Type.FRAGMENT_JOIN;
@@ -177,7 +199,8 @@ public class MainActivity extends AppCompatActivity {
 
                     case R.id.nav_log_out:
                         DataLocal.setIsLogin(false);
-                        checkLogin();
+                        Intent intent = new Intent(MainActivity.this,LoginActivity.class);
+                        startActivityForResult(intent,REQUEST_CODE);
                         break;
                 }
                 drawer.closeDrawer(GravityCompat.START);
@@ -206,68 +229,34 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    private Object getUser(String role){
-        Object myuser = new Object();
-        if (role == Role.ADMIN.name()) {
-            try {
-                myuser = ((Object) ApiService.apiService.loginAdmin(DataLocal.getUserLogin(), DataLocal.getUserPassword()).execute());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        else  if (role == Role.TRAINER.name()) {
-            try {
-                myuser = ((Object) ApiService.apiService.loginTrainer(DataLocal.getUserLogin(), DataLocal.getUserPassword()).execute());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        else if (role == Role.TRAINEE.name()) {
-            try {
-                myuser = ((Object) ApiService.apiService.loginTrainee(DataLocal.getUserLogin(), DataLocal.getUserPassword()).execute());
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-        return myuser;
-    }
 
-    private boolean checkLogin() {
+    private void checkLogin() {
         if(DataLocal.getIsLogin()==false){
             Intent intent = new Intent(MainActivity.this,LoginActivity.class);
             startActivityForResult(intent,REQUEST_CODE);
         }
-        else if(user==null ){
-            try{
-                //user=NoteDatabase.getInstance(MainActivity.this).userDAO().getUser(DataLocal.getUserLogin()).get(0) ;
 
-                role = DataLocal.getUserRole();
-                user = getUser(role);
-            }
-            catch (Exception ex){
-                Log.e("ERROR_USER",ex.getMessage());
-                DataLocal.setIsLogin(false);
-                checkLogin();
-            }
-        }
         if(DataLocal.getIsLogin()==true){
             Date date=DataLocal.getDateLogin();
             boolean rememberMe=DataLocal.getRememberMe();
 
             long distance=Calendar.getInstance().getTime().getTime()-date.getTime();
-            if(rememberMe==false && distance>3000000){
+            
+            if(rememberMe==false && distance>30*60*1000){ //milliseconds = 30 minutes
                 DataLocal.setIsLogin(false);
                 checkLogin();
             }
-            else if(rememberMe==true && distance>604800000){
+            else if(rememberMe==true && distance>24*60*60*1000){ // 24 hours
                 DataLocal.setIsLogin(false);
                 checkLogin();
             }
-            return true;
+
         }
-        return false;
+
 
     }
+
+
 
 
     public void editModuleFragment(Module module) {

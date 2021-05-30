@@ -1,5 +1,6 @@
 package com.example.android_etpj;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -40,6 +41,7 @@ public class LoginActivity extends AppCompatActivity {
     private TextView txtErrorUsername;
     private Spinner spRole;
     private ImageView imgvRoleMenu;
+    private Role currentRole;
     private TextView txtErrorPassword;
     public LoginActivity() {
     }
@@ -54,6 +56,7 @@ public class LoginActivity extends AppCompatActivity {
         edtUsername = findViewById(R.id.username);
         edtPassword = findViewById(R.id.password);
         txtvLogin = findViewById(R.id.btn_login);
+        currentRole = Role.ADMIN;
         chkRememberMe = findViewById(R.id.remember_me);
         txtErrorUsername = findViewById(R.id.username_error);
         txtErrorPassword = findViewById(R.id.password_error);
@@ -61,12 +64,30 @@ public class LoginActivity extends AppCompatActivity {
         txtErrorUsername.setVisibility(View.INVISIBLE);
         txtErrorPassword.setVisibility(View.INVISIBLE);
         user = new Object();
+
         setBtnLogin();
 
         setRoleSpinner();
 
 
+        if(DataLocal.getRememberMe()==true){
+            edtUsername.setText(DataLocal.getUserLogin());
+            edtPassword.setText(DataLocal.getUserPassword());
+            chkRememberMe.setChecked(true);
+            String role = DataLocal.getUserRole();
+            currentRole = Role.valueOf(role);
+            if (currentRole==Role.ADMIN){
+                spRole.setSelection(0);
+            }
+            else if (currentRole==Role.TRAINER){
+                spRole.setSelection(1);
+            }
+            else {
+                spRole.setSelection(2);
+            }
 
+
+        }
 
 
         //setImgvRoleMenu();
@@ -78,13 +99,32 @@ public class LoginActivity extends AppCompatActivity {
 
     private void setRoleSpinner(){
         ArrayList<String> roles= new ArrayList<String>();
-        roles.add(Role.ADMIN.name());
-        roles.add(Role.TRAINER.name());
-        roles.add(Role.TRAINEE.name());
+        roles.add(0,Role.ADMIN.name());
+        //roles.add(Role.ADMIN.name());
+        roles.add(1,Role.TRAINER.name());
+        roles.add(2,Role.TRAINEE.name());
 
         SpinnerRoleAdapter spinnerAdapter=new SpinnerRoleAdapter(this,R.layout.item_sp_login_selected,roles);
         spinnerAdapter.setDropDownViewResource(R.layout.item_sp_role);
         spRole.setAdapter(spinnerAdapter);
+    }
+
+    private void setLoginErrorDialog(){
+        Button btnYes ;
+
+        Dialog dialog = new Dialog(LoginActivity.this);
+        dialog.setContentView(R.layout.dialog_login_warning);
+        btnYes = dialog.findViewById(R.id.btn_yes);
+
+        dialog.setCancelable(false);
+
+        btnYes.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v){
+                dialog.cancel();
+            }
+        });
+        dialog.show();
     }
 
     private void roleLogin(String role, String username, String password){
@@ -93,28 +133,38 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Admin> call, Response<Admin> response) {
                     user = (Object)  response.body();
-                    //DataLocal.getInstance();
-                    DataLocal.setIsLogin(true);
-                    DataLocal.setDateLogin(Calendar.getInstance().getTime());
-                    DataLocal.setUserLogin(response.body().getUsername());
-                    DataLocal.setUserPassword(response.body().getPassword());
-                    DataLocal.setUserRole(role);
-                    DataLocal.setIsRememberMe(chkRememberMe.isChecked());
 
-                    edtPassword.setText(  ((Admin) user).getEmail());
+                    if (user != null){
+                        DataLocal.setIsLogin(true);
+                        DataLocal.setDateLogin(Calendar.getInstance().getTime());
+                        DataLocal.setUser(user);
+                        DataLocal.setUserPassword(password);
+                        DataLocal.setUserLogin(username);
+                        DataLocal.setUserRole(Role.ADMIN.name());
+                        DataLocal.setIsRememberMe(chkRememberMe.isChecked());
 
-                    Bundle bundle=new Bundle();
-                    bundle.putSerializable("USER",((Serializable) user));
-                    bundle.putString("ROLE", role);
-                    Intent intent=getIntent();
-                    intent.putExtras(bundle);
-                    setResult(RESULT_OK,intent);
-                    finish();
+                        //edtPassword.setText(  ((Admin) user).getEmail());
+
+                        Bundle bundle=new Bundle();
+                        bundle.putSerializable("USER",((Serializable) user));
+                        bundle.putString("ROLE", role);
+                        Intent intent=getIntent();
+                        intent.putExtras(bundle);
+                        setResult(RESULT_OK,intent);
+                        finish();
+                    }
+                    else{
+
+                        setLoginErrorDialog();
+
+                    }
+
 
                 }
 
                 @Override
                 public void onFailure(Call<Admin> call, Throwable t) {
+
                     edtPassword.setText("fail");
                 }
             };
@@ -125,23 +175,33 @@ public class LoginActivity extends AppCompatActivity {
                 @Override
                 public void onResponse(Call<Trainer> call, Response<Trainer> response) {
                     user = (Object)  response.body();
-                    //DataLocal.getInstance();
-                    DataLocal.setIsLogin(true);
-                    DataLocal.setDateLogin(Calendar.getInstance().getTime());
-                    DataLocal.setUserLogin(response.body().getUsername());
-                    DataLocal.setUserPassword(response.body().getPassword());
-                    DataLocal.setUserRole(role);
-                    DataLocal.setIsRememberMe(chkRememberMe.isChecked());
 
-                    edtPassword.setText(  ((Trainer) user).getEmail());
 
-                    Bundle bundle=new Bundle();
-                    bundle.putSerializable("USER",((Serializable) user));
-                    bundle.putString("ROLE", role);
-                    Intent intent=getIntent();
-                    intent.putExtras(bundle);
-                    setResult(RESULT_OK,intent);
-                    finish();
+                    if (user != null){
+                        DataLocal.setIsLogin(true);
+                        DataLocal.setDateLogin(Calendar.getInstance().getTime());
+                        DataLocal.setUser(user);
+                        DataLocal.setUserPassword(password);
+                        DataLocal.setUserLogin(username);
+                        DataLocal.setUserRole(Role.TRAINER.name());
+                        DataLocal.setIsRememberMe(chkRememberMe.isChecked());
+
+                        //edtPassword.setText(  ((Trainer) user).getEmail());
+
+                        Bundle bundle=new Bundle();
+                        bundle.putSerializable("USER",((Serializable) user));
+                        bundle.putString("ROLE", role);
+                        Intent intent=getIntent();
+                        intent.putExtras(bundle);
+                        setResult(RESULT_OK,intent);
+                        finish();
+
+                    }
+                    else{
+
+                        setLoginErrorDialog();
+
+                    }
                 }
 
                 @Override
@@ -157,22 +217,32 @@ public class LoginActivity extends AppCompatActivity {
                 public void onResponse(Call<Trainee> call, Response<Trainee> response) {
                     user = (Object)  response.body();
                     //DataLocal.getInstance();
-                    DataLocal.setIsLogin(true);
-                    DataLocal.setDateLogin(Calendar.getInstance().getTime());
-                    DataLocal.setUserLogin(response.body().getUsername());
-                    DataLocal.setUserPassword(response.body().getPassword());
-                    DataLocal.setUserRole(role);
-                    DataLocal.setIsRememberMe(chkRememberMe.isChecked());
+                    if (user != null){
+                        DataLocal.setIsLogin(true);
+                        DataLocal.setDateLogin(Calendar.getInstance().getTime());
+                        DataLocal.setUser(user);
+                        DataLocal.setUserPassword(password);
+                        DataLocal.setUserLogin(username);
+                        DataLocal.setUserRole(Role.TRAINEE.name());
+                        DataLocal.setIsRememberMe(chkRememberMe.isChecked());
 
-                    edtPassword.setText(  ((Trainee) user).getEmail());
+                        //edtPassword.setText(  ((Trainee) user).getEmail());
 
-                    Bundle bundle=new Bundle();
-                    bundle.putSerializable("USER",((Serializable) user));
-                    bundle.putString("ROLE", role);
-                    Intent intent=getIntent();
-                    intent.putExtras(bundle);
-                    setResult(RESULT_OK,intent);
-                    finish();
+                        Bundle bundle=new Bundle();
+                        bundle.putSerializable("USER",((Serializable) user));
+                        bundle.putString("ROLE", role);
+                        Intent intent=getIntent();
+                        intent.putExtras(bundle);
+                        setResult(RESULT_OK,intent);
+                        finish();
+
+                    }
+                    else{
+
+                        setLoginErrorDialog();
+
+                    }
+
                 }
 
                 @Override
@@ -195,19 +265,38 @@ public class LoginActivity extends AppCompatActivity {
                     String username = edtUsername.getText().toString();
                     String password = edtPassword.getText().toString();
 
-                    if (username.isEmpty() == true && password.isEmpty() == true) {
+                    if (username.isEmpty() == true) {
                         txtErrorUsername.setText("Username must have at least 1 character!");
-                        txtErrorPassword.setText("Password must have at least 1 character!");
-                        txtErrorPassword.setVisibility(View.VISIBLE);
                         txtErrorUsername.setVisibility(View.VISIBLE);
-                        return;
-                    } else if (username.contains(" ") && password.isEmpty() == true) {
-                        txtErrorUsername.setText("Username must have at blank space!");
-                        txtErrorPassword.setText("Password must have at least 1 character!");
-                        txtErrorPassword.setVisibility(View.VISIBLE);
-                        txtErrorUsername.setVisibility(View.VISIBLE);
+                        if (password.isEmpty() == true){
+                            txtErrorPassword.setText("Password must have at least 1 character!");
+                            txtErrorPassword.setVisibility(View.VISIBLE);
+                        }
                         return;
                     }
+                    else if (password.isEmpty() == true){
+                            txtErrorPassword.setText("Password must have at least 1 character!");
+                            txtErrorPassword.setVisibility(View.VISIBLE);
+                            return;
+                    }
+
+
+                    if (username.contains(" ") ) {
+                        txtErrorUsername.setText("Username must have at blank space!");
+
+                        txtErrorUsername.setVisibility(View.VISIBLE);
+                        if( password.isEmpty() == true){
+                            txtErrorPassword.setText("Password must have at least 1 character!");
+                            txtErrorPassword.setVisibility(View.VISIBLE);
+                        }
+                        return;
+                    }
+                    else if (password.isEmpty() == true){
+                        txtErrorPassword.setText("Password must have at least 1 character!");
+                        txtErrorPassword.setVisibility(View.VISIBLE);
+                        return;
+                    }
+
 
                     txtErrorUsername.setVisibility(View.INVISIBLE);
                     txtErrorPassword.setVisibility(View.INVISIBLE);

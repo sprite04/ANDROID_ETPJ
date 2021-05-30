@@ -17,6 +17,7 @@ import androidx.fragment.app.Fragment;
 
 
 import com.example.android_etpj.R;
+import com.example.android_etpj.Role;
 import com.example.android_etpj.SpinnerAdapter;
 import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.sharedpreference.DataLocal;
@@ -55,10 +56,11 @@ public class HomeFragment extends Fragment {
         /*
         * My add start here for testing only
         * */
-        if (this.user != null)
-        {
-            tvRetrofit.setText(((Admin) this.user).getName());
-        }
+
+
+
+
+
 
         /*
         * My add end here
@@ -67,9 +69,13 @@ public class HomeFragment extends Fragment {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                deleteFeedback();
+                test();
             }
         });
+
+
+
+
         ApiService.apiService.getFeedbackById(1).enqueue(new Callback<Feedback>() {
             @Override
             public void onResponse(Call<Feedback> call, Response<Feedback> response) {
@@ -141,6 +147,12 @@ public class HomeFragment extends Fragment {
         String sourceString = "<b>" + "No: " + "</b> " + "1"+"<br>"+"<b>" + "Module Name: " + "</b> "+ "Truyền thông và mạng máy tính";
         tvTest.setText(Html.fromHtml(sourceString,1));
         return view;
+    }
+
+    private void test(){
+
+        Snackbar snackbar = Snackbar.make(view1,((Admin)this.user).getName(), Snackbar.LENGTH_LONG);
+        snackbar.show();
     }
 
     private void addFeedback(){

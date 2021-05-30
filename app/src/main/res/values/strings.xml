@@ -23,5 +23,9 @@
     <string name="tv_assignment">Assignment</string>
 
 
+    <string name = "waring_tile">Login Failed, Check Your</string>
+    <string name = "waring_content">Login Detail</string>
+    <string name = "yes_btn">Yes!</string>
+
 
 </resources>

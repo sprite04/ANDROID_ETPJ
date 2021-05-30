@@ -27,7 +27,7 @@
             android:layout_below="@+id/img_success"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="5dp"
-            android:text="hihhhhhh"
+            android:text="@string/waring_tile"
             android:textSize="23sp"
             android:typeface="serif" />
 
@@ -36,9 +36,10 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_title"
-            android:text="hihhhhhh"
+            android:text="@string/waring_content"
             android:gravity="center"
             android:layout_marginBottom="5dp"
+            android:textSize="23sp"
             android:id="@+id/tv_content"
             android:typeface="serif"/>
 
@@ -54,7 +55,7 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="@color/purple_700"
                 android:id="@+id/btn_yes"
-                android:text="Yes!"
+                android:text="@string/yes_btn"
                 android:textAllCaps="false"
                 android:typeface="serif"
                 android:layout_marginEnd="10dp"/>
