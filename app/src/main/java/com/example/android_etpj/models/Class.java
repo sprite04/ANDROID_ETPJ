@@ -40,6 +40,10 @@ public class Class implements Serializable {
         return classID;
     }
 
+    public void setClassID(int classID) {
+        this.classID = classID;
+    }
+
     public String getClassName() {
         return className;
     }

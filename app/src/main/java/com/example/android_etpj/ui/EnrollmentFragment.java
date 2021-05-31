@@ -107,8 +107,12 @@ public class EnrollmentFragment extends Fragment implements ExchangeEnrollment {
         ApiService.apiService.getClasses().enqueue(new Callback<List<Class>>() {
             @Override
             public void onResponse(Call<List<Class>> call, Response<List<Class>> response) {
+                Class all=new Class();
+                all.setClassID(-1);
+                all.setClassName("All");
                 List<Class> arrayList=(ArrayList<Class>) response.body();
                 List<Object> classes =new ArrayList<>();
+                classes.add((Class)all);
                 classes.addAll(arrayList);
 
 
@@ -130,7 +134,10 @@ public class EnrollmentFragment extends Fragment implements ExchangeEnrollment {
                             Class aClass=(Class) object;
                             classId=aClass.getClassID();
                             Log.e("classId",String.valueOf(classId));
-                            searchEnrollment(classId);
+                            if(classId==-1)
+                                loadData();
+                            else
+                                searchEnrollment(classId);
                         }
 
                     }
