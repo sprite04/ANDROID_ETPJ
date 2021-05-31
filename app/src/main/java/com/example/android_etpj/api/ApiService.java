@@ -74,6 +74,9 @@ public interface ApiService {
     @GET("assignment")
     Call<List<Assignment>> getAssignments();
 
+    @GET("assignment")
+    Call<List<Assignment>> searchAssignments(@Query("stringSearch") String stringSearch);
+
     @POST("assignment")
     Call<Boolean> addAssignment(@Body Assignment a);
 
@@ -95,6 +98,9 @@ public interface ApiService {
     //Enrollment
     @GET("enrollment")
     Call<List<Enrollment>> getEnrollment();
+
+    @GET("enrollment")
+    Call<List<Enrollment>> searchEnrollment(@Query("classId") int classId);
 
     @POST("enrollment")
     Call<Boolean> addEnrollment(@Query("classId") int classId,

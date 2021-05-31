@@ -57,8 +57,9 @@ public class AssignmentFragment extends Fragment implements ExchangeAssignment {
         tvTitle=view.findViewById(R.id.tv_title);
         btnAdd=view.findViewById(R.id.btn_add);
         //btnAdd.setVisibility(View.GONE);
+        editSearch=view.findViewById(R.id.edit_search);
         editSearch.setVisibility(View.VISIBLE);
-        editSearch=view.findViewById(R.id.edt_search);
+        edtSearch=view.findViewById(R.id.edt_search);
         btnSearch=view.findViewById(R.id.btn_search);
 
 
@@ -76,6 +77,23 @@ public class AssignmentFragment extends Fragment implements ExchangeAssignment {
             @Override
             public void onClick(View v) {
                 mainActivity.addAssignmentFragment();
+            }
+        });
+       btnSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                ApiService.apiService.searchAssignments(edtSearch.getText().toString()).enqueue(new Callback<List<Assignment>>() {
+                    @Override
+                    public void onResponse(Call<List<Assignment>> call, Response<List<Assignment>> response) {
+                        assignmentsList = (ArrayList<Assignment>) response.body();
+                        assignmentAdapter.setData(assignmentsList);
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Assignment>> call, Throwable t) {
+
+                    }
+                });
             }
         });
         
