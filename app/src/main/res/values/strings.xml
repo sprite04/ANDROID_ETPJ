@@ -21,7 +21,11 @@
     <string name="menu_logout">LOG OUT</string>
 
     <string name="tv_assignment">Assignment</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <string name = "waring_tile">Login Failed, Check Your</string>
+    <string name = "waring_content">Login Detail</string>
+    <string name = "yes_btn">Yes!</string>
+
 
 </resources>

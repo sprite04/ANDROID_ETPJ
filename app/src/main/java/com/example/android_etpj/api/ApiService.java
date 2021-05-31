@@ -69,6 +69,10 @@ public interface ApiService {
     //Admin
     @GET("admin")
     Call<List<Admin>> getAdmins();
+    @GET("admin")
+    Call<Admin> loginAdmin(
+            @Query("username") String username,
+            @Query("password") String password);
 
     //Assigment
     @GET("assignment")
@@ -94,6 +98,9 @@ public interface ApiService {
     //Trainer
     @GET("trainer")
     Call<List<Trainer>> getTrainers();
+    Call<Trainer> loginTrainer(
+            @Query("username") String username,
+            @Query("password") String password);
 
     //Enrollment
     @GET("enrollment")
@@ -117,6 +124,10 @@ public interface ApiService {
     //Trainee
     @GET("trainee")
     Call<List<Trainee>> getTrainee();
+    @GET("trainee")
+    Call<Trainee> loginTrainee(
+            @Query("username") String username,
+            @Query("password") String password);
 
     //CommentResult
     @GET("traineecomment")
