@@ -1,11 +1,10 @@
-package com.example.android_etpj;
+package com.example.android_etpj.adapter;
 
 import android.app.Activity;
 import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Html;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -18,6 +17,8 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android_etpj.interfaces.ExchangeModule;
+import com.example.android_etpj.R;
 import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.models.*;
 import com.google.android.material.snackbar.Snackbar;
@@ -72,7 +73,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
                 "<b>" + "Feedback Title: " + "</b> "+ module.getFeedback().getTitle()+"<br>"+
                 "<b>" + "Feedback StartTime: " + "</b> " + (module.getFeedbackStartTime()!=null ? formatterDateTime.format(module.getFeedbackStartTime()):"" )+"<br>"+
                 "<b>" + "Feedback EndTime: " + "</b> "+ (module.getFeedbackEndTime()!=null ? formatterDateTime.format(module.getFeedbackEndTime()):"" )
-                ;
+        ;
 
 
         holder.tvItem.setText(Html.fromHtml(displayText,1));

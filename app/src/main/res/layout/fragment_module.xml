@@ -148,7 +148,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@color/transparent"
-                android:id="@+id/sp_admin_id"/>
+                android:id="@+id/sp_admin_idd"/>
 
 
 
@@ -278,27 +278,4 @@
 
         </LinearLayout>
     </ScrollView>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 </LinearLayout>

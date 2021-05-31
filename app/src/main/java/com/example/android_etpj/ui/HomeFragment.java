@@ -69,8 +69,24 @@ public class HomeFragment extends Fragment {
 
             }
         });
+        ApiService.apiService.getAssignments().enqueue(new Callback<List<Assignment>>() {
+            @Override
+            public void onResponse(Call<List<Assignment>> call, Response<List<Assignment>> response) {
+                ArrayList<Assignment> modules = (ArrayList<Assignment>) response.body();
+                if(modules.size()>0){
+                    tvRetrofit2.setText(modules.get(0).toString());
+                }
+                else{
+                    tvRetrofit2.setText("0");
+                }
+            }
 
-        ApiService.apiService.getModules().enqueue(new Callback<List<Module>>() {
+            @Override
+            public void onFailure(Call<List<Assignment>> call, Throwable t) {
+
+            }
+        });
+        /*ApiService.apiService.getModules().enqueue(new Callback<List<Module>>() {
             @Override
             public void onResponse(Call<List<Module>> call, Response<List<Module>> response) {
                 ArrayList<Module> modules = (ArrayList<Module>) response.body();
@@ -86,7 +102,7 @@ public class HomeFragment extends Fragment {
             public void onFailure(Call<List<Module>> call, Throwable t) {
 
             }
-        });
+        });*/
 
        /* ApiService.apiService.getAdmins().enqueue(new Callback<List<Admin>>() {
             @Override

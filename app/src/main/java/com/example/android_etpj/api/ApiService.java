@@ -1,6 +1,7 @@
 package com.example.android_etpj.api;
 
 import com.example.android_etpj.models.*;
+import com.example.android_etpj.models.Class;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
@@ -19,13 +20,13 @@ import retrofit2.http.Query;
 
 public interface ApiService {
 
-    Gson gson=new GsonBuilder()
+    Gson gson = new GsonBuilder()
             //.setDateFormat("yyyy-MM-dd")
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
             .create();
 
     ApiService apiService = new Retrofit.Builder()
-            .baseUrl("http://192.168.0.109/systemfeedback/api/")
+            .baseUrl("http://192.168.1.12/try/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
@@ -69,5 +70,50 @@ public interface ApiService {
     @GET("admin")
     Call<List<Admin>> getAdmins();
 
+    //Assigment
+    @GET("assignment")
+    Call<List<Assignment>> getAssignments();
 
+    @POST("assignment")
+    Call<Boolean> addAssignment(@Body Assignment a);
+
+    @DELETE("assignment")
+    Call<Boolean> deleteAssignment(@Query("idClass") int idClass,
+                                   @Query("idModule") int idModule);
+
+    @PUT("assignment")
+    Call<Boolean> editAssignment(@Body Assignment a);
+
+    //Class
+    @GET("class")
+    Call<List<Class>> getClasses();
+
+    //Trainer
+    @GET("trainer")
+    Call<List<Trainer>> getTrainers();
+
+    //Enrollment
+    @GET("enrollment")
+    Call<List<Enrollment>> getEnrollment();
+
+    @POST("enrollment")
+    Call<Boolean> addEnrollment(@Query("classId") int classId,
+                                @Query("username") String username);
+
+    @PUT("enrollment")
+    Call<Boolean> editEnrollment(@Query("classIdOld") int classIdOld,
+                                 @Query("classIdNew") int classIdNew,
+                                 @Query("username") String username);
+    @DELETE("enrollment")
+    Call<Boolean> deleteEnrollment(@Query("classId") int classId,
+                                   @Query("username") String username);
+
+    //Trainee
+    @GET("trainee")
+    Call<List<Trainee>> getTrainee();
+
+    //CommentResult
+    @GET("traineecomment")
+    Call<List<CommentResult>> getCommentResult(@Query("classId") int classId,
+                                           @Query("moduleId") int moduleId);
 }

@@ -39,7 +39,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EditModuleFragment extends Fragment {
-    public static final String TAG= AddModuleFragment.class.getName();
+    public static final String TAG= EditModuleFragment.class.getName();
     private ImageView btnStartDate;
     private ImageView btnEndDate;
     private ImageView btnFBStartDate;
@@ -131,7 +131,7 @@ public class EditModuleFragment extends Fragment {
 
 
 
-        spAdminID=view.findViewById(R.id.sp_admin_id);
+        spAdminID=view.findViewById(R.id.sp_admin_idd);
         spFeedbackTitle=view.findViewById(R.id.sp_feedback_title);
 
         tvErrorName=view.findViewById(R.id.tv_error_name);

@@ -1,7 +1,6 @@
 package com.example.android_etpj.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,12 +13,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.android_etpj.ExchangeModule;
+
+import com.example.android_etpj.interfaces.ExchangeModule;
 import com.example.android_etpj.MainActivity;
-import com.example.android_etpj.ModuleAdapter;
+import com.example.android_etpj.adapter.ModuleAdapter;
 import com.example.android_etpj.R;
 import com.example.android_etpj.api.ApiService;
-import com.example.android_etpj.models.*;
+import com.example.android_etpj.models.Module;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -97,7 +97,6 @@ public class ModuleFragment extends Fragment implements ExchangeModule {
 
     @Override
     public void editData(Module module) {
-
         mainActivity.editModuleFragment(module);
     }
 

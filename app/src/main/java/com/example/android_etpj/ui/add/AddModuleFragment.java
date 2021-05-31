@@ -20,9 +20,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.android_etpj.ModuleAdapter;
 import com.example.android_etpj.R;
 import com.example.android_etpj.SpinnerAdapter;
 import com.example.android_etpj.api.ApiService;
@@ -107,7 +105,7 @@ public class AddModuleFragment extends Fragment {
 
 
 
-        spAdminID=view.findViewById(R.id.sp_admin_id);
+        spAdminID=view.findViewById(R.id.sp_admin_idd);
         spFeedbackTitle=view.findViewById(R.id.sp_feedback_title);
 
         tvErrorName=view.findViewById(R.id.tv_error_name);
