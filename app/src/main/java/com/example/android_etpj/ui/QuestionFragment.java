@@ -38,6 +38,7 @@ import retrofit2.Response;
 
 public class QuestionFragment extends Fragment implements ExchangeQuestion {
 
+    private Object user;
     private MainActivity mainActivity;
     private RecyclerView rcvQuestion;
     private QuestionAdapter questionAdapter;
@@ -48,43 +49,18 @@ public class QuestionFragment extends Fragment implements ExchangeQuestion {
     private LinearLayout questionLayout;
     private Spinner spSearch;
 
-    public QuestionFragment() {
+    public QuestionFragment(Object user) {
+        this.user = user;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_common,container,false);
+        if (user instanceof Admin) {
+            return setAdminView(inflater, container, savedInstanceState);
+        }
 
-        mainActivity=(MainActivity)getActivity();
-
-        rcvQuestion=view.findViewById(R.id.rcv_common);
-        tvTitle=view.findViewById(R.id.tv_title);
-        tvSpinnerTitle = view.findViewById(R.id.tv_title_search);
-        btnAdd=view.findViewById(R.id.btn_add);
-        questionLayout = view.findViewById(R.id.spinner_search);
-        questionLayout.setVisibility(View.VISIBLE);
-        //btnAdd.setVisibility(View.GONE);
-
-        tvSpinnerTitle.setText("Topic Name:");
-
-        spSearch = view.findViewById(R.id.sp_search);
-        setSpinnerSearch();
-
-        questionAdapter=new QuestionAdapter(this);
-        loadData(1);
-
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
-        rcvQuestion.setLayoutManager(linearLayoutManager);
-        rcvQuestion.setAdapter(questionAdapter);
-
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mainActivity.addQuestionFragment();
-            }
-        });
-
+        View view=inflater.inflate(R.layout.fragment_access_forbidden_2,container,false);
         return view;
     }
 
@@ -147,5 +123,40 @@ public class QuestionFragment extends Fragment implements ExchangeQuestion {
 
             }
         });
+    }
+
+    private View setAdminView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view=inflater.inflate(R.layout.fragment_common,container,false);
+
+        mainActivity=(MainActivity)getActivity();
+
+        rcvQuestion=view.findViewById(R.id.rcv_common);
+        tvTitle=view.findViewById(R.id.tv_title);
+        tvSpinnerTitle = view.findViewById(R.id.tv_title_search);
+        btnAdd=view.findViewById(R.id.btn_add);
+        questionLayout = view.findViewById(R.id.spinner_search);
+        questionLayout.setVisibility(View.VISIBLE);
+        //btnAdd.setVisibility(View.GONE);
+
+        tvSpinnerTitle.setText("Topic Name:");
+
+        spSearch = view.findViewById(R.id.sp_search);
+        setSpinnerSearch();
+
+        questionAdapter=new QuestionAdapter(this);
+        loadData(1);
+
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
+        rcvQuestion.setLayoutManager(linearLayoutManager);
+        rcvQuestion.setAdapter(questionAdapter);
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainActivity.addQuestionFragment();
+            }
+        });
+
+        return view;
     }
 }

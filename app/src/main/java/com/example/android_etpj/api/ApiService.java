@@ -116,4 +116,24 @@ public interface ApiService {
     @GET("topic/{id}")
     Call<Topic> getTopicById(@Path("id") int id);
 
+
+    //Answer
+    @GET("answer")
+    Call<List<Answer>> getAnswersByClassModule(@Query("idClass") int idClass,@Query("idModule") int idModule);
+
+    @GET("answer")
+    Call<List<Answer>> getAnswersByIdQuestion(@Query("idQuestion") int idQuestion);
+
+    @GET("answer")
+    Call<List<Answer>> getAnswersByClassModuleTopic(@Query("idTopic") int idTopic, @Query("idClass") int idClass,@Query("idModule") int idModule);
+
+    //TopicAnswers
+    @GET("topicanswers")
+    Call<List<TopicAnswers>> getTopicAnswersByClassModule(@Query("idClass") int idClass,@Query("idModule") int idModule);
+
+    //Enrollment
+    @GET("enrollment")
+    Call<List<Enrollment>> getEnrollmentByIdClass(@Query("idClass") int idClass);
+
+    //Trainee
 }

@@ -3,6 +3,7 @@ package com.example.android_etpj.models;
 import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
+import java.util.List;
 
 public class Topic implements Serializable {
     @SerializedName("TopicID")
@@ -11,12 +12,23 @@ public class Topic implements Serializable {
     @SerializedName("TopicName")
     private String topicName;
 
+    @SerializedName("Questions")
+    private List<Question> questions;
+
     public Topic() {
     }
 
     public Topic(int topicID, String topicName) {
         this.topicID = topicID;
         this.topicName = topicName;
+    }
+
+    public List<Question> getQuestions() {
+        return questions;
+    }
+
+    public void setQuestions(List<Question> questions) {
+        this.questions = questions;
     }
 
     public int getTopicID() {

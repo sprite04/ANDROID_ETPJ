@@ -9,9 +9,12 @@ import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
 
+import com.example.android_etpj.models.Admin;
 import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Module;
 import com.example.android_etpj.models.Question;
+import com.example.android_etpj.models.Trainee;
+import com.example.android_etpj.models.Trainer;
 import com.example.android_etpj.ui.AssignmentFragment;
 import com.example.android_etpj.ui.ClassFragment;
 import com.example.android_etpj.ui.ContactFragment;
@@ -24,6 +27,7 @@ import com.example.android_etpj.ui.QuestionFragment;
 import com.example.android_etpj.ui.ResultFragment;
 import com.example.android_etpj.ui.add.*;
 import com.example.android_etpj.ui.edit.*;
+import com.example.android_etpj.ui.view.ViewClassFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -49,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawer;
     private Type currentFragment=Type.FRAGMENT_HOME;
+    private Object user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,8 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        user = new Trainer();
 
 
         drawer = findViewById(R.id.drawer_layout);
@@ -104,7 +111,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_class:
                         checkLogin();
                         if(currentFragment!=Type.FRAGMENT_CLASS){
-                            replaceFragment(new ClassFragment());
+                            replaceFragment(new ClassFragment(user));
                             currentFragment=Type.FRAGMENT_CLASS;
                         }
                         break;
@@ -139,7 +146,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_question:
                         checkLogin();
                         if(currentFragment!=Type.FRAGMENT_QUESTION){
-                            replaceFragment(new QuestionFragment());
+                            replaceFragment(new QuestionFragment(user));
                             currentFragment=Type.FRAGMENT_QUESTION;
                         }
                         break;
@@ -221,6 +228,19 @@ public class MainActivity extends AppCompatActivity {
         editClassFragment.setArguments(bundle);
 
         fragmentTransaction.replace(R.id.content_frame,editClassFragment);
+        fragmentTransaction.addToBackStack(EditModuleFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    public void viewClassFragment(Class clss) {
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        ViewClassFragment viewClassFragment=new ViewClassFragment();
+        Bundle bundle=new Bundle();
+
+        bundle.putSerializable("VIEWCLASS",clss);
+        viewClassFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_frame,viewClassFragment);
         fragmentTransaction.addToBackStack(EditModuleFragment.TAG);
         fragmentTransaction.commit();
     }

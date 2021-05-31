@@ -70,12 +70,13 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        ApiService.apiService.getModules().enqueue(new Callback<List<Module>>() {
+        ApiService.apiService.getTopicAnswersByClassModule(3,1).enqueue(new Callback<List<TopicAnswers>>() {
             @Override
-            public void onResponse(Call<List<Module>> call, Response<List<Module>> response) {
-                ArrayList<Module> modules = (ArrayList<Module>) response.body();
+            public void onResponse(Call<List<TopicAnswers>> call, Response<List<TopicAnswers>> response) {
+                ArrayList<TopicAnswers> modules = (ArrayList<TopicAnswers>) response.body();
                 if(modules.size()>0){
-                    tvRetrofit2.setText(modules.get(0).toString());
+
+                    tvRetrofit2.setText(String.valueOf(modules.get(0).getAnswers().size()));
                 }
                 else{
                     tvRetrofit2.setText("0");
@@ -83,7 +84,7 @@ public class HomeFragment extends Fragment {
             }
 
             @Override
-            public void onFailure(Call<List<Module>> call, Throwable t) {
+            public void onFailure(Call<List<TopicAnswers>> call, Throwable t) {
 
             }
         });

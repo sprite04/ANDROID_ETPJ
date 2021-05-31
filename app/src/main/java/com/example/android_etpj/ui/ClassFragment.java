@@ -18,8 +18,11 @@ import com.example.android_etpj.ExchangeClass;
 import com.example.android_etpj.MainActivity;
 import com.example.android_etpj.R;
 import com.example.android_etpj.api.ApiService;
+import com.example.android_etpj.models.Admin;
 import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Module;
+import com.example.android_etpj.models.Trainee;
+import com.example.android_etpj.models.Trainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,6 +33,7 @@ import retrofit2.Response;
 
 public class ClassFragment extends Fragment implements ExchangeClass {
 
+    private Object user;
     private MainActivity mainActivity;
     private RecyclerView rcvClass;
     private ClassAdapter classAdapter;
@@ -37,35 +41,23 @@ public class ClassFragment extends Fragment implements ExchangeClass {
     private ImageButton btnAdd;
     private List<Class> classList;
 
-    public ClassFragment() {
+    public ClassFragment(Object user) {
+        this.user = user;
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_common,container,false);
 
-        mainActivity=(MainActivity)getActivity();
+        if (user instanceof Admin) {
+            return setAdminView(inflater, container, savedInstanceState);
+        }
 
-        rcvClass=view.findViewById(R.id.rcv_common);
-        tvTitle=view.findViewById(R.id.tv_title);
-        btnAdd=view.findViewById(R.id.btn_add);
-        //btnAdd.setVisibility(View.GONE);
+        if (user instanceof Trainer) {
+            return setTrainerView(inflater, container, savedInstanceState);
+        }
 
-        classAdapter=new ClassAdapter(this);
-        loadData();
-
-        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
-        rcvClass.setLayoutManager(linearLayoutManager);
-        rcvClass.setAdapter(classAdapter);
-
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mainActivity.addClassFragment();
-            }
-        });
-
+        View view=inflater.inflate(R.layout.fragment_access_forbidden_2,container,false);
         return view;
     }
 
@@ -91,5 +83,59 @@ public class ClassFragment extends Fragment implements ExchangeClass {
     public void editData(Class clss) {
 
         mainActivity.editClassFragment(clss);
+    }
+
+    private View setAdminView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view=inflater.inflate(R.layout.fragment_common,container,false);
+
+        mainActivity=(MainActivity)getActivity();
+
+        rcvClass=view.findViewById(R.id.rcv_common);
+        tvTitle=view.findViewById(R.id.tv_title);
+        btnAdd=view.findViewById(R.id.btn_add);
+        //btnAdd.setVisibility(View.GONE);
+
+        classAdapter=new ClassAdapter(this, user, mainActivity);
+        loadData();
+
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
+        rcvClass.setLayoutManager(linearLayoutManager);
+        rcvClass.setAdapter(classAdapter);
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainActivity.addClassFragment();
+            }
+        });
+
+        return view;
+    }
+
+    private View setTrainerView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view=inflater.inflate(R.layout.fragment_common,container,false);
+
+        mainActivity=(MainActivity)getActivity();
+
+        rcvClass=view.findViewById(R.id.rcv_common);
+        tvTitle=view.findViewById(R.id.tv_title);
+        btnAdd=view.findViewById(R.id.btn_add);
+        btnAdd.setVisibility(View.GONE);
+
+        classAdapter=new ClassAdapter(this, user, mainActivity);
+        loadData();
+
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
+        rcvClass.setLayoutManager(linearLayoutManager);
+        rcvClass.setAdapter(classAdapter);
+
+        btnAdd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainActivity.addClassFragment();
+            }
+        });
+
+        return view;
     }
 }

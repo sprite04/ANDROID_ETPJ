@@ -18,6 +18,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android_etpj.api.ApiService;
+import com.example.android_etpj.models.Admin;
 import com.example.android_etpj.models.Class;
 import com.google.android.material.snackbar.Snackbar;
 
@@ -31,18 +32,21 @@ import retrofit2.Response;
 
 public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHolder> {
 
+    private Object user;
     private List<Class> classList;
     private Activity activity;
     private ExchangeClass exchange;
-    private Date date;
+    private MainActivity mainActivity;
 
     public void setData(List<Class> list){
         this.classList=list;
         notifyDataSetChanged();
     }
 
-    public ClassAdapter(ExchangeClass exchange) {
+    public ClassAdapter(ExchangeClass exchange, Object user, MainActivity mainActivity) {
         this.exchange = exchange;
+        this.user = user;
+        this.mainActivity = mainActivity;
     }
 
     @NonNull
@@ -75,6 +79,12 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
         holder.tvItem.setText(Html.fromHtml(displayText,1));
 
+        if (!(user instanceof Admin)) {
+            holder.btnView.setVisibility(View.VISIBLE);
+            holder.btnDelete.setVisibility(View.GONE);
+            holder.btnEdit.setVisibility(View.GONE);
+        }
+
         holder.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -86,6 +96,13 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             @Override
             public void onClick(View v) {
                 setDelete(clss);
+            }
+        });
+
+        holder.btnView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                mainActivity.viewClassFragment(clss);
             }
         });
 
@@ -241,13 +258,16 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         private TextView tvItem;
         private ImageButton btnEdit;
         private ImageButton btnDelete;
+        private ImageButton btnView;
 
         public ClassViewHolder(@NonNull View itemView) {
             super(itemView);
             tvItem=itemView.findViewById(R.id.tv_content);
             btnEdit=itemView.findViewById(R.id.btn_edit);
             btnDelete=itemView.findViewById(R.id.btn_delete);
+            btnView=itemView.findViewById(R.id.btn_view);
 
         }
     }
+
 }

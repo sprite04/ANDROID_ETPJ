@@ -1,5 +1,6 @@
 package com.example.android_etpj.ui;
 
+import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -17,9 +18,15 @@ import com.example.android_etpj.MainActivity;
 import com.example.android_etpj.R;
 import com.example.android_etpj.SpinnerAdapter;
 import com.example.android_etpj.api.ApiService;
+import com.example.android_etpj.models.Answer;
 import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Module;
 import com.example.android_etpj.models.Topic;
+import com.github.mikephil.charting.charts.PieChart;
+import com.github.mikephil.charting.data.PieData;
+import com.github.mikephil.charting.data.PieDataSet;
+import com.github.mikephil.charting.data.PieEntry;
+import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -30,16 +37,23 @@ import retrofit2.Response;
 
 public class ClassStatisticFragment extends Fragment {
 
-    Spinner spClassSearch;
-    Spinner spModuleSearch;
+    private Spinner spClassSearch;
+    private Spinner spModuleSearch;
 
-    TextView tvClassSpinner;
-    TextView tvModuleSpinner;
-    TextView tvStatisticTitle;
-    TextView tvGraphTitle;
+    private TextView tvClassSpinner;
+    private TextView tvModuleSpinner;
+    private TextView tvStatisticTitle;
+    private TextView tvGraphTitle;
 
-    Class clss;
-    Module module;
+    private Class clss;
+    private Module module;
+
+    private PieChart pcClassStatistic;
+
+    private List<Answer> answerList;
+    private List<Float> countList;
+    private List<String> titleList;
+
 
 
 
@@ -52,6 +66,8 @@ public class ClassStatisticFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_class_statistic, container, false);
+
+
 
         clss = new Class();
         module = new Module();
@@ -69,6 +85,10 @@ public class ClassStatisticFragment extends Fragment {
 
         setClassSpinnerSearch();
         setModuleSpinnerSearch();
+
+        pcClassStatistic = view.findViewById(R.id.pie_chart_class);
+        pcClassStatistic.setDrawHoleEnabled(false);
+        setClassPieChart();
 
         return view;
     }
@@ -100,6 +120,7 @@ public class ClassStatisticFragment extends Fragment {
                         clss = (Class) object;
                         String tmp = "<font color = #000000>Feedback Statistics of Class </font> <font color = #F4D484>" + clss.getClassName() +"</font>";
                         tvStatisticTitle.setText(Html.fromHtml(tmp,1));
+                        setClassPieChart();
                     }
 
                     @Override
@@ -143,6 +164,7 @@ public class ClassStatisticFragment extends Fragment {
                         module = (Module)object;
                         String tmp = "<font color = #000000>Feedback Statistics of Module </font> <font color = #F4D484>" + module.getModuleName() +"</font>";
                         tvGraphTitle.setText(Html.fromHtml(tmp,1));
+                        setClassPieChart();
                     }
 
                     @Override
@@ -157,5 +179,77 @@ public class ClassStatisticFragment extends Fragment {
 
             }
         });
+    }
+
+    private void setClassPieChart() {
+        titleList = new ArrayList<>();
+        answerList = new ArrayList<>();
+        countList = new ArrayList<>();
+
+        titleList.clear();
+        answerList.clear();
+        countList.clear();
+
+        titleList.add(new String("Strongly Disagree"));
+        titleList.add(new String("Disagree"));
+        titleList.add(new String("Neural"));
+        titleList.add(new String("Agree"));
+        titleList.add(new String("Strong Agree"));
+
+        for (int i = 0; i < 5 ; i++){
+            countList.add(new Float(0));
+        }
+
+        ApiService.apiService.getAnswersByClassModule(clss.getClassID(),module.getModuleID()).enqueue(new Callback<List<Answer>>() {
+            @Override
+            public void onResponse(Call<List<Answer>> call, Response<List<Answer>> response) {
+                answerList = (ArrayList<Answer>) response.body();
+
+                for (Answer answer:answerList) {
+                    switch (answer.getValue()) {
+                        case 0:
+                            countList.set(0,countList.get(0)+1);
+                            break;
+                        case 1:
+                            countList.set(1,countList.get(1)+1);
+                            break;
+                        case 2:
+                            countList.set(2,countList.get(2)+1);
+                            break;
+                        case 3:
+                            countList.set(3,countList.get(3)+1);
+                            break;
+                        case 4:
+                            countList.set(4,countList.get(4)+1);
+                            break;
+                    }
+                }
+
+                ArrayList<PieEntry> pieEntries=new ArrayList<>();
+                for(int i=0; i<countList.size(); i++){
+                    if (countList.get(i) != 0) {
+                        pieEntries.add(new PieEntry(((countList.get(i)*100 / answerList.size())), titleList.get(i) + " (%)"));
+                    }
+                }
+
+                pcClassStatistic.clear();
+                PieDataSet pieDataSet=new PieDataSet(pieEntries,"Class Statistic");
+                pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
+                pieDataSet.setValueTextColor(Color.WHITE);
+                pieDataSet.setValueTextSize(25f);
+
+                PieData pieData=new PieData(pieDataSet);
+                pcClassStatistic.setData(pieData);
+                pcClassStatistic.getDescription().setEnabled(false);
+                pcClassStatistic.animate();
+            }
+
+            @Override
+            public void onFailure(Call<List<Answer>> call, Throwable t) {
+
+            }
+        });
+
+
     }
 }
