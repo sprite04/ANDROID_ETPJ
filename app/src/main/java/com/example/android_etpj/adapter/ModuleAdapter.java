@@ -235,6 +235,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
                 dialogFail.cancel();
             }
         });
+        dialogFail.show();
     }
 
     private void dialogSuccess(){
@@ -258,6 +259,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
                 dialogSuccess.cancel();
             }
         });
+        dialogSuccess.show();
     }
 
     private void setEdit(Module module) {

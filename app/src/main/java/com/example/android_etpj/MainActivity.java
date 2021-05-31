@@ -1,13 +1,8 @@
 package com.example.android_etpj;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Menu;
-import android.widget.TextView;
 
 import com.example.android_etpj.models.Module;
 import com.example.android_etpj.ui.AssignmentFragment;
@@ -22,25 +17,17 @@ import com.example.android_etpj.ui.QuestionFragment;
 import com.example.android_etpj.ui.ResultFragment;
 import com.example.android_etpj.ui.add.*;
 import com.example.android_etpj.ui.edit.*;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.example.android_etpj.models.*;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import java.util.Calendar;
-import java.util.Date;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -181,6 +168,18 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public void backFeedbackFragment(){
+        getSupportFragmentManager().popBackStack();
+        getSupportFragmentManager().popBackStack();
+    }
+
+    public void backFeedbackFragmentRV(){
+
+        getSupportFragmentManager().popBackStack();
+        getSupportFragmentManager().popBackStack();
+        getSupportFragmentManager().popBackStack();
+    }
+
     public void addModuleFragment(){
         FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
         AddModuleFragment addModuleFragment=new AddModuleFragment();
@@ -212,6 +211,55 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    public void editFeedbackFragment() {
+    public void reviewAddFeedbackFragment(Feedback feedback){
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        ReviewAddFeedbackFragment reviewFeedbackFragment=new ReviewAddFeedbackFragment();
+        Bundle bundle=new Bundle();
+
+        bundle.putSerializable("FEEDBACKREVIEW",feedback);
+        reviewFeedbackFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_frame,reviewFeedbackFragment);
+        fragmentTransaction.addToBackStack(ReviewAddFeedbackFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    public void reviewEditFeedbackFragment(Feedback feedback, int type){
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        ReviewEditFeedbackFragment reviewFeedbackFragment=new ReviewEditFeedbackFragment();
+        Bundle bundle=new Bundle();
+
+        bundle.putSerializable("FEEDBACKREVIEW",feedback);
+        bundle.putInt("TYPEREVIEW",type);
+        reviewFeedbackFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_frame,reviewFeedbackFragment);
+        fragmentTransaction.addToBackStack(ReviewEditFeedbackFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    public void editFeedbackFragment(Feedback feedback,int type) {
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        EditFeedbackFragment editFeedbackFragment=new EditFeedbackFragment();
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("FEEDBACK_EDIT",feedback);
+        bundle.putInt("TYPE",type);
+        editFeedbackFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_frame,editFeedbackFragment);
+        fragmentTransaction.addToBackStack(EditFeedbackFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    public void reviewFeedbackFragment(Feedback feedback){
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        ReviewFeedbackFragment reviewFeedbackFragment=new ReviewFeedbackFragment();
+        Bundle bundle=new Bundle();
+        bundle.putSerializable("FEEDBACKREVIEW",feedback);
+        reviewFeedbackFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_frame,reviewFeedbackFragment);
+        fragmentTransaction.addToBackStack(ReviewFeedbackFragment.TAG);
+        fragmentTransaction.commit();
     }
 }

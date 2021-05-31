@@ -1,4 +1,4 @@
-package com.example.android_etpj.ui.add;
+package com.example.android_etpj.ui.edit;
 
 import android.app.Dialog;
 import android.graphics.Color;
@@ -28,7 +28,12 @@ import com.example.android_etpj.MainActivity;
 import com.example.android_etpj.R;
 import com.example.android_etpj.SpinnerAdapter;
 import com.example.android_etpj.api.ApiService;
-import com.example.android_etpj.models.*;
+import com.example.android_etpj.models.Feedback;
+import com.example.android_etpj.models.Module;
+import com.example.android_etpj.models.Question;
+import com.example.android_etpj.models.Topic;
+import com.example.android_etpj.models.TypeFeedback;
+import com.example.android_etpj.ui.add.AddFeedbackFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,8 +42,8 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class AddFeedbackFragment extends Fragment {
-    public static final String TAG=AddFeedbackFragment.class.getName();
+public class EditFeedbackFragment extends Fragment {
+    public static final String TAG= EditFeedbackFragment.class.getName();
 
     private MainActivity mainActivity;
 
@@ -54,29 +59,34 @@ public class AddFeedbackFragment extends Fragment {
 
     private TextView tvTitle;
 
+    private int type;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_feedback,container,false);
 
+        Bundle bundle=getArguments();
+        feedback= (Feedback) bundle.get("FEEDBACK_EDIT");
+        type=bundle.getInt("TYPE");
+
         mainActivity=(MainActivity)getActivity();
 
-        feedback=new Feedback();
-        
+        tvTitle=view.findViewById(R.id.tv_title);
+        tvTitle.setText("Edit New Feedback");
+
         spTypeFeedback=view.findViewById(R.id.sp_type_feedback);
         edtFeedbackTitle=view.findViewById(R.id.edt_feedback_title);
+        edtFeedbackTitle.setText(feedback.getTitle());
 
         btnBack=view.findViewById(R.id.btn_back);
         btnReview=view.findViewById(R.id.btn_review);
 
-        tvTitle=view.findViewById(R.id.tv_title);
-        tvTitle.setText("Create New Feedback");
-
         layoutInsert=view.findViewById(R.id.layout_insert);
-        
-        setSpinnerTypeFeedback();
+
+
         loadData();
+        setSpinnerTypeFeedback();
 
         btnBack.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -95,7 +105,6 @@ public class AddFeedbackFragment extends Fragment {
             }
         });
 
-
         return view;
     }
 
@@ -105,6 +114,8 @@ public class AddFeedbackFragment extends Fragment {
             public void onResponse(Call<List<Topic>> call, Response<List<Topic>> response) {
                 List<Topic> topics=response.body();
                 String title=edtFeedbackTitle.getText().toString();
+
+
 
                 //Lấy giá trị user admin gán vào đây
 
@@ -171,7 +182,7 @@ public class AddFeedbackFragment extends Fragment {
 
                 }
 
-                mainActivity.reviewAddFeedbackFragment(feedback);
+                mainActivity.reviewEditFeedbackFragment(feedback,type);
 
             }
 
@@ -193,7 +204,16 @@ public class AddFeedbackFragment extends Fragment {
                 SpinnerAdapter spTypeFeedbackAdapter=new SpinnerAdapter(getContext(),R.layout.item_sp_selected,typefeedbacks);
                 spTypeFeedback.setAdapter(spTypeFeedbackAdapter);
 
-                if(arrayList.size()>0){
+                boolean existTypeFeedback=false;
+                for(int i=0; i<arrayList.size(); i++){
+                    TypeFeedback typeFeedback=arrayList.get(i);
+                    if(typeFeedback.getTypeID()==feedback.getTypeFeedbackID()){
+                        existTypeFeedback=true;
+                        spTypeFeedback.setSelection(spTypeFeedbackAdapter.getPosition(arrayList.get(i)));
+                        break;
+                    }
+                }
+                if(arrayList.size()>0&& existTypeFeedback==false){
                     TypeFeedback typeFeedback=arrayList.get(0);
                     feedback.setTypeFeedbackID(typeFeedback.getTypeID());
                 }
@@ -228,6 +248,17 @@ public class AddFeedbackFragment extends Fragment {
             @Override
             public void onResponse(Call<List<Topic>> call, Response<List<Topic>> response) {
                 List<Topic> topics=response.body();
+
+                for(int i=0; i<topics.size(); i++){
+                    for(int j=0; j<topics.get(i).getQuestions().size();j++){
+                        for(int k=0; k<feedback.getQuestions().size(); k++){
+                            if(feedback.getQuestions().get(k).getQuestionID()==topics.get(i).getQuestions().get(j).getQuestionID()){
+                                feedback.getQuestions().get(k).setTopicID(topics.get(i).getTopicID());
+                            }
+                        }
+                    }
+                }
+
                 for(int i=0; i<topics.size(); i++) {
                     Topic topic=new Topic();
                     topic=topics.get(i);
@@ -244,6 +275,11 @@ public class AddFeedbackFragment extends Fragment {
                         question.setTopicID(topic.getTopicID());
                         CheckBox chkQuestion=new CheckBox(mainActivity);
                         chkQuestion.setText(question.getQuestionContent());
+                        for(int k=0; k<feedback.getQuestions().size(); k++){
+                            if(feedback.getQuestions().get(k).getQuestionID()==question.getQuestionID()){
+                                chkQuestion.setChecked(true);
+                            }
+                        }
                         layoutTopic.addView(chkQuestion);
                         chkQuestion.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                             @Override
@@ -263,7 +299,12 @@ public class AddFeedbackFragment extends Fragment {
                                     if(questionList==null){
                                         questionList=new ArrayList<>();
                                     }
-                                    questionList.remove(question);
+                                    for(int z=0; z<feedback.getQuestions().size();z++){
+                                        if(feedback.getQuestions().get(z).getQuestionID()==question.getQuestionID()){
+                                            questionList.remove(feedback.getQuestions().get(z));
+                                        }
+                                    }
+
                                     feedback.setQuestions(questionList);
                                     Log.e("xoa",String.valueOf(feedback.getQuestions().size()));
                                 }

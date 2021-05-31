@@ -91,6 +91,7 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.Feedba
                 setView(feedback);
             }
         });
+
     }
 
     private void setView(Feedback feedback) {
@@ -240,6 +241,7 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.Feedba
                 dialogSuccess.cancel();
             }
         });
+        dialogSuccess.show();
     }
 
     private void dialogFail() {
@@ -263,6 +265,7 @@ public class FeedbackAdapter extends RecyclerView.Adapter<FeedbackAdapter.Feedba
                 dialogFail.cancel();
             }
         });
+        dialogFail.show();
     }
 
     private void setEdit(Feedback feedback) {

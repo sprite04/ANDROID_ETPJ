@@ -391,7 +391,6 @@ public class AddModuleFragment extends Fragment {
                         }
                     });
                 }
-                Log.e("Success",String.valueOf(success));
 
             }
         });

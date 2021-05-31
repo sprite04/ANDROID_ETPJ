@@ -77,6 +77,7 @@ public class FeedbackFragment extends Fragment implements ExchangeFeedback {
         ApiService.apiService.getFeedbacks().enqueue(new Callback<List<Feedback>>() {
             @Override
             public void onResponse(Call<List<Feedback>> call, Response<List<Feedback>> response) {
+
                 feedbackList=(ArrayList<Feedback>)response.body();
                 tvTitle.setText("List Feedback ");
 
@@ -93,11 +94,11 @@ public class FeedbackFragment extends Fragment implements ExchangeFeedback {
 
     @Override
     public void editData(Feedback feedback) {
-
+        mainActivity.editFeedbackFragment(feedback,1);
     }
 
     @Override
     public void viewData(Feedback feedback) {
-
+        mainActivity.reviewFeedbackFragment(feedback);
     }
 }
