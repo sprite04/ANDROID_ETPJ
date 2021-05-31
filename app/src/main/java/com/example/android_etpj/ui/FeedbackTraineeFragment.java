@@ -1,6 +1,7 @@
 package com.example.android_etpj.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,10 +17,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.android_etpj.MainActivity;
 import com.example.android_etpj.R;
 import com.example.android_etpj.adapter.FeedbackAdapter;
-import com.example.android_etpj.adapter.ModuleAdapter;
+import com.example.android_etpj.adapter.FeedbackTraineeAdapter;
 import com.example.android_etpj.api.ApiService;
-import com.example.android_etpj.interfaces.ExchangeFeedback;
-import com.example.android_etpj.models.*;
+import com.example.android_etpj.interfaces.ExchangeFeedbackTrainee;
+import com.example.android_etpj.models.Assignment;
+import com.example.android_etpj.models.Trainee;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,17 +30,19 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class FeedbackFragment extends Fragment implements ExchangeFeedback {
+public class FeedbackTraineeFragment extends Fragment implements ExchangeFeedbackTrainee {
 
     private RecyclerView rcvFeedback;
-    private FeedbackAdapter feedbackAdapter;
+    private FeedbackTraineeAdapter feedbackTraineeAdapter;
     private TextView tvTitle;
     private ImageButton btnAdd;
-    private List<Feedback> feedbackList;
+    private List<Assignment> assignmentList;
 
     private MainActivity mainActivity;
+    private Trainee trainee;
 
-    public FeedbackFragment() {
+    public FeedbackTraineeFragment(Trainee trainee) {
+        this.trainee=trainee;
     }
 
     @Nullable
@@ -51,54 +55,46 @@ public class FeedbackFragment extends Fragment implements ExchangeFeedback {
         rcvFeedback=view.findViewById(R.id.rcv_common);
         tvTitle=view.findViewById(R.id.tv_title);
         btnAdd=view.findViewById(R.id.btn_add);
-        //btnAdd.setVisibility(View.GONE);
+        btnAdd.setVisibility(View.GONE);
 
 
 
-        feedbackAdapter=new FeedbackAdapter(this);
+        feedbackTraineeAdapter=new FeedbackTraineeAdapter(this,trainee);
         loadData();
 
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
         rcvFeedback.setLayoutManager(linearLayoutManager);
-        rcvFeedback.setAdapter(feedbackAdapter);
+        rcvFeedback.setAdapter(feedbackTraineeAdapter);
 
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mainActivity.addFeedbackFragment();
-            }
-        });
+
 
         return view;
     }
 
     @Override
     public void loadData() {
-        ApiService.apiService.getFeedbacks().enqueue(new Callback<List<Feedback>>() {
+        ApiService.apiService.getAssignmentsByTrainee("trainee1").enqueue(new Callback<List<Assignment>>() {
             @Override
-            public void onResponse(Call<List<Feedback>> call, Response<List<Feedback>> response) {
-
-                feedbackList=(ArrayList<Feedback>)response.body();
+            public void onResponse(Call<List<Assignment>> call, Response<List<Assignment>> response) {
+                assignmentList=response.body();
+                Log.e("thu",String.valueOf(assignmentList.size()));
                 tvTitle.setText("List Feedback");
-
-                feedbackAdapter.setData(feedbackList);
+                feedbackTraineeAdapter.setData(assignmentList);
             }
 
             @Override
-            public void onFailure(Call<List<Feedback>> call, Throwable t) {
+            public void onFailure(Call<List<Assignment>> call, Throwable t) {
 
             }
         });
 
+
     }
 
-    @Override
-    public void editData(Feedback feedback) {
-        mainActivity.editFeedbackFragment(feedback,1);
-    }
+
 
     @Override
-    public void viewData(Feedback feedback) {
-        mainActivity.reviewFeedbackFragment(feedback);
+    public void reviewData(Assignment assignment) {
+
     }
 }

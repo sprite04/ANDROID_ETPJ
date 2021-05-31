@@ -10,6 +10,7 @@ import com.example.android_etpj.ui.ClassFragment;
 import com.example.android_etpj.ui.ContactFragment;
 import com.example.android_etpj.ui.EnrollmentFragment;
 import com.example.android_etpj.ui.FeedbackFragment;
+import com.example.android_etpj.ui.FeedbackTraineeFragment;
 import com.example.android_etpj.ui.HomeFragment;
 import com.example.android_etpj.ui.JoinFragment;
 import com.example.android_etpj.ui.ModuleFragment;
@@ -110,7 +111,9 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_feedback:
                         checkLogin();
                         if(currentFragment!=Type.FRAGMENT_FEEDBACK){
-                            replaceFragment(new FeedbackFragment());
+                            Trainee trainee=new Trainee("trainee1","Thuỷ Tiên","tientien","0971966126","nnnn",true,"hhhh","hhhhh","jjj");
+
+                            replaceFragment(new FeedbackTraineeFragment(trainee));
                             currentFragment=Type.FRAGMENT_FEEDBACK;
                         }
                         break;

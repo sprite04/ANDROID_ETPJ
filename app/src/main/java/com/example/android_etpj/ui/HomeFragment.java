@@ -2,6 +2,7 @@ package com.example.android_etpj.ui;
 
 import android.os.Bundle;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -70,7 +71,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        ApiService.apiService.getModules().enqueue(new Callback<List<Module>>() {
+        /*ApiService.apiService.getModules().enqueue(new Callback<List<Module>>() {
             @Override
             public void onResponse(Call<List<Module>> call, Response<List<Module>> response) {
                 ArrayList<Module> modules = (ArrayList<Module>) response.body();
@@ -86,7 +87,37 @@ public class HomeFragment extends Fragment {
             public void onFailure(Call<List<Module>> call, Throwable t) {
 
             }
+        });*/
+
+        ApiService.apiService.getAssignmentsByTrainee("trainee2").enqueue(new Callback<List<Assignment>>() {
+            @Override
+            public void onResponse(Call<List<Assignment>> call, Response<List<Assignment>> response) {
+                ArrayList<Assignment> modules = (ArrayList<Assignment>) response.body();
+                if(modules.size()>0){
+
+                    Log.e("e",String.valueOf(modules.size()));
+                }
+                else{
+                    tvRetrofit2.setText("0");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Assignment>> call, Throwable t) {
+                Log.e("ee",t.getMessage());
+            }
         });
+        /*ApiService.apiService.getTopicAnswersByClassModule(5,13).enqueue(new Callback<List<TopicAnswers>>() {
+            @Override
+            public void onResponse(Call<List<TopicAnswers>> call, Response<List<TopicAnswers>> response) {
+
+            }
+
+            @Override
+            public void onFailure(Call<List<TopicAnswers>> call, Throwable t) {
+
+            }
+        });*/
 
        /* ApiService.apiService.getAdmins().enqueue(new Callback<List<Admin>>() {
             @Override
