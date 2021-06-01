@@ -65,6 +65,9 @@ public interface ApiService {
     @PUT("module")
     Call<Boolean> editModule(@Body Module m);
 
+    @GET("module")
+    Call<List<Module>> getModuleByIdTrainer(@Query("idTrainer") String idTrainer);
+
 
     //Admin
     @GET("admin")
@@ -137,6 +140,8 @@ public interface ApiService {
     //TopicAnswers
     @GET("topicanswers")
     Call<List<TopicAnswers>> getTopicAnswersByClassModule(@Query("idClass") int idClass,@Query("idModule") int idModule);
+    @GET("topicanswers")
+    Call<List<TopicStatistic>> getTopicStatisticByClassModule(@Query("classID") int classID,@Query("moduleID") int moduleID);
 
     //Enrollment
     @GET("enrollment")
@@ -145,4 +150,7 @@ public interface ApiService {
     //Trainee
     @GET("trainee")
     Call<Trainee> getTraineeByUsername(@Query("username") String username);
+
+
+
 }

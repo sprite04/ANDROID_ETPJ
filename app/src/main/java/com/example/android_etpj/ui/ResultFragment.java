@@ -18,9 +18,11 @@ import com.example.android_etpj.StatisticViewPagerAdapter;
 public class ResultFragment extends Fragment {
 
     private ViewPager vpStatistic;
+    private Object user;
 
 
-    public ResultFragment() {
+    public ResultFragment(Object user) {
+        this.user = user;
     }
 
     @Nullable
@@ -31,7 +33,7 @@ public class ResultFragment extends Fragment {
         vpStatistic = view.findViewById(R.id.vp_statistic);
 
 
-        StatisticViewPagerAdapter statisticViewPagerAdapter = new StatisticViewPagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
+        StatisticViewPagerAdapter statisticViewPagerAdapter = new StatisticViewPagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, user);
         vpStatistic.setAdapter(statisticViewPagerAdapter);
 
 

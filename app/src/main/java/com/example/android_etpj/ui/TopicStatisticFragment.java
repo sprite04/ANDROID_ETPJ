@@ -50,9 +50,11 @@ public class TopicStatisticFragment extends Fragment {
     private Module module;
 
     private LinearLayout layoutMainChart;
-    private List<LinearLayout> layoutChildChart;
 
-    public TopicStatisticFragment() {
+    private Object user;
+
+    public TopicStatisticFragment(Object user) {
+        this.user = user;
     }
 
     @Override
@@ -172,7 +174,6 @@ public class TopicStatisticFragment extends Fragment {
             @Override
             public void onResponse(Call<List<TopicAnswers>> call, Response<List<TopicAnswers>> response) {
                 ArrayList<TopicAnswers> topicAnswersList = (ArrayList<TopicAnswers>) response.body();
-                Log.e("A",String.valueOf(topicAnswersList.size()));
                 for (int i = 0; i < topicAnswersList.size(); i++) {
                     View viewChildChart;
                     viewChildChart = getLayoutInflater().inflate(R.layout.item_topic_chart,null,false);
@@ -217,13 +218,6 @@ public class TopicStatisticFragment extends Fragment {
                                 break;
                         }
                     }
-//                    if (clss.getClassID()==3&&module.getModuleID()==4) {
-//                        Log.e("0",String.valueOf(countList.get(0)));
-//                        Log.e("1",String.valueOf(countList.get(1)));
-//                        Log.e("2",String.valueOf(countList.get(2)));
-//                        Log.e("3",String.valueOf(countList.get(3)));
-//                        Log.e("4",String.valueOf(countList.get(4)));
-//                    }
 
                     ArrayList<PieEntry> pieEntries1 = new ArrayList<>();
                     for(int m=0; m<countList.size(); m++){
@@ -288,13 +282,6 @@ public class TopicStatisticFragment extends Fragment {
                                     break;
                             }
                         }
-//                    if (clss.getClassID()==3&&module.getModuleID()==4) {
-//                        Log.e("0",String.valueOf(countList.get(0)));
-//                        Log.e("1",String.valueOf(countList.get(1)));
-//                        Log.e("2",String.valueOf(countList.get(2)));
-//                        Log.e("3",String.valueOf(countList.get(3)));
-//                        Log.e("4",String.valueOf(countList.get(4)));
-//                    }
 
                         ArrayList<PieEntry> pieEntries2 = new ArrayList<>();
                         for (int m = 0; m < countList.size(); m++) {

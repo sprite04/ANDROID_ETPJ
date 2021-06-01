@@ -1,6 +1,5 @@
 package com.example.android_etpj.ui;
 
-import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -11,24 +10,22 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.android_etpj.MainActivity;
 import com.example.android_etpj.R;
 import com.example.android_etpj.SpinnerAdapter;
 import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.models.Admin;
-import com.example.android_etpj.models.Answer;
 import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Module;
+import com.example.android_etpj.models.Question;
+import com.example.android_etpj.models.Statistic;
 import com.example.android_etpj.models.Topic;
+import com.example.android_etpj.models.TopicAnswers;
+import com.example.android_etpj.models.TopicStatistic;
 import com.example.android_etpj.models.Trainer;
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -37,51 +34,29 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class ClassStatisticFragment extends Fragment {
+
+public class PercentStatisticFragment extends Fragment {
 
     private Spinner spClassSearch;
     private Spinner spModuleSearch;
 
-    private TextView tvClassSpinner;
-    private TextView tvModuleSpinner;
-    private TextView tvStatisticTitle;
-    private TextView tvGraphTitle;
-
     private Class clss;
     private Module module;
 
-    private PieChart pcClassStatistic;
-
-    private List<Answer> answerList;
-    private List<Float> countList;
-    private List<String> titleList;
+    private LinearLayout layoutMain;
 
     private Object user;
 
-
-
-    public ClassStatisticFragment(Object user) {
+    public PercentStatisticFragment(Object user) {
         this.user = user;
     }
 
-
-
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View view =  inflater.inflate(R.layout.fragment_class_statistic, container, false);
-
-
+        View view =  inflater.inflate(R.layout.fragment_percent_statistic, container, false);
 
         clss = new Class();
         module = new Module();
-
-        tvClassSpinner = view.findViewById(R.id.tv_title_search_1);
-        tvModuleSpinner = view.findViewById(R.id.tv_title_search_2);
-        tvStatisticTitle = view.findViewById(R.id.tv_title_statistic);
-        tvGraphTitle = view.findViewById(R.id.tv_title_graph);
-
-        tvClassSpinner.setText("Class:");
-        tvModuleSpinner.setText("Module:");
 
         spClassSearch = view.findViewById(R.id.sp_search_1);
         spModuleSearch = view.findViewById(R.id.sp_search_2);
@@ -98,10 +73,8 @@ public class ClassStatisticFragment extends Fragment {
             return view;
         }
 
-
-        pcClassStatistic = view.findViewById(R.id.pie_chart_class);
-        pcClassStatistic.setDrawHoleEnabled(false);
-        setClassPieChart();
+        layoutMain = view.findViewById(R.id.layout_percent_statistic);
+        setPercentStatistic();
 
         return view;
     }
@@ -131,9 +104,7 @@ public class ClassStatisticFragment extends Fragment {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         Object object=spClassAdapter.getItem(position);
                         clss = (Class) object;
-                        String tmp = "<font color = #000000>Feedback Statistics of Class </font> <font color = #F4D484>" + clss.getClassName() +"</font>";
-                        tvStatisticTitle.setText(Html.fromHtml(tmp,1));
-                        setClassPieChart();
+                        setPercentStatistic();
                     }
 
                     @Override
@@ -175,9 +146,7 @@ public class ClassStatisticFragment extends Fragment {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         Object object=spModuleAdapter.getItem(position);
                         module = (Module)object;
-                        String tmp = "<font color = #000000>Feedback Statistics of Module </font> <font color = #F4D484>" + module.getModuleName() +"</font>";
-                        tvGraphTitle.setText(Html.fromHtml(tmp,1));
-                        setClassPieChart();
+                        setPercentStatistic();
                     }
 
                     @Override
@@ -219,9 +188,7 @@ public class ClassStatisticFragment extends Fragment {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         Object object=spClassAdapter.getItem(position);
                         clss = (Class) object;
-                        String tmp = "<font color = #000000>Feedback Statistics of Class </font> <font color = #F4D484>" + clss.getClassName() +"</font>";
-                        tvStatisticTitle.setText(Html.fromHtml(tmp,1));
-                        setClassPieChart();
+                        setPercentStatistic();
                     }
 
                     @Override
@@ -263,9 +230,7 @@ public class ClassStatisticFragment extends Fragment {
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         Object object=spModuleAdapter.getItem(position);
                         module = (Module)object;
-                        String tmp = "<font color = #000000>Feedback Statistics of Module </font> <font color = #F4D484>" + module.getModuleName() +"</font>";
-                        tvGraphTitle.setText(Html.fromHtml(tmp,1));
-                        setClassPieChart();
+                        setPercentStatistic();
                     }
 
                     @Override
@@ -282,75 +247,91 @@ public class ClassStatisticFragment extends Fragment {
         });
     }
 
-    private void setClassPieChart() {
-        titleList = new ArrayList<>();
-        answerList = new ArrayList<>();
-        countList = new ArrayList<>();
+    private void setPercentStatistic () {
+        layoutMain.removeAllViews();
 
-        titleList.clear();
-        answerList.clear();
-        countList.clear();
-
-        titleList.add(new String("Strongly Disagree"));
-        titleList.add(new String("Disagree"));
-        titleList.add(new String("Neural"));
-        titleList.add(new String("Agree"));
-        titleList.add(new String("Strong Agree"));
-
-        for (int i = 0; i < 5 ; i++){
-            countList.add(new Float(0));
-        }
-
-        ApiService.apiService.getAnswersByClassModule(clss.getClassID(),module.getModuleID()).enqueue(new Callback<List<Answer>>() {
+        ApiService.apiService.getTopicStatisticByClassModule(clss.getClassID(),module.getModuleID()).enqueue(new Callback<List<TopicStatistic>>() {
             @Override
-            public void onResponse(Call<List<Answer>> call, Response<List<Answer>> response) {
-                answerList = (ArrayList<Answer>) response.body();
+            public void onResponse(Call<List<TopicStatistic>> call, Response<List<TopicStatistic>> response) {
+                List<TopicStatistic> topicStatisticList = (ArrayList<TopicStatistic>) response.body();
+                for (int i = 0; i < topicStatisticList.size(); i++) {
+                    View viewTopic;
+                    viewTopic = getLayoutInflater().inflate(R.layout.item_topic_statistic,null,false);
 
-                for (Answer answer:answerList) {
-                    switch (answer.getValue()) {
-                        case 0:
-                            countList.set(0,countList.get(0)+1);
-                            break;
-                        case 1:
-                            countList.set(1,countList.get(1)+1);
-                            break;
-                        case 2:
-                            countList.set(2,countList.get(2)+1);
-                            break;
-                        case 3:
-                            countList.set(3,countList.get(3)+1);
-                            break;
-                        case 4:
-                            countList.set(4,countList.get(4)+1);
-                            break;
+                    TextView tvTopic = viewTopic.findViewById(R.id.tv_title_topic);
+                    String topicString = "<b>" + (i+1) + "<b>. " + topicStatisticList.get(i).getTopic().getTopicName() +"<br>";
+                    tvTopic.setText(Html.fromHtml(topicString,1));
+
+                    List<Question> questionList = (ArrayList<Question>) topicStatisticList.get(i).getTopic().getQuestions();
+                    List<Statistic> statisticList = (ArrayList<Statistic>) topicStatisticList.get(i).getStatistics();
+
+                    layoutMain.addView(viewTopic);
+
+                    for (int j = 0; j < questionList.size(); j++) {
+                        View viewQuestion;
+                        viewQuestion = getLayoutInflater().inflate(R.layout.item_question_statistic,null,false);
+
+                        TextView tvQuestion = viewQuestion.findViewById(R.id.tv_title_question);
+                        String questionString = "- " + questionList.get(j).getQuestionContent();
+                        tvQuestion.setText(Html.fromHtml(questionString,1));
+
+                        layoutMain.addView(viewQuestion);
+
+                        Float sum = new Float(0.0);
+
+                        for (int value:statisticList.get(j).getAmount()) {
+                            sum = sum + value;
+                        }
+
+                        List<Float> percentList = new ArrayList<>();
+
+                        for (int k = 0; k < statisticList.get(j).getAmount().size(); k++) {
+                            if (sum!=0) {
+                                percentList.add(statisticList.get(j).getAmount().get(k) * 100 / sum);
+                            } else {
+                                percentList.add(new Float(0));
+                            }
+
+                        }
+
+                        View viewAnswer;
+                        viewAnswer = getLayoutInflater().inflate(R.layout.item_answer_statistic,null,false);
+
+                        for (int x=0; x < statisticList.get(j).getAmount().size(); x++) {
+                            switch (x) {
+                                case 0:
+                                    TextView tvAnswer0 = viewAnswer.findViewById(R.id.tv_answer0);
+                                    tvAnswer0.setText(String.valueOf(percentList.get(0)) + "%");
+                                    break;
+                                case 1:
+                                    TextView tvAnswer1 = viewAnswer.findViewById(R.id.tv_answer1);
+                                    tvAnswer1.setText(String.valueOf(percentList.get(1)) + "%");
+                                    break;
+                                case 2:
+                                    TextView tvAnswer2 = viewAnswer.findViewById(R.id.tv_answer2);
+                                    tvAnswer2.setText(String.valueOf(percentList.get(2)) + "%");
+                                    break;
+                                case 3:
+                                    TextView tvAnswer3 = viewAnswer.findViewById(R.id.tv_answer3);
+                                    tvAnswer3.setText(String.valueOf(percentList.get(3)) + "%");
+                                    break;
+                                case 4:
+                                    TextView tvAnswer4 = viewAnswer.findViewById(R.id.tv_answer4);
+                                    tvAnswer4.setText(String.valueOf(percentList.get(4)) + "%");
+                                    break;
+                            }
+                        }
+                        layoutMain.addView(viewAnswer);
                     }
+
+
                 }
-
-                ArrayList<PieEntry> pieEntries=new ArrayList<>();
-                for(int i=0; i<countList.size(); i++){
-                    if (countList.get(i) != 0) {
-                        pieEntries.add(new PieEntry(((countList.get(i)*100 / answerList.size())), titleList.get(i) + " (%)"));
-                    }
-                }
-
-                pcClassStatistic.clear();
-                PieDataSet pieDataSet=new PieDataSet(pieEntries,"Class Statistic");
-                pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-                pieDataSet.setValueTextColor(Color.WHITE);
-                pieDataSet.setValueTextSize(25f);
-
-                PieData pieData=new PieData(pieDataSet);
-                pcClassStatistic.setData(pieData);
-                pcClassStatistic.getDescription().setEnabled(false);
-                pcClassStatistic.animate();
             }
 
             @Override
-            public void onFailure(Call<List<Answer>> call, Throwable t) {
+            public void onFailure(Call<List<TopicStatistic>> call, Throwable t) {
 
             }
         });
-
-
     }
 }

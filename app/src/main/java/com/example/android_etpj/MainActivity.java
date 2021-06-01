@@ -56,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private Object user;
     private Trainer trainer;
     private Trainee trainee;
+    private Admin admin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,7 +72,9 @@ public class MainActivity extends AppCompatActivity {
         trainee = new Trainee();
         trainee.setUserId("trainee1");
 
-        user=trainee;
+        admin = new Admin();
+
+        user=admin;
 
 
         drawer = findViewById(R.id.drawer_layout);
@@ -147,7 +150,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_result:
                         checkLogin();
                         if(currentFragment!=Type.FRAGMENT_RESULT){
-                            replaceFragment(new ResultFragment());
+                            replaceFragment(new ResultFragment(user));
                             currentFragment=Type.FRAGMENT_RESULT;
                         }
                         break;
