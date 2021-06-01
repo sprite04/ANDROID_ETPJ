@@ -21,6 +21,8 @@ import com.example.android_etpj.interfaces.ExchangeAssignment;
 import com.example.android_etpj.R;
 import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.models.Assignment;
+import com.example.android_etpj.models.Trainee;
+import com.example.android_etpj.models.Trainer;
 
 import java.util.List;
 
@@ -33,6 +35,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
     private List<Assignment> assignmentsList;
     private Activity activity;
     private ExchangeAssignment exchange;
+    private Object user;
 
 
     public void setData(List<Assignment> list) {
@@ -40,8 +43,9 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         notifyDataSetChanged();
     }
 
-    public AssignmentAdapter(ExchangeAssignment exchange) {
+    public AssignmentAdapter(ExchangeAssignment exchange, Object user) {
         this.exchange = exchange;
+        this.user=user;
     }
 
     @NonNull
@@ -58,7 +62,11 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         Assignment assignment = assignmentsList.get(position);
         if (assignment == null)
             return;
+        if(user instanceof Trainer || user instanceof Trainee) {
+            holder.btnDelete.setVisibility(View.GONE);
+            holder.btnEdit.setVisibility(View.GONE);
 
+        }
         String displayText = "";
         displayText = "<b>" + "No.: " + "</b> " + position+1 + "<br>" +
                 "<b>" + "Course Name: " + "</b> " + assignment.getModule().getModuleName() + "<br>" +

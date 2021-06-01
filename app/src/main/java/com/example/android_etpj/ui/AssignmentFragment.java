@@ -1,5 +1,6 @@
 package com.example.android_etpj.ui;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,12 +18,15 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android_etpj.LoginActivity;
 import com.example.android_etpj.MainActivity;
 import com.example.android_etpj.adapter.AssignmentAdapter;
 import com.example.android_etpj.R;
 import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.interfaces.ExchangeAssignment;
 import com.example.android_etpj.models.Assignment;
+import com.example.android_etpj.models.Trainee;
+import com.example.android_etpj.models.Trainer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -43,7 +47,9 @@ public class AssignmentFragment extends Fragment implements ExchangeAssignment {
     private EditText edtSearch;
     private Button btnSearch;
 
-    public AssignmentFragment() {
+    private Object user;
+    public AssignmentFragment(Object user) {
+        this.user=user;
     }
 
     @Nullable
@@ -56,6 +62,9 @@ public class AssignmentFragment extends Fragment implements ExchangeAssignment {
         rcvAssignment=view.findViewById(R.id.rcv_common);
         tvTitle=view.findViewById(R.id.tv_title);
         btnAdd=view.findViewById(R.id.btn_add);
+        if(user instanceof Trainer || user instanceof Trainee) {
+            btnAdd.setVisibility(View.GONE);
+        }
         //btnAdd.setVisibility(View.GONE);
         editSearch=view.findViewById(R.id.edit_search);
         editSearch.setVisibility(View.VISIBLE);
@@ -64,7 +73,7 @@ public class AssignmentFragment extends Fragment implements ExchangeAssignment {
 
 
 
-        assignmentAdapter=new AssignmentAdapter(this);
+        assignmentAdapter=new AssignmentAdapter(this,user);
         loadData();
 
         Log.e("value",String.valueOf(assignmentAdapter.getItemCount()));
@@ -76,7 +85,9 @@ public class AssignmentFragment extends Fragment implements ExchangeAssignment {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mainActivity.addAssignmentFragment();
+                Intent intent=new Intent(getActivity(), LoginActivity.class);
+                startActivity(intent);
+               /* mainActivity.addAssignmentFragment();*/
             }
         });
        btnSearch.setOnClickListener(new View.OnClickListener() {

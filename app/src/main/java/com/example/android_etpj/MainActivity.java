@@ -1,17 +1,16 @@
 package com.example.android_etpj;
 
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.Menu;
-import android.widget.TextView;
 
+import com.example.android_etpj.models.Admin;
 import com.example.android_etpj.models.Assignment;
 import com.example.android_etpj.models.Enrollment;
 import com.example.android_etpj.models.Module;
+import com.example.android_etpj.models.Trainer;
+import com.example.android_etpj.ui.AccessForbiddenHomePageFragment;
+import com.example.android_etpj.ui.AccessForbiddenLoginFragment;
 import com.example.android_etpj.ui.AssignmentFragment;
 import com.example.android_etpj.ui.ClassFragment;
 import com.example.android_etpj.ui.CommentResultFragment;
@@ -20,14 +19,11 @@ import com.example.android_etpj.ui.EnrollmentFragment;
 import com.example.android_etpj.ui.FeedbackFragment;
 import com.example.android_etpj.ui.HomeFragment;
 import com.example.android_etpj.ui.JoinFragment;
-import com.example.android_etpj.ui.ModuleFragment;
 import com.example.android_etpj.ui.QuestionFragment;
 import com.example.android_etpj.ui.ResultFragment;
 import com.example.android_etpj.ui.add.*;
 import com.example.android_etpj.ui.edit.*;
 import com.example.android_etpj.ui.view.ViewEnrollmentDetailFragment;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
@@ -35,22 +31,16 @@ import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.core.view.GravityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.NavController;
-import androidx.navigation.Navigation;
-import androidx.navigation.ui.AppBarConfiguration;
-import androidx.navigation.ui.NavigationUI;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import java.util.Calendar;
-import java.util.Date;
-
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements AccessForbiddenHomePageFragment.AcessForBiddenHF {
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
     private Type currentFragment=Type.FRAGMENT_HOME;
+    private Object user;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +50,10 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
+        Trainer trainer=new Trainer();
+        trainer.setUsername("trainer1");
+        user=trainer;
+        user=null;
 
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this, drawer,toolbar,0,0);
@@ -98,9 +92,17 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_assignment:
                         checkLogin();
-                        if(currentFragment!=Type.FRAGMENT_ASSIGNMENT){
-                            replaceFragment(new AssignmentFragment());
-                            currentFragment=Type.FRAGMENT_ASSIGNMENT;
+                        if(user !=null){
+                            if(user instanceof Admin ||user instanceof Trainer) {
+                                if (currentFragment != Type.FRAGMENT_ASSIGNMENT) {
+                                    replaceFragment(new AssignmentFragment(user));
+                                    currentFragment = Type.FRAGMENT_ASSIGNMENT;
+                                }
+                            }else{
+                                replaceFragment(new AccessForbiddenHomePageFragment());
+                            }
+                        }else{
+                            replaceFragment(new AccessForbiddenLoginFragment());
                         }
                         break;
                     case R.id.nav_class:
@@ -112,9 +114,17 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_module:
                         checkLogin();
-                        if(currentFragment!=Type.FRAGMENT_MODULE){
-                            replaceFragment(new CommentResultFragment());
-                            currentFragment=Type.FRAGMENT_MODULE;
+                        if(user!=null){
+                            if(user instanceof Admin||user instanceof Trainer){
+                                if(currentFragment!=Type.FRAGMENT_MODULE){
+                                    replaceFragment(new CommentResultFragment(user));
+                                    currentFragment=Type.FRAGMENT_MODULE;
+                                }
+                            }else{
+                                replaceFragment(new AccessForbiddenHomePageFragment());
+                            }
+                        }else{
+                            replaceFragment(new AccessForbiddenLoginFragment());
                         }
                         /*if(currentFragment!=Type.FRAGMENT_MODULE){
                             replaceFragment(new ModuleFragment());
@@ -123,9 +133,18 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_enrollment:
                         checkLogin();
-                        if(currentFragment!=Type.FRAGMENT_ENROLLMENT){
-                            replaceFragment(new EnrollmentFragment());
-                            currentFragment=Type.FRAGMENT_ENROLLMENT;
+                        if(user!= null)
+                        {
+                            if(user instanceof Admin){
+                                if(currentFragment!=Type.FRAGMENT_ENROLLMENT){
+                                    replaceFragment(new EnrollmentFragment());
+                                    currentFragment=Type.FRAGMENT_ENROLLMENT;
+                                }
+                            }else{
+                                replaceFragment(new AccessForbiddenHomePageFragment());
+                            }
+                        }else{
+                            replaceFragment(new AccessForbiddenLoginFragment());
                         }
                         break;
                     case R.id.nav_feedback:
@@ -268,5 +287,10 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.content_frame,viewEnrollmentFragment);
         fragmentTransaction.addToBackStack(EditEnrollmentFragment.TAG);
         fragmentTransaction.commit();
+    }
+
+    @Override
+    public void fragmentHome() {
+        replaceFragment(new HomeFragment());
     }
 }

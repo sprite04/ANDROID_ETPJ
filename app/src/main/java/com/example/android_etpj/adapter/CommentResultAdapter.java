@@ -17,6 +17,8 @@ import com.example.android_etpj.interfaces.ExchangeCommentResult;
 import com.example.android_etpj.interfaces.ExchangeEnrollment;
 import com.example.android_etpj.models.CommentResult;
 import com.example.android_etpj.models.Enrollment;
+import com.example.android_etpj.models.Trainee;
+import com.example.android_etpj.models.Trainer;
 
 import java.util.List;
 
@@ -24,9 +26,11 @@ public class CommentResultAdapter extends RecyclerView.Adapter<CommentResultAdap
     private List<CommentResult> commentResultList;
     private Activity activity;
     private ExchangeCommentResult exchange;
+    private Object user;
 
-    public CommentResultAdapter(ExchangeCommentResult exchange) {
+    public CommentResultAdapter(ExchangeCommentResult exchange,Object user) {
         this.exchange = exchange;
+        this.user=user;
     }
 
     @NonNull
@@ -46,9 +50,14 @@ public class CommentResultAdapter extends RecyclerView.Adapter<CommentResultAdap
 
         //Xử lý cho admin
         String displayText = "";
-        displayText = "<b>" + "No: " + "</b> " + position+1 + "<br>" +
-                "<b>" + "Trainee ID: " + "</b> " + commentResult.getTraineeId() + "<br>" +
-                "<b>" + "Content: " + "</b> " + commentResult.getComment() + "<br>";
+        if(user instanceof Trainer || user instanceof Trainee) {
+            displayText = "<b>" + "No: " + "</b> " + position+1 + "<br>"+
+                    "<b>" + "Content: " + "</b> " + commentResult.getComment() + "<br>";
+        }else{
+            displayText = "<b>" + "No: " + "</b> " + position+1 + "<br>" +
+                    "<b>" + "Trainee ID: " + "</b> " + commentResult.getTraineeId() + "<br>" +
+                    "<b>" + "Content: " + "</b> " + commentResult.getComment() + "<br>";
+        }
         holder.tvItem.setText(Html.fromHtml(displayText, 1));
     }
 

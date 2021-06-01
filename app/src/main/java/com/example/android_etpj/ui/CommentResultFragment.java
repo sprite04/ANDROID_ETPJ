@@ -55,8 +55,12 @@ public class CommentResultFragment extends Fragment implements ExchangeCommentRe
     private int idModule;
     private int idClass;
 
+    private Object user;
 
-    public CommentResultFragment() {
+
+
+    public CommentResultFragment(Object user) {
+        this.user=user;
     }
 
     @Nullable
@@ -87,7 +91,7 @@ public class CommentResultFragment extends Fragment implements ExchangeCommentRe
         setSpinnerModule();
 
 
-        commentResultAdapter=new CommentResultAdapter(this);
+        commentResultAdapter=new CommentResultAdapter(this,user);
         loadData();
 
         Log.e("value",String.valueOf(commentResultAdapter.getItemCount()));

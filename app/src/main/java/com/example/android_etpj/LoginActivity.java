@@ -15,12 +15,15 @@ import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.PopupMenu;
+import androidx.fragment.app.FragmentManager;
 
 import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.models.Admin;
 import com.example.android_etpj.models.Trainee;
 import com.example.android_etpj.models.Trainer;
 import com.example.android_etpj.sharedpreference.DataLocal;
+import com.example.android_etpj.ui.AccessForbiddenHomePageFragment;
+import com.example.android_etpj.ui.AccessForbiddenLoginFragment;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.io.Serializable;
@@ -63,6 +66,9 @@ public class LoginActivity extends AppCompatActivity {
         spRole = findViewById(R.id.sp_role);
         txtErrorUsername.setVisibility(View.INVISIBLE);
         txtErrorPassword.setVisibility(View.INVISIBLE);
+
+        AccessForbiddenLoginFragment fragment=new AccessForbiddenLoginFragment();
+
         user = new Object();
 
         setBtnLogin();
