@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Answer implements Serializable {
+public class Trainee_Comment implements Serializable {
     @SerializedName("ClassID")
     private int classID;
 
@@ -14,21 +14,17 @@ public class Answer implements Serializable {
     @SerializedName("TraineeID")
     private String traineeID;
 
-    @SerializedName("QuestionID")
-    private int questionID;
+    @SerializedName("Comment")
+    private String comment;
 
-    @SerializedName("Value")
-    private int value;
+    public Trainee_Comment() {
+    }
 
-    public Answer(int classID, int moduleID, String traineeID, int questionID, int value) {
+    public Trainee_Comment(int classID, int moduleID, String traineeID, String comment) {
         this.classID = classID;
         this.moduleID = moduleID;
         this.traineeID = traineeID;
-        this.questionID = questionID;
-        this.value = value;
-    }
-
-    public Answer() {
+        this.comment = comment;
     }
 
     public int getClassID() {
@@ -55,21 +51,11 @@ public class Answer implements Serializable {
         this.traineeID = traineeID;
     }
 
-    public int getQuestionID() {
-        return questionID;
+    public String getComment() {
+        return comment;
     }
 
-    public void setQuestionID(int questionID) {
-        this.questionID = questionID;
+    public void setComment(String comment) {
+        this.comment = comment;
     }
-
-    public int getValue() {
-        return value;
-    }
-
-    public void setValue(int value) {
-        this.value = value;
-    }
-
-
 }

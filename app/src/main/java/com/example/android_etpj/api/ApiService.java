@@ -91,8 +91,16 @@ public interface ApiService {
     @GET("answer")
     Call<Boolean> checkAnswerUsed(@Query("idClass") int idClass, @Query("idModule") int idModule, @Query("idTrainee") String idTrainee);
 
+    @POST("answer")
+    Call<Boolean> addAnswers(@Body List<Answer> answers);
+
+
     //TopicAnswers
     @GET("topicanswers")
     Call<List<TopicAnswers>>getTopicAnswersByClassModule(@Query("idClass")int idClass, @Query("idModule") int idModule);
+
+    //TraineeComment
+    @POST("traineecomment")
+    Call<Boolean> addTraineeComment(@Body Trainee_Comment traineeComment);
 
 }

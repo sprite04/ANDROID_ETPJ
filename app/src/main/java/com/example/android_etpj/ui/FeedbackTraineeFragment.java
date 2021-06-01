@@ -73,7 +73,7 @@ public class FeedbackTraineeFragment extends Fragment implements ExchangeFeedbac
 
     @Override
     public void loadData() {
-        ApiService.apiService.getAssignmentsByTrainee("trainee1").enqueue(new Callback<List<Assignment>>() {
+        ApiService.apiService.getAssignmentsByTrainee(trainee.getUserId()).enqueue(new Callback<List<Assignment>>() {
             @Override
             public void onResponse(Call<List<Assignment>> call, Response<List<Assignment>> response) {
                 assignmentList=response.body();
@@ -87,14 +87,13 @@ public class FeedbackTraineeFragment extends Fragment implements ExchangeFeedbac
 
             }
         });
-
-
     }
 
 
-
     @Override
-    public void reviewData(Assignment assignment) {
+    public void reviewData(Assignment assignment, Trainee trainee) {
+
+        mainActivity.addFeedbackTraineeReviewFragment(assignment,trainee);
 
     }
 }

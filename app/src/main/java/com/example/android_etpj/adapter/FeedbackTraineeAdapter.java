@@ -78,10 +78,11 @@ public class FeedbackTraineeAdapter extends RecyclerView.Adapter<FeedbackTrainee
                             "<b>" + "Status: " + "</b> " + "Complete"+"<br>";    ;
 
 
+                    holder.btnEditFB.setVisibility(View.GONE);
                     holder.tvItem.setText(Html.fromHtml(displayText,1));
                     holder.tvItem.setTextSize(20f);
 
-                    holder.btnEditFB.setVisibility(View.GONE);
+
                 }
                 else {
                     SimpleDateFormat formatterDateTime= new SimpleDateFormat("dd/MM/yyyy HH:mm");
@@ -89,20 +90,20 @@ public class FeedbackTraineeAdapter extends RecyclerView.Adapter<FeedbackTrainee
                     String displayText="";
                     displayText="<b>" + "Feedback Title: " + "</b> " + assignment.getModule().getFeedback().getTitle()+"<br>"+
                             "<b>" + "Class ID: " + "</b> "+ assignment.getClassID()+"<br>"+
-                            "<b>" + "Class Name: " + "</b> "+ assignment.getClass().getName()+"<br>"+
+                            "<b>" + "Class Name: " + "</b> "+ assignment.getClss().getClassName()+"<br>"+
                             "<b>" + "Module ID: " + "</b> "+ assignment.getModuleID()+"<br>"+
                             "<b>" + "Module Name: " + "</b> "+ assignment.getModule().getModuleName()+"<br>"+
                             "<b>" + "End Time: " + "</b> "+ (assignment.getModule().getFeedbackEndTime()!=null ? formatterDateTime.format(assignment.getModule().getFeedbackEndTime()):"" )+"<br>"+
-                            "<b>" + "Status: " + "</b> " + "Complete"+"<br>";    ;
+                            "<b>" + "Status: " + "</b> " + "InComplete"+"<br>";    ;
 
 
                     holder.tvItem.setText(Html.fromHtml(displayText,1));
                     holder.tvItem.setTextSize(20f);
-
+                    holder.btnEditFB.setVisibility(View.VISIBLE);
                     holder.btnEditFB.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            exchange.reviewData(assignment,trainee);
                         }
                     });
                 }
@@ -143,7 +144,6 @@ public class FeedbackTraineeAdapter extends RecyclerView.Adapter<FeedbackTrainee
             btnDelete=itemView.findViewById(R.id.btn_delete);
             btnDelete.setVisibility(View.GONE);
             btnEditFB=itemView.findViewById(R.id.btn_edit_fb);
-            btnEditFB.setVisibility(View.VISIBLE);
 
 
         }

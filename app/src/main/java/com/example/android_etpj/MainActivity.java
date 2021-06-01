@@ -1,6 +1,7 @@
 package com.example.android_etpj;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.Menu;
 
@@ -11,6 +12,7 @@ import com.example.android_etpj.ui.ContactFragment;
 import com.example.android_etpj.ui.EnrollmentFragment;
 import com.example.android_etpj.ui.FeedbackFragment;
 import com.example.android_etpj.ui.FeedbackTraineeFragment;
+import com.example.android_etpj.ui.FeedbackTraineeReviewFragment;
 import com.example.android_etpj.ui.HomeFragment;
 import com.example.android_etpj.ui.JoinFragment;
 import com.example.android_etpj.ui.ModuleFragment;
@@ -265,4 +267,19 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack(ReviewFeedbackFragment.TAG);
         fragmentTransaction.commit();
     }
+
+    public void addFeedbackTraineeReviewFragment(Assignment assignment, Trainee trainee){
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        FeedbackTraineeReviewFragment feedbackTraineeReviewFragment=new FeedbackTraineeReviewFragment();
+        Bundle bundle=new Bundle();
+
+        bundle.putSerializable("ASSIGNMENT",assignment);
+        bundle.putSerializable("TRAINEE",trainee);
+        feedbackTraineeReviewFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_frame,feedbackTraineeReviewFragment);
+        fragmentTransaction.addToBackStack(FeedbackTraineeReviewFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
 }
