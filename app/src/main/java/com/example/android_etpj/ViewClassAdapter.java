@@ -1,6 +1,7 @@
 package com.example.android_etpj;
 
 import android.app.Activity;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,6 +17,10 @@ import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Trainee;
 
 import java.util.List;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ViewClassAdapter extends RecyclerView.Adapter<ViewClassAdapter.ViewClassViewHolder> {
     private List<String> traineeIDList;
@@ -38,11 +43,29 @@ public class ViewClassAdapter extends RecyclerView.Adapter<ViewClassAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewClassViewHolder holder, int position) {
 
+
+
         String traineeID = traineeIDList.get(position);
         if(traineeID==null)
             return;
-//
-//        ApiService.apiService.
+
+        ApiService.apiService.getTraineeByUsername(traineeID).enqueue(new Callback<Trainee>() {
+            @Override
+            public void onResponse(Call<Trainee> call, Response<Trainee> response) {
+                Trainee trainee = (Trainee)response.body();
+                String displayText="";
+                displayText="<b>" + "Number: " + "</b> " + position + 1 +"<br>"+
+                        "<b>" + "Trainee ID: " + "</b> "+ trainee.getUserId() +"<br>"+
+                        "<b>" + "Trainee Name: " + "</b> " + trainee.getName()+"<br>"
+                ;
+                holder.tvItem.setText(Html.fromHtml(displayText,1));
+            }
+
+            @Override
+            public void onFailure(Call<Trainee> call, Throwable t) {
+
+            }
+        });
     }
 
     @Override
@@ -63,6 +86,10 @@ public class ViewClassAdapter extends RecyclerView.Adapter<ViewClassAdapter.View
             btnEdit=itemView.findViewById(R.id.btn_edit);
             btnDelete=itemView.findViewById(R.id.btn_delete);
             btnView=itemView.findViewById(R.id.btn_view);
+
+            btnDelete.setVisibility(View.GONE);
+            btnEdit.setVisibility(View.GONE);
+            btnView.setVisibility(View.GONE);;
         }
     }
 }

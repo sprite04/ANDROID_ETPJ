@@ -20,9 +20,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.models.Admin;
 import com.example.android_etpj.models.Class;
+import com.example.android_etpj.models.Enrollment;
 import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -64,6 +66,50 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
         if(clss==null)
             return;
 
+        //Phan quyen trainer va trainee
+        if (!(user instanceof Admin)) {
+            holder.btnView.setVisibility(View.VISIBLE);
+            holder.btnDelete.setVisibility(View.GONE);
+            holder.btnEdit.setVisibility(View.GONE);
+
+
+
+            holder.btnView.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    mainActivity.viewClassFragment(clss);
+                }
+            });
+
+
+
+            String displayText="";
+            displayText="<b>" + "Class ID: " + "</b> " + clss.getClassID()+"<br>"+
+                    "<b>" + "Class Name: " + "</b> "+ clss.getClassName()+"<br>"
+            ;
+
+            ApiService.apiService.getEnrollmentByIdClass(clss.getClassID()).enqueue(new Callback<List<Enrollment>>() {
+                @Override
+                public void onResponse(Call<List<Enrollment>> call, Response<List<Enrollment>> response) {
+                    List<Enrollment> enrollmentList = (ArrayList<Enrollment>) response.body();
+                    String displayText="";
+                    displayText="<b>" + "Class ID: " + "</b> " + clss.getClassID()+"<br>"+
+                            "<b>" + "Class Name: " + "</b> "+ clss.getClassName()+"<br>" +
+                            "<b>" + "Number of Trainee: " + "</b> "+ enrollmentList.size() +"<br>"
+                    ;
+
+                    holder.tvItem.setText(Html.fromHtml(displayText,1));
+                }
+
+                @Override
+                public void onFailure(Call<List<Enrollment>> call, Throwable t) {
+
+                }
+            });
+
+            return;
+        }
+
         SimpleDateFormat formatterDate= new SimpleDateFormat("dd/MM/yyyy");
         SimpleDateFormat formatterDateTime= new SimpleDateFormat("dd/MM/yyyy HH:mm");
 
@@ -79,11 +125,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
         holder.tvItem.setText(Html.fromHtml(displayText,1));
 
-        if (!(user instanceof Admin)) {
-            holder.btnView.setVisibility(View.VISIBLE);
-            holder.btnDelete.setVisibility(View.GONE);
-            holder.btnEdit.setVisibility(View.GONE);
-        }
+
+
 
         holder.btnEdit.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,13 +139,6 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
             @Override
             public void onClick(View v) {
                 setDelete(clss);
-            }
-        });
-
-        holder.btnView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mainActivity.viewClassFragment(clss);
             }
         });
 

@@ -57,26 +57,66 @@ public class ClassFragment extends Fragment implements ExchangeClass {
             return setTrainerView(inflater, container, savedInstanceState);
         }
 
+        if (user instanceof Trainee) {
+            return setTraineeView(inflater, container, savedInstanceState);
+        }
+
         View view=inflater.inflate(R.layout.fragment_access_forbidden_2,container,false);
         return view;
     }
 
     @Override
     public void loadData() {
-        ApiService.apiService.getClasses().enqueue(new Callback<List<Class>>() {
-            @Override
-            public void onResponse(Call<List<Class>> call, Response<List<Class>> response) {
-                classList = (ArrayList<Class>) response.body();
-                tvTitle.setText("Class List");
+        if (user instanceof Admin) {
+            ApiService.apiService.getClasses().enqueue(new Callback<List<Class>>() {
+                @Override
+                public void onResponse(Call<List<Class>> call, Response<List<Class>> response) {
+                    classList = (ArrayList<Class>) response.body();
+                    tvTitle.setText("Class List");
 
-                classAdapter.setData(classList);
-            }
+                    classAdapter.setData(classList);
+                }
 
-            @Override
-            public void onFailure(Call<List<Class>> call, Throwable t) {
+                @Override
+                public void onFailure(Call<List<Class>> call, Throwable t) {
 
-            }
-        });
+                }
+            });
+        }
+
+        if (user instanceof Trainer) {
+            ApiService.apiService.getClassesByTrainer(((Trainer) user).getUsername()).enqueue(new Callback<List<Class>>() {
+                @Override
+                public void onResponse(Call<List<Class>> call, Response<List<Class>> response) {
+                    classList = (ArrayList<Class>) response.body();
+                    tvTitle.setText("Class List");
+
+                    classAdapter.setData(classList);
+                }
+
+                @Override
+                public void onFailure(Call<List<Class>> call, Throwable t) {
+
+                }
+            });
+        }
+
+        if (user instanceof Trainee) {
+            ApiService.apiService.getClassesByTrainee(((Trainee) user).getUserId()).enqueue(new Callback<List<Class>>() {
+                @Override
+                public void onResponse(Call<List<Class>> call, Response<List<Class>> response) {
+                    classList = (ArrayList<Class>) response.body();
+                    tvTitle.setText("Class List");
+
+                    classAdapter.setData(classList);
+                }
+
+                @Override
+                public void onFailure(Call<List<Class>> call, Throwable t) {
+
+                }
+            });
+        }
     }
 
     @Override
@@ -129,12 +169,25 @@ public class ClassFragment extends Fragment implements ExchangeClass {
         rcvClass.setLayoutManager(linearLayoutManager);
         rcvClass.setAdapter(classAdapter);
 
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mainActivity.addClassFragment();
-            }
-        });
+        return view;
+    }
+
+    private View setTraineeView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        View view=inflater.inflate(R.layout.fragment_common,container,false);
+
+        mainActivity=(MainActivity)getActivity();
+
+        rcvClass=view.findViewById(R.id.rcv_common);
+        tvTitle=view.findViewById(R.id.tv_title);
+        btnAdd=view.findViewById(R.id.btn_add);
+        btnAdd.setVisibility(View.GONE);
+
+        classAdapter=new ClassAdapter(this, user, mainActivity);
+        loadData();
+
+        LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
+        rcvClass.setLayoutManager(linearLayoutManager);
+        rcvClass.setAdapter(classAdapter);
 
         return view;
     }

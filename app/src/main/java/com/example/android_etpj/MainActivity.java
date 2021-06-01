@@ -54,6 +54,8 @@ public class MainActivity extends AppCompatActivity {
     private DrawerLayout drawer;
     private Type currentFragment=Type.FRAGMENT_HOME;
     private Object user;
+    private Trainer trainer;
+    private Trainee trainee;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,7 +65,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        user = new Trainer();
+        trainer = new Trainer();
+        trainer.setUsername("trainer1");
+
+        trainee = new Trainee();
+        trainee.setUserId("trainee1");
+
+        user=trainee;
 
 
         drawer = findViewById(R.id.drawer_layout);

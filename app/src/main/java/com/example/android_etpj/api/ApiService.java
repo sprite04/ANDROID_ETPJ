@@ -77,6 +77,12 @@ public interface ApiService {
     @GET("class/{id}")
     Call<com.example.android_etpj.models.Class> getClassById(@Path("id") int id);
 
+    @GET("class")
+    Call<List<com.example.android_etpj.models.Class>> getClassesByTrainer(@Query("idTrainer") String idTrainer);
+
+    @GET("class")
+    Call<List<com.example.android_etpj.models.Class>> getClassesByTrainee(@Query("idTrainee") String idTrainee);
+
     @POST("class")
     Call<Boolean> addClass(@Body com.example.android_etpj.models.Class cl);
 
@@ -85,6 +91,7 @@ public interface ApiService {
 
     @DELETE("class/{id}")
     Call<Boolean> deleteClass(@Path("id") int id);
+
 
     //Question
     @GET("question")
@@ -136,4 +143,6 @@ public interface ApiService {
     Call<List<Enrollment>> getEnrollmentByIdClass(@Query("idClass") int idClass);
 
     //Trainee
+    @GET("trainee")
+    Call<Trainee> getTraineeByUsername(@Query("username") String username);
 }

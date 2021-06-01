@@ -12,7 +12,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:id="@+id/tv_title_chart_1"/>
 
         <com.github.mikephil.charting.charts.PieChart
@@ -30,7 +30,7 @@
 
         <TextView
             android:layout_width="match_parent"
-            android:layout_height="30dp"
+            android:layout_height="40dp"
             android:id="@+id/tv_title_chart_2"/>
 
         <com.github.mikephil.charting.charts.PieChart

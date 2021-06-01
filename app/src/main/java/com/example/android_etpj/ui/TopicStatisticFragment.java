@@ -228,7 +228,7 @@ public class TopicStatisticFragment extends Fragment {
                     ArrayList<PieEntry> pieEntries1 = new ArrayList<>();
                     for(int m=0; m<countList.size(); m++){
                         if (countList.get(m) != 0) {
-                            pieEntries1.add(new PieEntry(countList.get(m), titleList.get(m) + " (%)"));
+                            pieEntries1.add(new PieEntry((countList.get(m)*100)/topicAnswersList.get(i).getAnswers().size(), titleList.get(m) + " (%)"));
                         }
                     }
 
@@ -299,7 +299,7 @@ public class TopicStatisticFragment extends Fragment {
                         ArrayList<PieEntry> pieEntries2 = new ArrayList<>();
                         for (int m = 0; m < countList.size(); m++) {
                             if (countList.get(m) != 0) {
-                                pieEntries2.add(new PieEntry(countList.get(m), titleList.get(m) + " (%)"));
+                                pieEntries2.add(new PieEntry((countList.get(m)*100)/topicAnswersList.get(i).getAnswers().size(), titleList.get(m) + " (%)"));
                             }
                         }
 
@@ -325,208 +325,6 @@ public class TopicStatisticFragment extends Fragment {
 
             @Override
             public void onFailure(Call<List<TopicAnswers>> call, Throwable t) {
-
-            }
-        });
-    }
-
-    private void setTopicChartTemp() {
-        layoutMainChart.removeAllViews();
-        ApiService.apiService.getTopics().enqueue(new Callback<List<Topic>>() {
-            @Override
-            public void onResponse(Call<List<Topic>> call, Response<List<Topic>> response) {
-                List<Topic> arrayTopicList=(ArrayList<Topic>) response.body();
-//                for (int x = 0; x < arrayTopicList.size(); x++) {
-//                    for (int y = 0; y < arrayTopicList.get(x).getQuestions().size(); y++) {
-//                        arrayTopicList.get(x).getQuestions().get(y).setTopicID(arrayTopicList.get(x).getTopicID());
-//                    }
-//                }
-                List<Object> topics = new ArrayList<>();
-                topics.addAll(arrayTopicList);
-                List<Topic> arrayUseTopic = new ArrayList<>();
-
-                for (int i = 0; i < arrayTopicList.size(); i++) {
-                    Topic topic = arrayTopicList.get(i);
-                    ApiService.apiService.getAnswersByClassModuleTopic(arrayTopicList.get(i).getTopicID(), clss.getClassID(), module.getModuleID())
-                            .enqueue(new Callback<List<Answer>>() {
-                                @Override
-                                public void onResponse(Call<List<Answer>> call, Response<List<Answer>> response) {
-                                    List<Answer> answerList = (ArrayList<Answer>) response.body();
-                                    if (answerList.size() > 0) {
-                                        arrayUseTopic.add(topic);
-                                    }
-                                }
-
-                                @Override
-                                public void onFailure(Call<List<Answer>> call, Throwable t) {
-
-                                }
-                            });
-                }
-                for (int i = 0; i < arrayUseTopic.size(); i++) {
-                    View viewChildChart;
-                    viewChildChart = getLayoutInflater().inflate(R.layout.item_topic_chart,null,false);
-                    ApiService.apiService.getAnswersByClassModuleTopic(arrayUseTopic.get(i).getTopicID(), clss.getClassID(), module.getModuleID())
-                            .enqueue(new Callback<List<Answer>>() {
-                                @Override
-                                public void onResponse(Call<List<Answer>> call, Response<List<Answer>> response) {
-                                    List<Answer> arrayNeedAnswerList = (ArrayList<Answer>) response.body();
-
-                                    PieChart pieChart1;
-
-
-                                    pieChart1 = viewChildChart.findViewById(R.id.child_chart_1);
-
-                                    List<String> titleList = new ArrayList<>();
-                                    List<Float> countList = new ArrayList<>();
-
-                                    titleList.add(new String("Strongly Disagree"));
-                                    titleList.add(new String("Disagree"));
-                                    titleList.add(new String("Neural"));
-                                    titleList.add(new String("Agree"));
-                                    titleList.add(new String("Strong Agree"));
-
-                                    for (int j = 0; j < 5 ; j++){
-                                        countList.add(new Float(0));
-                                    }
-
-                                    for (Answer answer:arrayNeedAnswerList) {
-                                        switch (answer.getValue()) {
-                                            case 0:
-                                                countList.set(0,countList.get(0)+1);
-                                                break;
-                                            case 1:
-                                                countList.set(1,countList.get(1)+1);
-                                                break;
-                                            case 2:
-                                                countList.set(2,countList.get(2)+1);
-                                                break;
-                                            case 3:
-                                                countList.set(3,countList.get(3)+1);
-                                                break;
-                                            case 4:
-                                                countList.set(4,countList.get(4)+1);
-                                                break;
-                                        }
-                                    }
-                                    if (clss.getClassID()==3&&module.getModuleID()==4) {
-                                        Log.e("0",String.valueOf(countList.get(0)));
-                                        Log.e("1",String.valueOf(countList.get(1)));
-                                        Log.e("2",String.valueOf(countList.get(2)));
-                                        Log.e("3",String.valueOf(countList.get(3)));
-                                        Log.e("4",String.valueOf(countList.get(4)));
-                                        Log.e("a",String.valueOf(arrayNeedAnswerList.size()));
-                                    }
-
-                                    ArrayList<PieEntry> pieEntries=new ArrayList<>();
-                                    for(int i=0; i<countList.size(); i++){
-                                        if (countList.get(i) != 0) {
-                                            pieEntries.add(new PieEntry(((countList.get(i)*100 / arrayNeedAnswerList.size())), titleList.get(i) + " (%)"));
-                                        }
-                                    }
-
-                                    pieChart1.clear();
-                                    PieDataSet pieDataSet=new PieDataSet(pieEntries,"Class Statistic");
-                                    pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-                                    pieDataSet.setValueTextColor(Color.WHITE);
-                                    pieDataSet.setValueTextSize(25f);
-
-                                    PieData pieData=new PieData(pieDataSet);
-                                    pieChart1.setData(pieData);
-                                    pieChart1.getDescription().setEnabled(false);
-                                    pieChart1.animate();
-                                }
-
-
-                                @Override
-                                public void onFailure(Call<List<Answer>> call, Throwable t) {
-
-                                }
-                            });
-                    i++;
-                    ApiService.apiService.getAnswersByClassModuleTopic(arrayUseTopic.get(i).getTopicID(), clss.getClassID(), module.getModuleID())
-                            .enqueue(new Callback<List<Answer>>() {
-                                @Override
-                                public void onResponse(Call<List<Answer>> call, Response<List<Answer>> response) {
-                                    List<Answer> arrayNeedAnswerList = (ArrayList<Answer>) response.body();
-
-                                    PieChart pieChart2;
-
-
-                                    pieChart2 = viewChildChart.findViewById(R.id.child_chart_1);
-
-                                    List<String> titleList = new ArrayList<>();
-                                    List<Float> countList = new ArrayList<>();
-
-                                    titleList.add(new String("Strongly Disagree"));
-                                    titleList.add(new String("Disagree"));
-                                    titleList.add(new String("Neural"));
-                                    titleList.add(new String("Agree"));
-                                    titleList.add(new String("Strong Agree"));
-
-                                    for (int j = 0; j < 5 ; j++){
-                                        countList.add(new Float(0));
-                                    }
-
-                                    for (Answer answer:arrayNeedAnswerList) {
-                                        switch (answer.getValue()) {
-                                            case 0:
-                                                countList.set(0,countList.get(0)+1);
-                                                break;
-                                            case 1:
-                                                countList.set(1,countList.get(1)+1);
-                                                break;
-                                            case 2:
-                                                countList.set(2,countList.get(2)+1);
-                                                break;
-                                            case 3:
-                                                countList.set(3,countList.get(3)+1);
-                                                break;
-                                            case 4:
-                                                countList.set(4,countList.get(4)+1);
-                                                break;
-                                        }
-                                    }
-                                    if (clss.getClassID()==3&&module.getModuleID()==4) {
-                                        Log.e("0",String.valueOf(countList.get(0)));
-                                        Log.e("1",String.valueOf(countList.get(1)));
-                                        Log.e("2",String.valueOf(countList.get(2)));
-                                        Log.e("3",String.valueOf(countList.get(3)));
-                                        Log.e("4",String.valueOf(countList.get(4)));
-                                        Log.e("a",String.valueOf(arrayNeedAnswerList.size()));
-                                    }
-
-                                    ArrayList<PieEntry> pieEntries=new ArrayList<>();
-                                    for(int i=0; i<countList.size(); i++){
-                                        if (countList.get(i) != 0) {
-                                            pieEntries.add(new PieEntry(((countList.get(i)*100 / arrayNeedAnswerList.size())), titleList.get(i) + " (%)"));
-                                        }
-                                    }
-
-                                    pieChart2.clear();
-                                    PieDataSet pieDataSet=new PieDataSet(pieEntries,"Class Statistic");
-                                    pieDataSet.setColors(ColorTemplate.COLORFUL_COLORS);
-                                    pieDataSet.setValueTextColor(Color.WHITE);
-                                    pieDataSet.setValueTextSize(25f);
-
-                                    PieData pieData=new PieData(pieDataSet);
-                                    pieChart2.setData(pieData);
-                                    pieChart2.getDescription().setEnabled(false);
-                                    pieChart2.animate();
-                                }
-
-
-                                @Override
-                                public void onFailure(Call<List<Answer>> call, Throwable t) {
-
-                                }
-                            });
-                    layoutMainChart.addView(viewChildChart);
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Topic>> call, Throwable t) {
 
             }
         });
