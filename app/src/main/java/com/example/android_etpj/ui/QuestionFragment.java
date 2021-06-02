@@ -17,15 +17,13 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android_etpj.ClassAdapter;
-import com.example.android_etpj.ExchangeClass;
-import com.example.android_etpj.ExchangeQuestion;
+import com.example.android_etpj.interfaces.ExchangeQuestion;
 import com.example.android_etpj.MainActivity;
 import com.example.android_etpj.QuestionAdapter;
 import com.example.android_etpj.R;
 import com.example.android_etpj.SpinnerAdapter;
 import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.models.Admin;
-import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Question;
 import com.example.android_etpj.models.Topic;
 

@@ -1,5 +1,6 @@
 package com.example.android_etpj;
 
+
 import android.content.Context;
 import android.text.Html;
 import android.view.LayoutInflater;
@@ -10,6 +11,8 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+
+import com.example.android_etpj.R;
 
 import java.util.List;
 

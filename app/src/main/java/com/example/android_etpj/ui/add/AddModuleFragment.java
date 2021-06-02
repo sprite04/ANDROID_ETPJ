@@ -20,9 +20,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.recyclerview.widget.LinearLayoutManager;
 
-import com.example.android_etpj.ModuleAdapter;
+
 import com.example.android_etpj.R;
 import com.example.android_etpj.SpinnerAdapter;
 import com.example.android_etpj.api.ApiService;

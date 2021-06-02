@@ -7,139 +7,116 @@
     android:paddingHorizontal="20dp">
 
 
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:id="@+id/tv_title"
-        android:text="Add Assignment"
+        android:textSize="30sp"
+        android:textStyle="bold"
         android:fontFamily="@font/alternate_gothic"
+        android:id="@+id/tv_title"
+        android:text="Add Assignmnet"
         android:gravity="center"/>
 
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:textSize="18sp"
-        android:text="Module Name"
-        android:layout_marginStart="15dp" />
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <ScrollView
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_border_white">
-
-        <TextView
+        android:layout_height="match_parent">
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="hhhhhhhhhhhh"
+            android:orientation="vertical" >
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:typeface="serif"
+                android:text="Module Name"
+                android:layout_marginStart="15dp" />
 
-            android:textSize="18sp"
-            android:layout_toStartOf="@id/img_admin_id"
-            android:layout_centerVertical="true"/>
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:id="@+id/img_admin_id"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/sort"
-            android:padding="5dp"/>
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:id="@+id/module_name"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:typeface="serif"
+                android:text="Class Name"
+                android:layout_marginStart="15dp" />
 
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:id="@+id/class_name"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:typeface="serif"
+                android:text="Train ID"
+                android:layout_marginStart="15dp" />
+            er
+            <Spinner
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/transparent"
+                android:id="@+id/trainer_id"/>
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp">
 
-    </RelativeLayout>
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:textSize="18sp"
-        android:text="Class Name"
-        android:layout_marginStart="15dp" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="@color/purple_700"
+                    android:id="@+id/btn_save"
+                    android:text="Save"
+                    android:layout_toStartOf="@+id/btn_back"
+                    android:typeface="serif"
+                    android:textAllCaps="false"
+                    android:layout_marginEnd="10dp"/>
 
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_border_white">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="hhhhhhhhhhhh"
-
-            android:textSize="18sp"
-            android:layout_toStartOf="@id/img_admin_id"
-            android:layout_centerVertical="true"/>
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:id="@+id/img_admin_id"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/sort"
-            android:padding="5dp"/>
-
-
-    </RelativeLayout>
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="15dp"
-        android:textSize="18sp"
-        android:text="Trainer ID"
-        android:layout_marginStart="15dp" />
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/background_border_white">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="hhhhhhhhhhhh"
-
-            android:textSize="18sp"
-            android:layout_toStartOf="@id/img_feedback"
-            android:layout_centerVertical="true"/>
-        <ImageView
-            android:layout_width="35dp"
-            android:layout_height="35dp"
-            android:id="@+id/img_feedback"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/sort"
-            android:padding="5dp"/>
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:backgroundTint="#FF2222"
+                    android:id="@+id/btn_back"
+                    android:text="Back"
+                    android:layout_alignParentEnd="true"
+                    android:typeface="serif"
+                    android:textAllCaps="false" />
+            </RelativeLayout>
+        </LinearLayout>
 
 
-    </RelativeLayout>
+    </ScrollView>
 
 
 
-    <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_below="@+id/tv_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:layout_gravity="end">
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/purple_700"
-            android:id="@+id/btn_close"
-            android:text="Save"
-            android:textAllCaps="false"
-            android:layout_marginEnd="10dp"/>
-
-        <Button
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:backgroundTint="#FF2222"
-            android:id="@+id/btn_submit"
-            android:text="Back"
-            android:textAllCaps="false" />
 
 
-    </LinearLayout>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 </LinearLayout>

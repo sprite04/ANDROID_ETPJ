@@ -147,10 +147,63 @@ public interface ApiService {
     @GET("enrollment")
     Call<List<Enrollment>> getEnrollmentByIdClass(@Query("idClass") int idClass);
 
+    //Enrollment
+    @GET("enrollment")
+    Call<List<Enrollment>> getEnrollment();
+
+    @GET("enrollment")
+    Call<List<Enrollment>> searchEnrollment(@Query("classId") int classId);
+
+    @POST("enrollment")
+    Call<Boolean> addEnrollment(@Query("classId") int classId,
+                                @Query("username") String username);
+
+    @PUT("enrollment")
+    Call<Boolean> editEnrollment(@Query("classIdOld") int classIdOld,
+                                 @Query("classIdNew") int classIdNew,
+                                 @Query("username") String username);
+    @DELETE("enrollment")
+    Call<Boolean> deleteEnrollment(@Query("classId") int classId,
+                                   @Query("username") String username);
+
+
+
     //Trainee
     @GET("trainee")
     Call<Trainee> getTraineeByUsername(@Query("username") String username);
+    //Trainee
+    @GET("trainee")
+    Call<List<Trainee>> getTrainee();
+    @GET("trainee")
+    Call<Trainee> loginTrainee(
+            @Query("username") String username,
+            @Query("password") String password);
 
+    //Assigment
+    @GET("assignment")
+    Call<List<Assignment>> getAssignments();
 
+    @GET("assignment")
+    Call<List<Assignment>> searchAssignments(@Query("stringSearch") String stringSearch);
 
+    @POST("assignment")
+    Call<Boolean> addAssignment(@Body Assignment a);
+
+    @DELETE("assignment")
+    Call<Boolean> deleteAssignment(@Query("idClass") int idClass,
+                                   @Query("idModule") int idModule);
+
+    @PUT("assignment")
+    Call<Boolean> editAssignment(@Body Assignment a);
+
+    //CommentResult
+    @GET("traineecomment")
+    Call<List<CommentResult>> getCommentResult(@Query("classId") int classId,
+                                               @Query("moduleId") int moduleId);
+    //Trainer
+    @GET("trainer")
+    Call<List<Trainer>> getTrainers();
+    Call<Trainer> loginTrainer(
+            @Query("username") String username,
+            @Query("password") String password);
 }

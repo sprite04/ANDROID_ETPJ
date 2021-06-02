@@ -1,11 +1,16 @@
 package com.example.android_etpj.ui.edit;
 
 import android.app.DatePickerDialog;
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -267,10 +272,53 @@ public class EditClassFragment extends Fragment {
                         @Override
                         public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                             if(response.body()==true){
-                                if(getActivity().getSupportFragmentManager()!=null){
-                                    FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
-                                    fragmentManager.popBackStack();
-                                }
+                                Dialog dialogSuccess=new Dialog(getActivity());
+                                dialogSuccess.setContentView(R.layout.dialog_notification);
+                                dialogSuccess.setCancelable(false);
+
+                                Window window=dialogSuccess.getWindow();
+                                if(window==null)
+                                    return ;
+                                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+                                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                TextView tvTitleSuccess=dialogSuccess.findViewById(R.id.tv_title);
+                                tvTitleSuccess.setText("Update success!");
+
+                                Button btnOk=dialogSuccess.findViewById(R.id.btn_ok);
+                                btnOk.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialogSuccess.cancel();
+                                        if(getActivity().getSupportFragmentManager()!=null){
+                                            FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
+                                            fragmentManager.popBackStack();
+                                        }
+                                    }
+                                });
+                                dialogSuccess.show();
+                            }else{
+                                Dialog dialog = new Dialog(getActivity());
+                                dialog.setContentView(R.layout.dialog_error);
+                                dialog.setCancelable(false);
+
+                                Window window = dialog.getWindow();
+                                if (window == null)
+                                    return;
+                                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                TextView tvTitleSuccess=dialog.findViewById(R.id.tv_title);
+                                tvTitleSuccess.setText("Add fail!");
+
+                                Button btnOk=dialog.findViewById(R.id.btn_ok_error);
+                                btnOk.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialog.cancel();
+                                    }
+                                });
+                                dialog.show();
                             }
                         }
 

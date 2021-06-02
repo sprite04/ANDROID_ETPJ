@@ -6,14 +6,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android_etpj.api.ApiService;
-import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Trainee;
 
 import java.util.List;

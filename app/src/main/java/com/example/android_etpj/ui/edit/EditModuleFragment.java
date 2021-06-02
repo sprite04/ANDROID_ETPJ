@@ -25,7 +25,6 @@ import com.example.android_etpj.R;
 import com.example.android_etpj.SpinnerAdapter;
 import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.models.*;
-import com.example.android_etpj.ui.add.AddModuleFragment;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;

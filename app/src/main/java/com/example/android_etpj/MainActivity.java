@@ -10,7 +10,9 @@ import android.view.Menu;
 import android.widget.TextView;
 
 import com.example.android_etpj.models.Admin;
+import com.example.android_etpj.models.Assignment;
 import com.example.android_etpj.models.Class;
+import com.example.android_etpj.models.Enrollment;
 import com.example.android_etpj.models.Module;
 import com.example.android_etpj.models.Question;
 import com.example.android_etpj.models.Trainee;
@@ -28,6 +30,7 @@ import com.example.android_etpj.ui.ResultFragment;
 import com.example.android_etpj.ui.add.*;
 import com.example.android_etpj.ui.edit.*;
 import com.example.android_etpj.ui.view.ViewClassFragment;
+import com.example.android_etpj.ui.view.ViewEnrollmentDetailFragment;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
@@ -114,9 +117,17 @@ public class MainActivity extends AppCompatActivity {
                         break;
                     case R.id.nav_assignment:
                         checkLogin();
-                        if(currentFragment!=Type.FRAGMENT_ASSIGNMENT){
-                            replaceFragment(new AssignmentFragment());
-                            currentFragment=Type.FRAGMENT_ASSIGNMENT;
+                        if(user !=null){
+                            if(user instanceof Admin ||user instanceof Trainer) {
+                                if (currentFragment != Type.FRAGMENT_ASSIGNMENT) {
+                                    replaceFragment(new AssignmentFragment(user));
+                                    currentFragment = Type.FRAGMENT_ASSIGNMENT;
+                                }
+                            }else{
+                              //  replaceFragment(new AccessForbiddenHomePageFragment());
+                            }
+                        }else{
+                           // replaceFragment(new AccessForbiddenLoginFragment());
                         }
                         break;
                     case R.id.nav_class:
@@ -277,5 +288,62 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.addToBackStack(EditQuestionFragment.TAG);
         fragmentTransaction.commit();
     }
+
+    //Assignment
+    public void addAssignmentFragment(){
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        AddAssignmentFragment addAssignmentFragment=new AddAssignmentFragment();
+
+        fragmentTransaction.replace(R.id.content_frame,addAssignmentFragment);
+        fragmentTransaction.addToBackStack(AddAssignmentFragment.TAG);
+        fragmentTransaction.commit();
+    }
+    public void editAssignmentFragment(Assignment assignment) {
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        EditAssignmentFragment editAssignmentFragment=new EditAssignmentFragment();
+        Bundle bundle=new Bundle();
+
+        bundle.putSerializable("ASSIGNMENT",assignment);
+        editAssignmentFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_frame,editAssignmentFragment);
+        fragmentTransaction.addToBackStack(EditAssignmentFragment.TAG);
+        fragmentTransaction.commit();
+    }
+    //Enrollment
+    public void addEnrollmentFragment(){
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        AddEnrollmentFragment addEnrollmentFragment=new AddEnrollmentFragment();
+
+        fragmentTransaction.replace(R.id.content_frame,addEnrollmentFragment);
+        fragmentTransaction.addToBackStack(AddEnrollmentFragment.TAG);
+        fragmentTransaction.commit();
+    }
+    public void editEnrollmentFragment(Enrollment enrollment) {
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        EditEnrollmentFragment editEnrollmentFragment=new EditEnrollmentFragment();
+        Bundle bundle=new Bundle();
+
+        bundle.putSerializable("ENROLLMENT",enrollment);
+        editEnrollmentFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_frame,editEnrollmentFragment);
+        fragmentTransaction.addToBackStack(EditEnrollmentFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    public void viewEnrollmentFragment(Enrollment enrollment) {
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        ViewEnrollmentDetailFragment viewEnrollmentFragment=new ViewEnrollmentDetailFragment();
+        Bundle bundle=new Bundle();
+
+        bundle.putSerializable("ENROLLMENT",enrollment);
+        viewEnrollmentFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_frame,viewEnrollmentFragment);
+        fragmentTransaction.addToBackStack(EditEnrollmentFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
 
 }

@@ -17,11 +17,11 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.android_etpj.interfaces.ExchangeClass;
 import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.models.Admin;
 import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Enrollment;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

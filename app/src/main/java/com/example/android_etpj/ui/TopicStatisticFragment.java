@@ -5,7 +5,6 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,8 +20,6 @@ import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.models.Answer;
 import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Module;
-import com.example.android_etpj.models.Question;
-import com.example.android_etpj.models.Topic;
 import com.example.android_etpj.models.TopicAnswers;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;

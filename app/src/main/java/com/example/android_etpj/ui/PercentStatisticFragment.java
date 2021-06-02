@@ -22,8 +22,6 @@ import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Module;
 import com.example.android_etpj.models.Question;
 import com.example.android_etpj.models.Statistic;
-import com.example.android_etpj.models.Topic;
-import com.example.android_etpj.models.TopicAnswers;
 import com.example.android_etpj.models.TopicStatistic;
 import com.example.android_etpj.models.Trainer;
 
