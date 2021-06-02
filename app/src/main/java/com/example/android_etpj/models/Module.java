@@ -139,18 +139,6 @@ public class Module implements Serializable {
 
     @Override
     public String toString() {
-        return "Module{" +
-                "moduleID=" + moduleID +
-                ", moduleName='" + moduleName + '\'' +
-                ", adminID='" + adminID + '\'' +
-                ", isDeleted=" + isDeleted +
-                ", startTime=" + startTime +
-                ", endTime=" + endTime +
-                ", feedbackStartTime=" + feedbackStartTime +
-                ", feedbackEndTime=" + feedbackEndTime +
-                ", feedbackID=" + feedbackID +
-                ", feedback=" + feedback +
-                ", admin=" + admin +
-                '}';
+        return moduleName;
     }
 }

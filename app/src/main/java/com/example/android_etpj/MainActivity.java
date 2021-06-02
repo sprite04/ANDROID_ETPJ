@@ -68,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
 
         admin = new Admin();
 
-        user=admin;
+        user=trainer;
         setNavigationView();
 
 
@@ -137,7 +137,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_result:
                         checkLogin();
                         if(currentFragment!=Type.FRAGMENT_RESULT){
-                            replaceFragment(new ResultFragment());
+                            replaceFragment(new ResultFragment(user));
                             currentFragment=Type.FRAGMENT_RESULT;
                         }
                         break;

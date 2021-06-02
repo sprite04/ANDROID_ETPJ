@@ -72,6 +72,9 @@ public interface ApiService {
     @PUT("module")
     Call<Boolean> editModule(@Body Module m);
 
+    @GET("module")
+    Call<List<Module>> getModuleByIdTrainer(@Query("idTrainer") String idTrainer);
+
 
     //Admin
     @GET("admin")
@@ -111,6 +114,8 @@ public interface ApiService {
     @POST("answer")
     Call<Boolean> addAnswer(@Body Answer answer);
 
+    @GET("answer")
+    Call<List<Answer>> getAnswersByClassModule(@Query("idClass") int idClass,@Query("idModule") int idModule);
 
 
 
@@ -118,7 +123,12 @@ public interface ApiService {
 
     //TopicAnswers
     @GET("topicanswers")
-    Call<List<TopicAnswers>>getTopicAnswersByClassModule(@Query("idClass")int idClass, @Query("idModule") int idModule);
+    Call<List<TopicAnswers>> getTopicAnswersByClassModule(@Query("idClass") int idClass,@Query("idModule") int idModule);
+    @GET("topicanswers")
+    Call<List<TopicStatistic>> getTopicStatisticByClassModule(@Query("classID") int classID,@Query("moduleID") int moduleID);
+
+
+
 
     //TraineeComment
     @POST("traineecomment")

@@ -57,7 +57,7 @@ public class EditQuestionFragment extends Fragment {
 
         Bundle bundle = getArguments();
         question= (Question) bundle.get("QUESTION");
-        
+
 
 
         tvErrorContent.setVisibility(View.GONE);
