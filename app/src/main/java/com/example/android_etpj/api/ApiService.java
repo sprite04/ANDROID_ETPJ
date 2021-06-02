@@ -81,6 +81,12 @@ public interface ApiService {
     @GET("assignment")
     Call<List<Assignment>> searchAssignments(@Query("stringSearch") String stringSearch);
 
+    @GET("assignment")
+    Call<List<Assignment>> getAssignmentByRegistrationCode(@Query("registrationCode") String registrationCode);
+
+    @GET("assignment")
+    Call<List<Assignment>> getAssignmentsByTrainee(@Query("idTrainee") String idTrainee);
+
     @POST("assignment")
     Call<Boolean> addAssignment(@Body Assignment a);
 

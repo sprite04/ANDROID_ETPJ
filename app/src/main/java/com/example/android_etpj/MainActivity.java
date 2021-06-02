@@ -8,6 +8,7 @@ import com.example.android_etpj.models.Admin;
 import com.example.android_etpj.models.Assignment;
 import com.example.android_etpj.models.Enrollment;
 import com.example.android_etpj.models.Module;
+import com.example.android_etpj.models.Trainee;
 import com.example.android_etpj.models.Trainer;
 import com.example.android_etpj.ui.AccessForbiddenHomePageFragment;
 import com.example.android_etpj.ui.AccessForbiddenLoginFragment;
@@ -17,6 +18,7 @@ import com.example.android_etpj.ui.CommentResultFragment;
 import com.example.android_etpj.ui.ContactFragment;
 import com.example.android_etpj.ui.EnrollmentFragment;
 import com.example.android_etpj.ui.FeedbackFragment;
+import com.example.android_etpj.ui.FeedbackTraineeFragment;
 import com.example.android_etpj.ui.HomeFragment;
 import com.example.android_etpj.ui.JoinFragment;
 import com.example.android_etpj.ui.QuestionFragment;
@@ -42,6 +44,9 @@ public class MainActivity extends AppCompatActivity implements AccessForbiddenHo
     private Type currentFragment=Type.FRAGMENT_HOME;
     private Object user;
 
+
+    Trainee trainer;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,8 +55,8 @@ public class MainActivity extends AppCompatActivity implements AccessForbiddenHo
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Admin trainer=new Admin();
-        trainer.setUsername("trainer1");
+        trainer=new Trainee();
+        trainer.setUserId("trainee1");
         user=trainer;
 
         drawer = findViewById(R.id.drawer_layout);
@@ -149,9 +154,13 @@ public class MainActivity extends AppCompatActivity implements AccessForbiddenHo
                     case R.id.nav_feedback:
                         checkLogin();
                         if(currentFragment!=Type.FRAGMENT_FEEDBACK){
-                            replaceFragment(new FeedbackFragment());
+                            replaceFragment(new FeedbackTraineeFragment(trainer,1));
                             currentFragment=Type.FRAGMENT_FEEDBACK;
                         }
+                        /*if(currentFragment!=Type.FRAGMENT_FEEDBACK){
+                            replaceFragment(new FeedbackFragment());
+                            currentFragment=Type.FRAGMENT_FEEDBACK;
+                        }*/
                         break;
                     case R.id.nav_result:
                         checkLogin();

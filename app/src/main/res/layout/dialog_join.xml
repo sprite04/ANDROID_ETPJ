@@ -3,7 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:orientation="vertical"
-    android:padding="20dp">
+    android:padding="20dp"
+    android:background="@drawable/background_dialog"
+    android:layout_margin="20dp">
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,12 +38,13 @@
             android:typeface="serif" />
 
         <EditText
+            android:id="@+id/edt_code_assignment"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="7"
-            android:textSize="18sp"
-            android:text="hhhhh"
             android:background="@drawable/background_border_orange"
+            android:text="hhhhh"
+            android:textSize="18sp"
             android:typeface="serif" />
 
     </LinearLayout>
