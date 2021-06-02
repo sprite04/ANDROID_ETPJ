@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -16,7 +15,6 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -29,7 +27,6 @@ import com.example.android_etpj.interfaces.ExchangeCommentResult;
 import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.CommentResult;
 import com.example.android_etpj.models.Module;
-import com.example.android_etpj.ui.add.AddClassFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,8 +36,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CommentResultFragment extends Fragment implements ExchangeCommentResult {
-
-    public static final String TAG= CommentResultFragment.class.getName();
     private RecyclerView rcvComment;
     private CommentResultAdapter commentResultAdapter;
     private TextView tvTitle;
@@ -49,8 +44,6 @@ public class CommentResultFragment extends Fragment implements ExchangeCommentRe
     private MainActivity mainActivity;
     private LinearLayout spinner;
     private LinearLayout select;
-    private Button btnShowOverView;
-    private Button btnShowDetail;
 
 
 
@@ -73,11 +66,9 @@ public class CommentResultFragment extends Fragment implements ExchangeCommentRe
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_comment,container,false);
+        View view=inflater.inflate(R.layout.fragment_common,container,false);
 
         mainActivity=(MainActivity)getActivity();
-        btnShowOverView=view.findViewById(R.id.btn_show_overview);
-        btnShowDetail=view.findViewById(R.id.btn_show_detail);
 
         rcvComment=view.findViewById(R.id.rcv_common);
 
@@ -108,28 +99,6 @@ public class CommentResultFragment extends Fragment implements ExchangeCommentRe
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
         rcvComment.setLayoutManager(linearLayoutManager);
         rcvComment.setAdapter(commentResultAdapter);
-
-        btnShowOverView.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(getActivity().getSupportFragmentManager()!=null){
-                    mainActivity.type=0;
-                    FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
-                    fragmentManager.popBackStack();
-                }
-            }
-        });
-
-        btnShowDetail.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(getActivity().getSupportFragmentManager()!=null){
-                    mainActivity.type=2;
-                    FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
-                    fragmentManager.popBackStack();
-                }
-            }
-        });
 
         return view;
     }

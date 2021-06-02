@@ -444,7 +444,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.commit();
     }
 
-    public void viewCommentResultFragment(Object user) {
+/*    public void viewCommentResultFragment(Object user) {
         FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
         CommentResultFragment commentResultFragment=new CommentResultFragment(user);
 
@@ -452,7 +452,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentTransaction.replace(R.id.content_frame,commentResultFragment);
         fragmentTransaction.addToBackStack(CommentResultFragment.TAG);
         fragmentTransaction.commit();
-    }
+    }*/
 
     public void addAssignmentFragment(){
         FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();

@@ -27,11 +27,8 @@ import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Enrollment;
 import com.example.android_etpj.models.Trainee;
-import com.example.android_etpj.models.Trainer;
 
-import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -153,7 +150,7 @@ public class AddEnrollmentFragment extends Fragment {
                 List<Class> arrayList=(ArrayList<Class>) response.body();
                 List<Object> classes =new ArrayList<>();
                 classes.addAll(arrayList);
-                SpinnerAdapter spClassIdAdapter=new SpinnerAdapter(getContext(),R.layout.item_sp_selected,classes);
+                SpinnerAdapter spClassIdAdapter=new SpinnerAdapter(getContext(), R.layout.item_sp_selected,classes);
                 spClassId.setAdapter(spClassIdAdapter);
 
                 if(arrayList.size()>0){
@@ -196,7 +193,7 @@ public class AddEnrollmentFragment extends Fragment {
                 trainees.addAll(arrayList);
 
 
-                SpinnerAdapter spTraineeIDAdapter=new SpinnerAdapter(getContext(),R.layout.item_sp_selected,trainees);
+                SpinnerAdapter spTraineeIDAdapter=new SpinnerAdapter(getContext(), R.layout.item_sp_selected,trainees);
                 spTraineeId.setAdapter(spTraineeIDAdapter);
 
                 if(arrayList.size()>0){

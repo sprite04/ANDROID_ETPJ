@@ -20,10 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.android_etpj.MainActivity;
 import com.example.android_etpj.R;
 import com.example.android_etpj.SpinnerAdapter;
-import com.example.android_etpj.adapter.EnrollmentAdapter;
+import com.example.android_etpj.EnrollmentAdapter;
 import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.interfaces.ExchangeEnrollment;
-import com.example.android_etpj.models.Assignment;
 import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Enrollment;
 

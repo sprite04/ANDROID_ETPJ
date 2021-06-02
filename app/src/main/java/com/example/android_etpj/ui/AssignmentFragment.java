@@ -20,8 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 
 import com.example.android_etpj.MainActivity;
-import com.example.android_etpj.adapter.AssignmentAdapter;
+
 import com.example.android_etpj.R;
+import com.example.android_etpj.adapter.AssignmentAdapter;
 import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.interfaces.ExchangeAssignment;
 import com.example.android_etpj.models.Assignment;

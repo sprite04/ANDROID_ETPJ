@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,7 +12,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
+
 import android.widget.Spinner;
+import com.example.android_etpj.SpinnerAdapter;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -22,15 +23,12 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.example.android_etpj.R;
-import com.example.android_etpj.SpinnerAdapter;
 import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.models.Assignment;
 import com.example.android_etpj.models.Class;
-import com.example.android_etpj.models.Feedback;
 import com.example.android_etpj.models.Module;
 import com.example.android_etpj.models.Trainer;
 
-import java.security.AccessController;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
@@ -41,7 +39,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AddAssignmentFragment extends Fragment {
-    public static final String TAG =AddAssignmentFragment.class.getName();
+    public static final String TAG = AddAssignmentFragment.class.getName();
 
     private Spinner spModuleName;
     private Spinner spClassName;
@@ -169,7 +167,7 @@ public class AddAssignmentFragment extends Fragment {
                 trainers.addAll(arrayList);
 
 
-                SpinnerAdapter spTrainerIDAdapter=new SpinnerAdapter(getContext(),R.layout.item_sp_selected,trainers);
+                SpinnerAdapter spTrainerIDAdapter=new SpinnerAdapter(getContext(), R.layout.item_sp_selected,trainers);
                 spTrainerId.setAdapter(spTrainerIDAdapter);
 
                 if(arrayList.size()>0){
@@ -212,7 +210,7 @@ public class AddAssignmentFragment extends Fragment {
                 classes.addAll(arrayList);
 
 
-                SpinnerAdapter spClassNameAdapter=new SpinnerAdapter(getContext(),R.layout.item_sp_selected,classes);
+                SpinnerAdapter spClassNameAdapter=new SpinnerAdapter(getContext(), R.layout.item_sp_selected,classes);
                 spClassName.setAdapter(spClassNameAdapter);
 
                 if(arrayList.size()>0){
@@ -254,7 +252,7 @@ public class AddAssignmentFragment extends Fragment {
                 modules.addAll(arrayList);
 
 
-                SpinnerAdapter spModuleNameAdapter=new SpinnerAdapter(getContext(),R.layout.item_sp_selected,modules);
+                SpinnerAdapter spModuleNameAdapter=new SpinnerAdapter(getContext(), R.layout.item_sp_selected,modules);
                 spModuleName.setAdapter(spModuleNameAdapter);
 
                 if(arrayList.size()>0){

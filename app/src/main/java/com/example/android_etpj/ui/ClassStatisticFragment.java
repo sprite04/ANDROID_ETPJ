@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.android_etpj.MainActivity;
 import com.example.android_etpj.R;
 import com.example.android_etpj.SpinnerAdapter;
 import com.example.android_etpj.api.ApiService;
@@ -22,7 +21,6 @@ import com.example.android_etpj.models.Admin;
 import com.example.android_etpj.models.Answer;
 import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Module;
-import com.example.android_etpj.models.Topic;
 import com.example.android_etpj.models.Trainer;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;

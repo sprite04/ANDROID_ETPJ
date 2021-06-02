@@ -24,7 +24,6 @@ import com.example.android_etpj.R;
 import com.example.android_etpj.SpinnerAdapter;
 import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.models.Assignment;
-import com.example.android_etpj.models.Feedback;
 import com.example.android_etpj.models.Trainer;
 
 import java.util.ArrayList;
