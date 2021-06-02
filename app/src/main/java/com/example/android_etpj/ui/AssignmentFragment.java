@@ -85,9 +85,7 @@ public class AssignmentFragment extends Fragment implements ExchangeAssignment {
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intent=new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
-               /* mainActivity.addAssignmentFragment();*/
+               mainActivity.addAssignmentFragment();
             }
         });
        btnSearch.setOnClickListener(new View.OnClickListener() {

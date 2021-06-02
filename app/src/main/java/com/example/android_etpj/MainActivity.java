@@ -50,10 +50,9 @@ public class MainActivity extends AppCompatActivity implements AccessForbiddenHo
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        Trainer trainer=new Trainer();
+        Admin trainer=new Admin();
         trainer.setUsername("trainer1");
         user=trainer;
-        user=null;
 
         drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle=new ActionBarDrawerToggle(this, drawer,toolbar,0,0);
@@ -292,5 +291,6 @@ public class MainActivity extends AppCompatActivity implements AccessForbiddenHo
     @Override
     public void fragmentHome() {
         replaceFragment(new HomeFragment());
+        currentFragment=Type.FRAGMENT_HOME;
     }
 }
