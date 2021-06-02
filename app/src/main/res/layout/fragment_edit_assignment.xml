@@ -5,10 +5,6 @@
     android:orientation="vertical"
     android:paddingTop="15dp"
     android:paddingHorizontal="20dp">
-
-
-
-
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,7 +12,7 @@
         android:textStyle="bold"
         android:fontFamily="@font/alternate_gothic"
         android:id="@+id/tv_title"
-        android:text="Add Assignmnet"
+        android:text="Edit Assignmnet"
         android:gravity="center"/>
 
 
@@ -32,14 +28,17 @@
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
                 android:typeface="serif"
-                android:text="Module Name"
+                android:text="Class ID"
                 android:layout_marginStart="15dp" />
 
-            <Spinner
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:id="@+id/module_name"/>
+                android:layout_height="30dp"
+                android:id="@+id/tv_class_id"
+                android:textSize="15sp"
+                android:typeface="serif"
+                android:background="@drawable/background_border_white"
+                android:text="Class id"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -48,19 +47,51 @@
                 android:text="Class Name"
                 android:layout_marginStart="15dp" />
 
-            <Spinner
+            <TextView
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@color/transparent"
-                android:id="@+id/class_name"/>
+                android:layout_height="30dp"
+                android:id="@+id/tv_class_name"
+                android:textSize="15sp"
+                android:typeface="serif"
+                android:background="@drawable/background_border_white"
+                android:text="Class name"/>
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textSize="15sp"
                 android:typeface="serif"
-                android:text="Train ID"
+                android:text="Module ID"
+                android:layout_marginStart="15dp" />id
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:id="@+id/tv_module_id"
+                android:textSize="15sp"
+                android:typeface="serif"
+                android:background="@drawable/background_border_white"
+                android:text="Module id"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:typeface="serif"
+                android:text="Module Name"
                 android:layout_marginStart="15dp" />
-            er
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="30dp"
+                android:id="@+id/tv_module_name"
+                android:textSize="15sp"
+                android:typeface="serif"
+                android:background="@drawable/background_border_white"
+                android:text="Module name"/>
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="15sp"
+                android:typeface="serif"
+                android:text="Trainer ID"
+                android:layout_marginStart="15dp" />
             <Spinner
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -93,5 +124,8 @@
                     android:textAllCaps="false" />
             </RelativeLayout>
         </LinearLayout>
+
+
     </ScrollView>
+
 </LinearLayout>

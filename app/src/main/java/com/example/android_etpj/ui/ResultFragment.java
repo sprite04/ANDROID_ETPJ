@@ -39,7 +39,7 @@ public class ResultFragment extends Fragment {
         StatisticViewPagerAdapter statisticViewPagerAdapter = new StatisticViewPagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, user);
 
         vpStatistic.setAdapter(statisticViewPagerAdapter);
-
+        vpStatistic.setCurrentItem(mainActivity.type);
         
         return view;
     }

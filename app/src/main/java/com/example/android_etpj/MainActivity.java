@@ -104,7 +104,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_assignment:
                         checkLogin();
                         if(currentFragment!=Type.FRAGMENT_ASSIGNMENT){
-                            replaceFragment(new AssignmentFragment());
+                            replaceFragment(new AssignmentFragment(user));
                             currentFragment=Type.FRAGMENT_ASSIGNMENT;
                         }
                         break;
@@ -401,6 +401,27 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentTransaction.replace(R.id.content_frame,commentResultFragment);
         fragmentTransaction.addToBackStack(CommentResultFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    public void addAssignmentFragment(){
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        AddAssignmentFragment addAssignmentFragment=new AddAssignmentFragment();
+
+        fragmentTransaction.replace(R.id.content_frame,addAssignmentFragment);
+        fragmentTransaction.addToBackStack(AddAssignmentFragment.TAG);
+        fragmentTransaction.commit();
+    }
+    public void editAssignmentFragment(Assignment assignment) {
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        EditAssignmentFragment editAssignmentFragment=new EditAssignmentFragment();
+        Bundle bundle=new Bundle();
+
+        bundle.putSerializable("ASSIGNMENT",assignment);
+        editAssignmentFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_frame,editAssignmentFragment);
+        fragmentTransaction.addToBackStack(EditAssignmentFragment.TAG);
         fragmentTransaction.commit();
     }
 

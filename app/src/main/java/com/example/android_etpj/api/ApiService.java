@@ -90,10 +90,30 @@ public interface ApiService {
     @GET("trainee")
     Call<Trainee> loginTrainee(@Query("username") String username, @Query("password") String password);
 
+    //Trainer
+    Call<List<Trainer>> getTrainers();
+    Call<Trainer> loginTrainer(@Query("username") String username, @Query("password") String password);
+
 
     //Assignment
     @GET("assignment")
     Call<List<Assignment>> getAssignmentsByTrainee(@Query("idTrainee") String idTrainee);
+
+    @GET("assignment")
+    Call<List<Assignment>> getAssignments();
+
+    @GET("assignment")
+    Call<List<Assignment>> searchAssignments(@Query("stringSearch") String stringSearch);
+
+    @POST("assignment")
+    Call<Boolean> addAssignment(@Body Assignment a);
+
+    @DELETE("assignment")
+    Call<Boolean> deleteAssignment(@Query("idClass") int idClass,
+                                   @Query("idModule") int idModule);
+
+    @PUT("assignment")
+    Call<Boolean> editAssignment(@Body Assignment a);
 
     //Topic
     @GET("topic")
