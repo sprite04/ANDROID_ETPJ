@@ -107,53 +107,7 @@ public class HomeFragment extends Fragment {
                 Log.e("ee",t.getMessage());
             }
         });
-        /*ApiService.apiService.getTopicAnswersByClassModule(5,13).enqueue(new Callback<List<TopicAnswers>>() {
-            @Override
-            public void onResponse(Call<List<TopicAnswers>> call, Response<List<TopicAnswers>> response) {
 
-            }
-
-            @Override
-            public void onFailure(Call<List<TopicAnswers>> call, Throwable t) {
-
-            }
-        });*/
-
-       /* ApiService.apiService.getAdmins().enqueue(new Callback<List<Admin>>() {
-            @Override
-            public void onResponse(Call<List<Admin>> call, Response<List<Admin>> response) {
-                ArrayList<Admin> modules = (ArrayList<Admin>) response.body();
-                if(modules.size()>0){
-                    tvRetrofit2.setText(modules.get(0).toString());
-                }
-                else{
-                    tvRetrofit2.setText("0");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Admin>> call, Throwable t) {
-
-            }
-        });*/
-
-
-
-
-
-        /*spinner.setAdapter(spinnerAdapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                Snackbar snackbar = Snackbar.make(view1,spinnerAdapter.getItem(position).toString(), Snackbar.LENGTH_LONG);
-                snackbar.show();
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
         String sourceString = "<b>" + "No: " + "</b> " + "1"+"<br>"+"<b>" + "Module Name: " + "</b> "+ "Truyền thông và mạng máy tính";
         tvTest.setText(Html.fromHtml(sourceString,1));
         return view;
@@ -163,13 +117,4 @@ public class HomeFragment extends Fragment {
 
 
 
-   /* private List<Object> getListCategory() {
-        List<Feedback> feedbackList=new ArrayList<>();
-        feedbackList.add(new Feedback("Feedback1",".NET"));
-        feedbackList.add(new Feedback("Feedback2",".NET"));
-        feedbackList.add(new Feedback("Feedback3",".NET"));
-        List<Object> objectList=new ArrayList<>();
-        objectList.addAll(feedbackList);
-        return  objectList;
-    }*/
 }

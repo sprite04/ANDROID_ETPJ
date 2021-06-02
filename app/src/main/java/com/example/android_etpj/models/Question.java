@@ -21,6 +21,12 @@ public class Question implements Serializable {
     @SerializedName("Feedbacks")
     private List<Feedback> feedbacks;
 
+
+    //Chu y cho topic nay do Quan them co the gay xung dot voi cua minh
+    @SerializedName("Topic")
+    private Topic topic;
+
+
     public Question() {
     }
 
@@ -59,6 +65,14 @@ public class Question implements Serializable {
 
     public void setQuestionContent(String questionContent) {
         this.questionContent = questionContent;
+    }
+
+    public Topic getTopic() {
+        return topic;
+    }
+
+    public void setTopic(Topic topic) {
+        this.topic = topic;
     }
 
     public boolean isDeleted() {

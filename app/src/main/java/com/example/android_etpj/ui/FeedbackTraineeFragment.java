@@ -84,7 +84,7 @@ public class FeedbackTraineeFragment extends Fragment implements ExchangeFeedbac
 
             @Override
             public void onFailure(Call<List<Assignment>> call, Throwable t) {
-
+                Log.e("loi",t.getMessage());
             }
         });
     }

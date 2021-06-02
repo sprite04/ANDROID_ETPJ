@@ -5,6 +5,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.view.Menu;
 
+import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Module;
 import com.example.android_etpj.ui.AssignmentFragment;
 import com.example.android_etpj.ui.ClassFragment;
@@ -20,6 +21,7 @@ import com.example.android_etpj.ui.QuestionFragment;
 import com.example.android_etpj.ui.ResultFragment;
 import com.example.android_etpj.ui.add.*;
 import com.example.android_etpj.ui.edit.*;
+import com.example.android_etpj.ui.view.ViewClassFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.example.android_etpj.models.*;
 
@@ -37,6 +39,10 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private DrawerLayout drawer;
     private Type currentFragment=Type.FRAGMENT_HOME;
+    private Object user;
+    private Trainer trainer;
+    private Trainee trainee;
+    private Admin admin;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,6 +60,15 @@ public class MainActivity extends AppCompatActivity {
         navigationView = findViewById(R.id.nav_view);
 
         //checklogin
+        trainer = new Trainer();
+        trainer.setUsername("trainer1");
+
+        trainee = new Trainee();
+        trainee.setUserId("trainee1");
+
+        admin = new Admin();
+
+        user=admin;
         setNavigationView();
 
 
@@ -92,7 +107,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_class:
                         checkLogin();
                         if(currentFragment!=Type.FRAGMENT_CLASS){
-                            replaceFragment(new ClassFragment());
+                            replaceFragment(new ClassFragment(user));
                             currentFragment=Type.FRAGMENT_CLASS;
                         }
                         break;
@@ -115,7 +130,7 @@ public class MainActivity extends AppCompatActivity {
                         if(currentFragment!=Type.FRAGMENT_FEEDBACK){
                             Trainee trainee=new Trainee("trainee1","Thuỷ Tiên","tientien","0971966126","nnnn",true,"hhhh","hhhhh","jjj");
 
-                            replaceFragment(new FeedbackTraineeFragment(trainee));
+                            replaceFragment(new FeedbackFragment());
                             currentFragment=Type.FRAGMENT_FEEDBACK;
                         }
                         break;
@@ -129,7 +144,7 @@ public class MainActivity extends AppCompatActivity {
                     case R.id.nav_question:
                         checkLogin();
                         if(currentFragment!=Type.FRAGMENT_QUESTION){
-                            replaceFragment(new QuestionFragment());
+                            replaceFragment(new QuestionFragment(user));
                             currentFragment=Type.FRAGMENT_QUESTION;
                         }
                         break;
@@ -279,6 +294,64 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentTransaction.replace(R.id.content_frame,feedbackTraineeReviewFragment);
         fragmentTransaction.addToBackStack(FeedbackTraineeReviewFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    public void addClassFragment(){
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        AddClassFragment addClassFragment=new AddClassFragment();
+
+        fragmentTransaction.replace(R.id.content_frame,addClassFragment);
+        fragmentTransaction.addToBackStack(AddClassFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    public void editClassFragment(Class clss) {
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        EditClassFragment editClassFragment=new EditClassFragment();
+        Bundle bundle=new Bundle();
+
+        bundle.putSerializable("CLASS",clss);
+        editClassFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_frame,editClassFragment);
+        fragmentTransaction.addToBackStack(EditModuleFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    public void viewClassFragment(Class clss) {
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        ViewClassFragment viewClassFragment=new ViewClassFragment();
+        Bundle bundle=new Bundle();
+
+        bundle.putSerializable("VIEWCLASS",clss);
+        viewClassFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_frame,viewClassFragment);
+        fragmentTransaction.addToBackStack(EditModuleFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+
+    public void addQuestionFragment(){
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        AddQuestionFragment addQuestionFragment=new AddQuestionFragment();
+
+        fragmentTransaction.replace(R.id.content_frame,addQuestionFragment);
+        fragmentTransaction.addToBackStack(AddQuestionFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    public void editQuestionFragment(Question question) {
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        EditQuestionFragment editQuestionFragment=new EditQuestionFragment();
+        Bundle bundle=new Bundle();
+
+        bundle.putSerializable("QUESTION",question);
+        editQuestionFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_frame,editQuestionFragment);
+        fragmentTransaction.addToBackStack(EditQuestionFragment.TAG);
         fragmentTransaction.commit();
     }
 

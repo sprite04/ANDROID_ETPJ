@@ -25,20 +25,29 @@
         android:text="Topic Name"
         android:typeface="serif"
         android:layout_marginStart="15dp" />
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    <Spinner
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_border_white">
+        android:background="@color/transparent"
+        android:id="@+id/sp_search"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/background_border_white"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="hhhhhhhhhhhh"
-            android:typeface="serif"
-            android:textSize="18sp"
+            android:layout_alignParentTop="true"
+            android:layout_marginTop="6dp"
+            android:layout_marginEnd="0dp"
             android:layout_toStartOf="@id/img_admin_id"
-            android:layout_centerVertical="true"/>
+            android:text=""
+            android:textSize="18sp"
+            android:typeface="serif" />
+
         <ImageView
             android:layout_width="35dp"
             android:layout_height="35dp"
@@ -64,8 +73,17 @@
         android:gravity="top|left"
         android:typeface="serif"
         android:background="@drawable/background_border_white"
-        android:text="linhjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj"
+        android:text=""
+        android:id="@+id/edt_content"
         android:inputType="textMultiLine" />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/tv_error_content"
+        android:text="Content error"
+        android:textColor="#F44336"
+        android:typeface="serif"
+        android:textSize="15sp"/>
 
 
 
@@ -82,7 +100,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="@color/purple_700"
-            android:id="@+id/btn_close"
+            android:id="@+id/btn_save"
             android:text="Save"
             android:textAllCaps="false"
             android:layout_marginEnd="10dp"
@@ -92,7 +110,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:backgroundTint="#FF2222"
-            android:id="@+id/btn_submit"
+            android:id="@+id/btn_back"
             android:text="Back"
             android:textAllCaps="false"
             android:typeface="serif"/>

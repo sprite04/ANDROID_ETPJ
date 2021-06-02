@@ -34,6 +34,7 @@ import com.example.android_etpj.ui.edit.ReviewEditFeedbackFragment;
 import java.util.ArrayList;
 import java.util.List;
 
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -41,7 +42,7 @@ import retrofit2.Response;
 public class FeedbackTraineeReviewFragment extends Fragment {
     public static final String TAG= FeedbackTraineeReviewFragment.class.getName();
 
-    private List<Answer> answers;
+    private ArrayList<Answer> answers;
 
     private TextView tvModule;
     private TextView tvClass;
@@ -85,7 +86,7 @@ public class FeedbackTraineeReviewFragment extends Fragment {
         }
 
 
-        answers=new ArrayList<>();
+        answers=new ArrayList<Answer>();
 
         mainActivity=(MainActivity)getActivity();
 
@@ -93,12 +94,7 @@ public class FeedbackTraineeReviewFragment extends Fragment {
 
         loadData();
 
-        btnSubmit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                save();
-            }
-        });
+
 
         return view;
     }
@@ -133,6 +129,7 @@ public class FeedbackTraineeReviewFragment extends Fragment {
                         answer.setClassID(assignment.getClassID());
                         answer.setModuleID(assignment.getModuleID());
                         answer.setQuestionID(topics.get(i).getQuestions().get(j).getQuestionID());
+                        answer.setTraineeID(trainee.getUserId());
 
 
                         rdAnswer1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -241,6 +238,128 @@ public class FeedbackTraineeReviewFragment extends Fragment {
 
                 }
 
+                btnSubmit.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Dialog dialogConfirm=new Dialog(mainActivity);
+                        dialogConfirm.setContentView(R.layout.dialog_warning);
+                        dialogConfirm.setCancelable(false);
+
+                        Window window=dialogConfirm.getWindow();
+                        if(window==null)
+                            return ;
+                        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+                        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                        TextView tvTitle=dialogConfirm.findViewById(R.id.tv_title);
+                        tvTitle.setText("Are you sure?");
+
+                        TextView tvContent=dialogConfirm.findViewById(R.id.tv_content);
+                        tvContent.setText("Do you want to submit Feedback? ");
+
+
+                        Button btnYes=dialogConfirm.findViewById(R.id.btn_yes);
+                        btnYes.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogConfirm.cancel();
+                                if(edtComment.getText().toString().isEmpty()){
+                                    dialogWarning();
+                                    return;
+                                }
+
+                                for(int i=0; i<topics.size(); i++){
+                                    for(int k=0; k<topics.get(0).getQuestions().size(); k++){
+                                        boolean exist=false;
+                                        for(int j=0; j<answers.size(); j++){
+                                            if(answers.get(j).getQuestionID()==topics.get(0).getQuestions().get(k).getQuestionID()){
+                                                exist=true;
+                                                break;
+                                            }
+                                        }
+                                        if(exist==false){
+                                            dialogWarning();
+                                            return;
+                                        }
+                                    }
+
+                                }
+
+                                Log.e("thuuu",String.valueOf(answers.size()));
+
+                                String strComment=edtComment.getText().toString();
+                                Trainee_Comment traineeComment=new Trainee_Comment(assignment.getClassID(),assignment.getModuleID(),trainee.getUserId(),strComment);
+
+                                Review review=new Review();
+                                review.setAnswers(answers);
+                                review.setTraineeComment(traineeComment);
+
+
+                                /*ApiService.apiService.addTraineeComment(traineeComment).enqueue(new Callback<Boolean>() {
+                                    @Override
+                                    public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                                        Boolean result=response.body();
+                                        if(result==true){
+                                            dialogSuccess();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Boolean> call, Throwable t) {
+                                        Log.e("mmmmmmm",t.getMessage());
+                                        dialogFail();
+                                        return;
+                                    }
+                                });*/
+
+                                for(int i=0; i<answers.size(); i++){
+                                    ApiService.apiService.addAnswer(answers.get(i)).enqueue(new Callback<Boolean>() {
+                                        @Override
+                                        public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                                            Boolean result=response.body();
+
+                                        }
+
+                                        @Override
+                                        public void onFailure(Call<Boolean> call, Throwable t) {
+
+                                        }
+                                    });
+                                }
+
+                                ApiService.apiService.checkAnswerUsed(assignment.getClassID(),assignment.getModuleID(),trainee.getUserId()).enqueue(new Callback<Boolean>() {
+                                    @Override
+                                    public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                                        Boolean result=response.body();
+                                        if(result==true){
+                                            dialogSuccess();
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onFailure(Call<Boolean> call, Throwable t) {
+
+                                    }
+                                });
+
+
+
+                            }
+                        });
+
+                        Button btnCancel=dialogConfirm.findViewById(R.id.btn_cancel);
+                        btnCancel.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialogConfirm.cancel();
+                            }
+                        });
+                        dialogConfirm.show();
+
+                    }
+                });
+
+
             }
 
             @Override
@@ -252,106 +371,8 @@ public class FeedbackTraineeReviewFragment extends Fragment {
 
     }
 
-    private void dialogConfirm() {
-        Dialog dialogConfirm=new Dialog(mainActivity);
-        dialogConfirm.setContentView(R.layout.dialog_warning);
-        dialogConfirm.setCancelable(false);
-
-        Window window=dialogConfirm.getWindow();
-        if(window==null)
-            return ;
-        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
-        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-        TextView tvTitle=dialogConfirm.findViewById(R.id.tv_title);
-        tvTitle.setText("Are you sure?");
-
-        TextView tvContent=dialogConfirm.findViewById(R.id.tv_content);
-        tvContent.setText("Do you want to submit Feedback? ");
 
 
-        Button btnYes=dialogConfirm.findViewById(R.id.btn_yes);
-        btnYes.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                save();
-            }
-        });
-
-        Button btnCancel=dialogConfirm.findViewById(R.id.btn_cancel);
-        btnCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialogConfirm.cancel();
-            }
-        });
-        dialogConfirm.show();
-    }
-
-    private void save() {
-        if(edtComment.getText().toString().isEmpty()){
-            dialogWarning();
-            return;
-        }
-        ApiService.apiService.getTopicsByFeedback(assignment.getModule().getFeedbackID()).enqueue(new Callback<List<Topic>>() {
-            @Override
-            public void onResponse(Call<List<Topic>> call, Response<List<Topic>> response) {
-                List<Topic> topics=response.body();
-
-                for(int i=0; i<topics.size(); i++){
-                    for(int k=0; k<topics.get(0).getQuestions().size(); k++){
-                        boolean exist=false;
-                        for(int j=0; j<answers.size(); j++){
-                            if(answers.get(j).getQuestionID()==topics.get(0).getQuestions().get(k).getQuestionID()){
-                                exist=true;
-                                break;
-                            }
-                        }
-                        if(exist==false){
-                            dialogWarning();
-                            return;
-                        }
-                    }
-
-                }
-
-                ApiService.apiService.addAnswers(answers).enqueue(new Callback<Boolean>() {
-                    @Override
-                    public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                        String strComment=edtComment.getText().toString();
-                        Trainee_Comment traineeComment=new Trainee_Comment(assignment.getClassID(),assignment.getModuleID(),trainee.getUserId(),strComment);
-                        ApiService.apiService.addTraineeComment(traineeComment).enqueue(new Callback<Boolean>() {
-                            @Override
-                            public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                                dialogSuccess();
-                                FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
-                                fragmentManager.popBackStack();
-                                return;
-                            }
-
-                            @Override
-                            public void onFailure(Call<Boolean> call, Throwable t) {
-                                dialogFail();
-                                return;
-                            }
-                        });
-
-                    }
-
-                    @Override
-                    public void onFailure(Call<Boolean> call, Throwable t) {
-                        dialogFail();
-                        return;
-                    }
-                });
-            }
-
-            @Override
-            public void onFailure(Call<List<Topic>> call, Throwable t) {
-
-            }
-        });
-    }
 
     private void dialogSuccess() {
         Dialog dialogSuccess=new Dialog(mainActivity);
@@ -372,6 +393,8 @@ public class FeedbackTraineeReviewFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 dialogSuccess.cancel();
+                FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
+                fragmentManager.popBackStack();
             }
         });
         dialogSuccess.show();
