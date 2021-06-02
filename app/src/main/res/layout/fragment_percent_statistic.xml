@@ -161,6 +161,7 @@
             android:layout_height="60dp"
             android:layout_weight="0.3"
             android:text="View Comment"
+            android:id="@+id/btn_comment"
             android:textAllCaps="false"
             android:layout_marginHorizontal="5dp"/>
 

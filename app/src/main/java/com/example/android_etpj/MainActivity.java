@@ -9,6 +9,7 @@ import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Module;
 import com.example.android_etpj.ui.AssignmentFragment;
 import com.example.android_etpj.ui.ClassFragment;
+import com.example.android_etpj.ui.CommentResultFragment;
 import com.example.android_etpj.ui.ContactFragment;
 import com.example.android_etpj.ui.EnrollmentFragment;
 import com.example.android_etpj.ui.FeedbackFragment;
@@ -22,6 +23,7 @@ import com.example.android_etpj.ui.ResultFragment;
 import com.example.android_etpj.ui.add.*;
 import com.example.android_etpj.ui.edit.*;
 import com.example.android_etpj.ui.view.ViewClassFragment;
+import com.example.android_etpj.ui.view.ViewEnrollmentDetailFragment;
 import com.google.android.material.navigation.NavigationView;
 import com.example.android_etpj.models.*;
 
@@ -43,6 +45,8 @@ public class MainActivity extends AppCompatActivity {
     private Trainer trainer;
     private Trainee trainee;
     private Admin admin;
+
+    public int type=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
 
         admin = new Admin();
 
-        user=trainer;
+        user=admin;
         setNavigationView();
 
 
@@ -352,6 +356,51 @@ public class MainActivity extends AppCompatActivity {
 
         fragmentTransaction.replace(R.id.content_frame,editQuestionFragment);
         fragmentTransaction.addToBackStack(EditQuestionFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    public void addEnrollmentFragment(){
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        AddEnrollmentFragment addEnrollmentFragment=new AddEnrollmentFragment();
+
+        fragmentTransaction.replace(R.id.content_frame,addEnrollmentFragment);
+        fragmentTransaction.addToBackStack(AddEnrollmentFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    public void editEnrollmentFragment(Enrollment enrollment) {
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        EditEnrollmentFragment editEnrollmentFragment=new EditEnrollmentFragment();
+        Bundle bundle=new Bundle();
+
+        bundle.putSerializable("ENROLLMENT",enrollment);
+        editEnrollmentFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_frame,editEnrollmentFragment);
+        fragmentTransaction.addToBackStack(EditEnrollmentFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    public void viewEnrollmentFragment(Enrollment enrollment) {
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        ViewEnrollmentDetailFragment viewEnrollmentFragment=new ViewEnrollmentDetailFragment();
+        Bundle bundle=new Bundle();
+
+        bundle.putSerializable("ENROLLMENT",enrollment);
+        viewEnrollmentFragment.setArguments(bundle);
+
+        fragmentTransaction.replace(R.id.content_frame,viewEnrollmentFragment);
+        fragmentTransaction.addToBackStack(EditEnrollmentFragment.TAG);
+        fragmentTransaction.commit();
+    }
+
+    public void viewCommentResultFragment(Object user) {
+        FragmentTransaction fragmentTransaction=getSupportFragmentManager().beginTransaction();
+        CommentResultFragment commentResultFragment=new CommentResultFragment(user);
+
+
+        fragmentTransaction.replace(R.id.content_frame,commentResultFragment);
+        fragmentTransaction.addToBackStack(CommentResultFragment.TAG);
         fragmentTransaction.commit();
     }
 

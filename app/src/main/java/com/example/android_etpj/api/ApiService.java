@@ -84,6 +84,13 @@ public interface ApiService {
     @GET("trainee")
     Call<Trainee> getTraineeByUsername(@Query("username") String username);
 
+    @GET("trainee")
+    Call<List<Trainee>> getTrainee();
+
+    @GET("trainee")
+    Call<Trainee> loginTrainee(@Query("username") String username, @Query("password") String password);
+
+
     //Assignment
     @GET("assignment")
     Call<List<Assignment>> getAssignmentsByTrainee(@Query("idTrainee") String idTrainee);
@@ -164,6 +171,26 @@ public interface ApiService {
     @GET("enrollment")
     Call<List<Enrollment>> getEnrollmentByIdClass(@Query("idClass") int idClass);
 
+    @GET("enrollment")
+    Call<List<Enrollment>> getEnrollment();
+
+    @GET("enrollment")
+    Call<List<Enrollment>> searchEnrollment(@Query("classId") int classId);
+
+    @POST("enrollment")
+    Call<Boolean> addEnrollment(@Query("classId") int classId,
+                                @Query("username") String username);
+
+    @PUT("enrollment")
+    Call<Boolean> editEnrollment(@Query("classIdOld") int classIdOld,
+                                 @Query("classIdNew") int classIdNew,
+                                 @Query("username") String username);
+    @DELETE("enrollment")
+    Call<Boolean> deleteEnrollment(@Query("classId") int classId,
+                                   @Query("username") String username);
+
+
+
     //Question
     @GET("question")
     Call<List<Question>> getQuestions();
@@ -185,4 +212,9 @@ public interface ApiService {
 
     @GET("question")
     Call<Integer> checkQuestionUsed(@Query("idUsed") int idUsed);
+
+    //CommentResult
+    @GET("traineecomment")
+    Call<List<CommentResult>> getCommentResult(@Query("classId") int classId,
+                                               @Query("moduleId") int moduleId);
 }

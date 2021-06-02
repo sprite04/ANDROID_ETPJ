@@ -4,25 +4,29 @@ import com.google.gson.annotations.SerializedName;
 
 import java.io.Serializable;
 
-public class Enrollment implements Serializable {
+public class CommentResult implements Serializable {
+
     @SerializedName("ClassID")
     private int classId;
-
+    @SerializedName("ModuleID")
+    private int moduleId;
     @SerializedName("TraineeID")
     private String traineeId;
-
+    @SerializedName("Comment")
+    private String comment;
     @SerializedName("Class")
     private Class aClass;
+    @SerializedName("Module")
+    private Module module;
 
-    @SerializedName("Trainee")
-    private Trainee trainee;
-
-    public Enrollment() {
+    public CommentResult() {
     }
 
-    public Enrollment(int classId, String traineeId) {
+    public CommentResult(int classId, int moduleId, String traineeId, String comment) {
         this.classId = classId;
+        this.moduleId = moduleId;
         this.traineeId = traineeId;
+        this.comment = comment;
     }
 
     public int getClassId() {
@@ -33,12 +37,28 @@ public class Enrollment implements Serializable {
         this.classId = classId;
     }
 
+    public int getModuleId() {
+        return moduleId;
+    }
+
+    public void setModuleId(int moduleId) {
+        this.moduleId = moduleId;
+    }
+
     public String getTraineeId() {
         return traineeId;
     }
 
     public void setTraineeId(String traineeId) {
         this.traineeId = traineeId;
+    }
+
+    public String getComment() {
+        return comment;
+    }
+
+    public void setComment(String comment) {
+        this.comment = comment;
     }
 
     public Class getaClass() {
@@ -49,11 +69,11 @@ public class Enrollment implements Serializable {
         this.aClass = aClass;
     }
 
-    public Trainee getTrainee() {
-        return trainee;
+    public Module getModule() {
+        return module;
     }
 
-    public void setTrainee(Trainee trainee) {
-        this.trainee = trainee;
+    public void setModule(Module module) {
+        this.module = module;
     }
 }
