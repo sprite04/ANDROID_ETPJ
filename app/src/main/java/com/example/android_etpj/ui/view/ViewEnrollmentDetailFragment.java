@@ -7,7 +7,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,11 +18,12 @@ import com.example.android_etpj.R;
 import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Enrollment;
 import com.example.android_etpj.models.Trainee;
+import com.example.android_etpj.ui.edit.EditAssignmentFragment;
 
 import java.text.SimpleDateFormat;
 
 public class ViewEnrollmentDetailFragment extends Fragment {
-    public static final String TAG = ViewEnrollmentDetailFragment.class.getName();
+    public static final String TAG = EditAssignmentFragment.class.getName();
 
     private TextView tvContentTrainee;
     private TextView tvContentClass;

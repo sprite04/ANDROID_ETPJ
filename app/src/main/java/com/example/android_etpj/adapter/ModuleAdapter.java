@@ -5,6 +5,9 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Html;
+
+import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -35,6 +38,7 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
     private List<Module> moduleList;
     private Activity activity;
     private ExchangeModule exchange;
+    private Object user;
 
 
     public void setData(List<Module> list){
@@ -42,8 +46,9 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
         notifyDataSetChanged();
     }
 
-    public ModuleAdapter(ExchangeModule exchange) {
+    public ModuleAdapter(ExchangeModule exchange, Object user) {
         this.exchange=exchange;
+        this.user=user;
     }
 
     @NonNull
@@ -73,24 +78,30 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
                 "<b>" + "Feedback Title: " + "</b> "+ module.getFeedback().getTitle()+"<br>"+
                 "<b>" + "Feedback StartTime: " + "</b> " + (module.getFeedbackStartTime()!=null ? formatterDateTime.format(module.getFeedbackStartTime()):"" )+"<br>"+
                 "<b>" + "Feedback EndTime: " + "</b> "+ (module.getFeedbackEndTime()!=null ? formatterDateTime.format(module.getFeedbackEndTime()):"" )
-                ;
+        ;
 
 
         holder.tvItem.setText(Html.fromHtml(displayText,1));
 
-        holder.btnEdit.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setEdit(module);
-            }
-        });
+        if(user instanceof Admin){
 
-        holder.btnDelete.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setDelete(module);
-            }
-        });
+            holder.btnEdit.setVisibility(View.VISIBLE);
+            holder.btnDelete.setVisibility(View.VISIBLE);
+
+            holder.btnEdit.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setEdit(module);
+                }
+            });
+
+            holder.btnDelete.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    setDelete(module);
+                }
+            });
+        }
     }
 
     private void setDelete(Module module) {
@@ -239,11 +250,16 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
     }
 
     private void dialogSuccess(){
+
         Dialog dialogSuccess=new Dialog(activity);
         dialogSuccess.setContentView(R.layout.dialog_notification);
         dialogSuccess.setCancelable(false);
 
+        Log.e("hrer",String.valueOf(activity.toString()));
+
         Window window=dialogSuccess.getWindow();
+        Log.e("hrer",String.valueOf(window==null));
+
         if(window==null)
             return ;
         window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
@@ -285,6 +301,9 @@ public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleView
             tvItem=itemView.findViewById(R.id.tv_content);
             btnEdit=itemView.findViewById(R.id.btn_edit);
             btnDelete=itemView.findViewById(R.id.btn_delete);
+
+            btnDelete.setVisibility(View.GONE);
+            btnEdit.setVisibility(View.GONE);
 
         }
     }

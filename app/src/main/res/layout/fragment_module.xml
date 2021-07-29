@@ -44,8 +44,7 @@
                 android:id="@+id/edt_name"
                 android:textSize="15sp"
                 android:typeface="serif"
-                android:background="@drawable/background_border_white"
-                android:text="linh"/>
+                android:background="@drawable/background_border_white" />
 
             <TextView
                 android:layout_width="match_parent"

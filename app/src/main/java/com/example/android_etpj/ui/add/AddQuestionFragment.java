@@ -1,10 +1,15 @@
 package com.example.android_etpj.ui.add;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
@@ -19,13 +24,10 @@ import androidx.fragment.app.FragmentManager;
 import com.example.android_etpj.R;
 import com.example.android_etpj.SpinnerAdapter;
 import com.example.android_etpj.api.ApiService;
-import com.example.android_etpj.models.Module;
 import com.example.android_etpj.models.Question;
 import com.example.android_etpj.models.Topic;
 
-import java.text.ParseException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import retrofit2.Call;
@@ -97,10 +99,31 @@ public class AddQuestionFragment extends Fragment {
                         @Override
                         public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                             if(response.body()==true){
-                                if(getActivity().getSupportFragmentManager()!=null){
-                                    FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
-                                    fragmentManager.popBackStack();
-                                }
+                                Dialog dialogSuccess=new Dialog(getActivity());
+                                dialogSuccess.setContentView(R.layout.dialog_notification);
+                                dialogSuccess.setCancelable(false);
+
+                                Window window=dialogSuccess.getWindow();
+                                if(window==null)
+                                    return ;
+                                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+                                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                TextView tvTitleSuccess=dialogSuccess.findViewById(R.id.tv_title);
+                                tvTitleSuccess.setText("Add Question success!");
+
+                                Button btnOk=dialogSuccess.findViewById(R.id.btn_ok);
+                                btnOk.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialogSuccess.cancel();
+                                        if(getActivity().getSupportFragmentManager()!=null){
+                                            FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
+                                            fragmentManager.popBackStack();
+                                        }
+                                    }
+                                });
+                                dialogSuccess.show();
                             }
                         }
 

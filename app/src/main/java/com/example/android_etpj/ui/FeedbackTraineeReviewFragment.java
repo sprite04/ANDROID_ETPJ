@@ -294,54 +294,24 @@ public class FeedbackTraineeReviewFragment extends Fragment {
                                 review.setAnswers(answers);
                                 review.setTraineeComment(traineeComment);
 
-
-                                /*ApiService.apiService.addTraineeComment(traineeComment).enqueue(new Callback<Boolean>() {
+                                ApiService.apiService.addAnswers(review).enqueue(new Callback<Boolean>() {
                                     @Override
                                     public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                                         Boolean result=response.body();
                                         if(result==true){
                                             dialogSuccess();
                                         }
+                                        else {
+                                            dialogFail();
+                                        }
                                     }
 
                                     @Override
                                     public void onFailure(Call<Boolean> call, Throwable t) {
-                                        Log.e("mmmmmmm",t.getMessage());
                                         dialogFail();
-                                        return;
-                                    }
-                                });*/
-
-                                for(int i=0; i<answers.size(); i++){
-                                    ApiService.apiService.addAnswer(answers.get(i)).enqueue(new Callback<Boolean>() {
-                                        @Override
-                                        public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                                            Boolean result=response.body();
-
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<Boolean> call, Throwable t) {
-
-                                        }
-                                    });
-                                }
-
-                                ApiService.apiService.checkAnswerUsed(assignment.getClassID(),assignment.getModuleID(),trainee.getUserId()).enqueue(new Callback<Boolean>() {
-                                    @Override
-                                    public void onResponse(Call<Boolean> call, Response<Boolean> response) {
-                                        Boolean result=response.body();
-                                        if(result==true){
-                                            dialogSuccess();
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onFailure(Call<Boolean> call, Throwable t) {
-
+                                        Log.e("Error add answer, comment",t.getMessage());
                                     }
                                 });
-
 
 
                             }

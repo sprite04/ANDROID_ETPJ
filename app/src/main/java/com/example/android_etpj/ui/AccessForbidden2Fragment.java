@@ -11,15 +11,15 @@ import androidx.fragment.app.Fragment;
 
 import com.example.android_etpj.R;
 
-public class JoinFragment extends Fragment {
+public class AccessForbidden2Fragment extends Fragment {
 
-    public JoinFragment() {
+    public AccessForbidden2Fragment() {
     }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        View view=inflater.inflate(R.layout.fragment_class,container,false);
+        View view=inflater.inflate(R.layout.fragment_access_forbidden_1,container,false);
 
         return view;
     }

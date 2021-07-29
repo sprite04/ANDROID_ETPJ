@@ -5,6 +5,9 @@ import android.app.Dialog;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.text.Html;
+
+import android.util.Log;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,12 +22,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android_etpj.MainActivity;
 import com.example.android_etpj.R;
-import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.interfaces.ExchangeClass;
+import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.models.Admin;
 import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Enrollment;
-import com.google.android.material.snackbar.Snackbar;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -186,6 +188,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
                         @Override
                         public void onFailure(Call<Boolean> call, Throwable t) {
 
+                            dialogFail();
+
                         }
                     });
                 }
@@ -229,6 +233,7 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
                                 dialog.cancel();
 
                                 //create dialog success
+
                                 dialogSuccess();
 
                                 exchange.loadData();
@@ -237,6 +242,8 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
                         @Override
                         public void onFailure(Call<Boolean> call, Throwable t) {
+
+                            dialogFail();
 
                         }
                     });
@@ -256,10 +263,37 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
 
     }
 
+
+    private void dialogFail() {
+        Dialog dialogFail=new Dialog(activity);
+        dialogFail.setContentView(R.layout.dialog_notification_2);
+        dialogFail.setCancelable(false);
+
+        Window window=dialogFail.getWindow();
+        if(window==null)
+            return ;
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView tvTitleFail=dialogFail.findViewById(R.id.tv_title);
+        tvTitleFail.setText("Delete Fail!");
+
+        Button btnOk=dialogFail.findViewById(R.id.btn_ok);
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogFail.cancel();
+            }
+        });
+        dialogFail.show();
+    }
+
+
     private void dialogSuccess(){
         Dialog dialogSuccess=new Dialog(activity);
         dialogSuccess.setContentView(R.layout.dialog_notification);
         dialogSuccess.setCancelable(false);
+
 
         Window window=dialogSuccess.getWindow();
         if(window==null)
@@ -277,6 +311,9 @@ public class ClassAdapter extends RecyclerView.Adapter<ClassAdapter.ClassViewHol
                 dialogSuccess.cancel();
             }
         });
+
+        dialogSuccess.show();
+
     }
 
     private void setEdit(Class clss) {

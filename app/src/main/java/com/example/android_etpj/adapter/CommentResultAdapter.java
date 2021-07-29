@@ -5,8 +5,6 @@ import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,15 +12,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android_etpj.R;
 import com.example.android_etpj.interfaces.ExchangeCommentResult;
-import com.example.android_etpj.interfaces.ExchangeEnrollment;
 import com.example.android_etpj.models.CommentResult;
-import com.example.android_etpj.models.Enrollment;
 import com.example.android_etpj.models.Trainee;
 import com.example.android_etpj.models.Trainer;
 
 import java.util.List;
 
-public class CommentResultAdapter extends RecyclerView.Adapter<CommentResultAdapter.CommentViewHolder> {
+public class CommentResultAdapter extends RecyclerView.Adapter<CommentResultAdapter.CommentViewHolder>{
     private List<CommentResult> commentResultList;
     private Activity activity;
     private ExchangeCommentResult exchange;

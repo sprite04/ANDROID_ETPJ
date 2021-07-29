@@ -1,12 +1,18 @@
 package com.example.android_etpj.ui.add;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -74,14 +80,21 @@ public class AddModuleFragment extends Fragment {
     private Button btnBack;
 
 
+    private Admin user;
 
     private Module module;
+    Activity activity;
+
+    public AddModuleFragment(Admin user) {
+        this.user=user;
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_module,container,false);
 
+        activity=(Activity) container.getContext();
         btnStartDate=view.findViewById(R.id.img_start_date);
         btnEndDate=view.findViewById(R.id.img_end_date);
         btnFBStartDate=view.findViewById(R.id.img_fb_start_date);
@@ -378,16 +391,17 @@ public class AddModuleFragment extends Fragment {
                         @Override
                         public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                             if(response.body()==true){
-                                if(getActivity().getSupportFragmentManager()!=null){
-                                    FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
-                                    fragmentManager.popBackStack();
-                                }
+                                dialogSuccess();
+                            }
+                            else {
+                                dialogFail();
                             }
                         }
 
                         @Override
                         public void onFailure(Call<Boolean> call, Throwable t) {
-
+                            Log.e("ErrorAddModuleFragment",t.getMessage());
+                            dialogFail();
                         }
                     });
                 }
@@ -396,6 +410,63 @@ public class AddModuleFragment extends Fragment {
         });
 
         return view;
+    }
+
+    private void dialogFail() {
+        Dialog dialogFail=new Dialog(activity);
+        dialogFail.setContentView(R.layout.dialog_notification_2);
+        dialogFail.setCancelable(false);
+
+        Window window=dialogFail.getWindow();
+        if(window==null)
+            return ;
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView tvTitleFail=dialogFail.findViewById(R.id.tv_title);
+        tvTitleFail.setText("Add Fail!");
+
+        Button btnOk=dialogFail.findViewById(R.id.btn_ok);
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogFail.cancel();
+            }
+        });
+        dialogFail.show();
+    }
+
+    private void dialogSuccess(){
+
+        Dialog dialogSuccess=new Dialog(activity);
+        dialogSuccess.setContentView(R.layout.dialog_notification);
+        dialogSuccess.setCancelable(false);
+
+        Log.e("hrer",String.valueOf(activity.toString()));
+
+        Window window=dialogSuccess.getWindow();
+        Log.e("hrer",String.valueOf(window==null));
+
+        if(window==null)
+            return ;
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView tvTitleSuccess=dialogSuccess.findViewById(R.id.tv_title);
+        tvTitleSuccess.setText("Add Success!");
+
+        Button btnOk=dialogSuccess.findViewById(R.id.btn_ok);
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogSuccess.cancel();
+                if(getActivity().getSupportFragmentManager()!=null){
+                    FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
+                    fragmentManager.popBackStack();
+                }
+            }
+        });
+        dialogSuccess.show();
     }
 
     private void setSpinnerFeedback() {
@@ -451,10 +522,18 @@ public class AddModuleFragment extends Fragment {
 
                 SpinnerAdapter spAdminIDAdapter=new SpinnerAdapter(getContext(),R.layout.item_sp_selected,admins);
                 spAdminID.setAdapter(spAdminIDAdapter);
-                if(arrayList.size()>=2)
-                {
-                    spAdminID.setSelection(spAdminIDAdapter.getPosition(arrayList.get(1)));
+
+                boolean existAdmin=false;
+                for(int i=0; i<arrayList.size();i++){
+                    Admin admin=arrayList.get(i);
+                    if(admin.getUsername().trim().equals(user.getUsername())){
+                        spAdminID.setSelection(spAdminIDAdapter.getPosition(arrayList.get(i)));
+                        existAdmin=true;
+                        break;
+                    }
                 }
+
+
 
                 spAdminID.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override

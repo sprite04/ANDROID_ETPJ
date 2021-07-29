@@ -17,9 +17,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.example.android_etpj.interfaces.ExchangeAssignment;
 import com.example.android_etpj.R;
 import com.example.android_etpj.api.ApiService;
+import com.example.android_etpj.interfaces.ExchangeAssignment;
 import com.example.android_etpj.models.Assignment;
 import com.example.android_etpj.models.Trainee;
 import com.example.android_etpj.models.Trainer;
@@ -31,12 +31,10 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.AssignmentViewHolder> {
-
     private List<Assignment> assignmentsList;
     private Activity activity;
     private ExchangeAssignment exchange;
     private Object user;
-
 
     public void setData(List<Assignment> list) {
         this.assignmentsList = list;
@@ -50,7 +48,7 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
 
     @NonNull
     @Override
-    public AssignmentAdapter.AssignmentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public AssignmentViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         activity = new Activity();
         activity = (Activity) parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rcv_common, parent, false);
@@ -58,7 +56,8 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
     }
 
     @Override
-    public void onBindViewHolder(@NonNull AssignmentAdapter.AssignmentViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull AssignmentViewHolder holder, int position) {
+
         Assignment assignment = assignmentsList.get(position);
         if (assignment == null)
             return;
@@ -90,12 +89,6 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
                 setDelete(assignment);
             }
         });
-
-
-    }
-
-    private void setEdit(Assignment assignment) {
-        exchange.editData(assignment);
     }
 
     @Override
@@ -103,6 +96,10 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         if(assignmentsList!=null)
             return assignmentsList.size();
         return 0;
+    }
+
+    private void setEdit(Assignment assignment) {
+        exchange.editData(assignment);
     }
 
     private void setDelete(Assignment assignment) {
@@ -159,21 +156,6 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
         dialog.show();
     }
 
-
-    public class AssignmentViewHolder extends RecyclerView.ViewHolder {
-
-        private TextView tvItem;
-        private ImageButton btnEdit;
-        private ImageButton btnDelete;
-
-        public AssignmentViewHolder(@NonNull View itemView) {
-            super(itemView);
-            tvItem = itemView.findViewById(R.id.tv_content);
-            btnEdit = itemView.findViewById(R.id.btn_edit);
-            btnDelete = itemView.findViewById(R.id.btn_delete);
-
-        }
-    }
     private void dialogSuccess(){
         Dialog dialogSuccess=new Dialog(activity);
         dialogSuccess.setContentView(R.layout.dialog_notification);
@@ -196,5 +178,19 @@ public class AssignmentAdapter extends RecyclerView.Adapter<AssignmentAdapter.As
             }
         });
     }
-}
 
+    public class AssignmentViewHolder extends RecyclerView.ViewHolder {
+
+        private TextView tvItem;
+        private ImageButton btnEdit;
+        private ImageButton btnDelete;
+
+        public AssignmentViewHolder(@NonNull View itemView) {
+            super(itemView);
+            tvItem = itemView.findViewById(R.id.tv_content);
+            btnEdit = itemView.findViewById(R.id.btn_edit);
+            btnDelete = itemView.findViewById(R.id.btn_delete);
+
+        }
+    }
+}

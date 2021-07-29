@@ -11,18 +11,18 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.example.android_etpj.MainActivity;
 import com.example.android_etpj.R;
 import com.example.android_etpj.SpinnerAdapter;
 import com.example.android_etpj.api.ApiService;
+import com.example.android_etpj.interfaces.ExchangeResult;
 import com.example.android_etpj.models.Admin;
 import com.example.android_etpj.models.Answer;
 import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Module;
-import com.example.android_etpj.models.Topic;
 import com.example.android_etpj.models.Trainer;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -57,10 +57,14 @@ public class ClassStatisticFragment extends Fragment {
     private List<String> titleList;
 
     private Object user;
+    private ExchangeResult exchangeResult;
+
+    private Button btnDetail;
 
 
 
-    public ClassStatisticFragment(Object user) {
+    public ClassStatisticFragment(Object user, ExchangeResult exchangeResult) {
+        this.exchangeResult=exchangeResult;
         this.user = user;
     }
 
@@ -70,7 +74,7 @@ public class ClassStatisticFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view =  inflater.inflate(R.layout.fragment_class_statistic, container, false);
 
-
+        btnDetail=view.findViewById(R.id.btn_detail);
 
         clss = new Class();
         module = new Module();
@@ -102,6 +106,13 @@ public class ClassStatisticFragment extends Fragment {
         pcClassStatistic = view.findViewById(R.id.pie_chart_class);
         pcClassStatistic.setDrawHoleEnabled(false);
         setClassPieChart();
+
+        btnDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exchangeResult.tranferPage(2);
+            }
+        });
 
         return view;
     }

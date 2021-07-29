@@ -1,11 +1,15 @@
 package com.example.android_etpj.ui.edit;
 
+import android.app.Dialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
@@ -19,7 +23,6 @@ import androidx.fragment.app.FragmentManager;
 import com.example.android_etpj.R;
 import com.example.android_etpj.SpinnerAdapter;
 import com.example.android_etpj.api.ApiService;
-import com.example.android_etpj.models.Module;
 import com.example.android_etpj.models.Question;
 import com.example.android_etpj.models.Topic;
 
@@ -58,8 +61,6 @@ public class EditQuestionFragment extends Fragment {
         Bundle bundle = getArguments();
         question= (Question) bundle.get("QUESTION");
 
-
-
         tvErrorContent.setVisibility(View.GONE);
 
         setSpinnerSearch();
@@ -80,6 +81,7 @@ public class EditQuestionFragment extends Fragment {
 
         btnSave.setOnClickListener(new View.OnClickListener() {
 
+
             @Override
             public void onClick(View v) {
                 boolean success=true;
@@ -97,15 +99,63 @@ public class EditQuestionFragment extends Fragment {
                 }
 
                 if(success==true){
-
+                    Log.e("hahaaa",String.valueOf(question.getQuestionContent()));
                     ApiService.apiService.editQuestion(question).enqueue(new Callback<Boolean>() {
                         @Override
                         public void onResponse(Call<Boolean> call, Response<Boolean> response) {
+                            Log.e("haha",String.valueOf(response.body()));
                             if(response.body()==true){
-                                if(getActivity().getSupportFragmentManager()!=null){
-                                    FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
-                                    fragmentManager.popBackStack();
-                                }
+                                Dialog dialogSuccess=new Dialog(getActivity());
+                                dialogSuccess.setContentView(R.layout.dialog_notification);
+                                dialogSuccess.setCancelable(false);
+
+                                Window window=dialogSuccess.getWindow();
+                                if(window==null)
+                                    return ;
+                                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+                                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                TextView tvTitleSuccess=dialogSuccess.findViewById(R.id.tv_title);
+
+                                tvTitleSuccess.setText("Add Question success!");
+
+
+                                Button btnOk=dialogSuccess.findViewById(R.id.btn_ok);
+                                btnOk.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialogSuccess.cancel();
+                                        if(getActivity().getSupportFragmentManager()!=null){
+                                            FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
+                                            fragmentManager.popBackStack();
+                                        }
+                                    }
+                                });
+                                dialogSuccess.show();
+                            }else{
+                                Dialog dialog = new Dialog(getActivity());
+                                dialog.setContentView(R.layout.dialog_error);
+                                dialog.setCancelable(false);
+
+                                Window window = dialog.getWindow();
+                                if (window == null)
+                                    return;
+                                window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                TextView tvTitleSuccess=dialog.findViewById(R.id.tv_title);
+
+                                tvTitleSuccess.setText("Add Question  fail!");
+
+
+                                Button btnOk=dialog.findViewById(R.id.btn_ok_error);
+                                btnOk.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        dialog.cancel();
+                                    }
+                                });
+                                dialog.show();
                             }
                         }
 

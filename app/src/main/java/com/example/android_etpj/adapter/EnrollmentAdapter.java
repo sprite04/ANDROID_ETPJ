@@ -50,7 +50,7 @@ public class EnrollmentAdapter extends RecyclerView.Adapter<EnrollmentAdapter.En
         activity = new Activity();
         activity = (Activity) parent.getContext();
         View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_rcv_common, parent, false);
-        return new EnrollmentAdapter.EnrollmentViewHolder(view);
+        return new EnrollmentViewHolder(view);
     }
 
     @Override

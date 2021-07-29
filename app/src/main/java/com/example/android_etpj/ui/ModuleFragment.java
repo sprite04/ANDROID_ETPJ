@@ -1,6 +1,7 @@
 package com.example.android_etpj.ui;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,10 +35,12 @@ public class ModuleFragment extends Fragment implements ExchangeModule {
     private TextView tvTitle;
     private ImageButton btnAdd;
     private List<Module> moduleList;
+    private Object user;
 
     private MainActivity mainActivity;
 
-    public ModuleFragment() {
+    public ModuleFragment(Object user) {
+        this.user=user;
     }
 
     @Nullable
@@ -50,23 +53,38 @@ public class ModuleFragment extends Fragment implements ExchangeModule {
         rcvModule=view.findViewById(R.id.rcv_common);
         tvTitle=view.findViewById(R.id.tv_title);
         btnAdd=view.findViewById(R.id.btn_add);
-        //btnAdd.setVisibility(View.GONE);
+        if(user instanceof Admin){
+            try {
+                Admin admin=(Admin) user;
+                btnAdd.setVisibility(View.VISIBLE);
+                btnAdd.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+
+                        mainActivity.addModuleFragment(admin);
+                    }
+                });
+            }
+            catch (Exception e){
+                Log.e("ErrorModuleFragmentButtonAdd",e.getMessage());
+            }
+
+        }
+        else {
+            btnAdd.setVisibility(View.GONE);
+        }
 
 
 
-        moduleAdapter=new ModuleAdapter(this);
+        moduleAdapter=new ModuleAdapter(this, user);
         loadData();
 
         LinearLayoutManager linearLayoutManager=new LinearLayoutManager(getActivity());
         rcvModule.setLayoutManager(linearLayoutManager);
         rcvModule.setAdapter(moduleAdapter);
 
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                mainActivity.addModuleFragment();
-            }
-        });
+
 
         return view;
     }
@@ -75,20 +93,68 @@ public class ModuleFragment extends Fragment implements ExchangeModule {
 
     @Override
     public void loadData() {
-        ApiService.apiService.getModules().enqueue(new Callback<List<Module>>() {
-            @Override
-            public void onResponse(Call<List<Module>> call, Response<List<Module>> response) {
-                moduleList = (ArrayList<Module>) response.body();
-                tvTitle.setText("Module List");
+        if(user instanceof Admin) {
+            ApiService.apiService.getModules().enqueue(new Callback<List<Module>>() {
+                @Override
+                public void onResponse(Call<List<Module>> call, Response<List<Module>> response) {
+                    moduleList = (ArrayList<Module>) response.body();
+                    tvTitle.setText("Module List");
 
-                moduleAdapter.setData(moduleList);
+                    moduleAdapter.setData(moduleList);
+                }
+
+                @Override
+                public void onFailure(Call<List<Module>> call, Throwable t) {
+
+                }
+            });
+        }
+        else if(user instanceof Trainer){
+            try {
+                Trainer trainer=(Trainer)user;
+                ApiService.apiService.getModuleByIdTrainer(trainer.getUsername()).enqueue(new Callback<List<Module>>() {
+                    @Override
+                    public void onResponse(Call<List<Module>> call, Response<List<Module>> response) {
+                        moduleList = (ArrayList<Module>) response.body();
+                        tvTitle.setText("Module List");
+
+                        moduleAdapter.setData(moduleList);
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Module>> call, Throwable t) {
+
+                    }
+                });
+            }
+            catch (Exception ex){
+                Log.e("ModuleFragment",ex.getMessage());
+            }
+        }
+        else if(user instanceof Trainee){
+            try {
+                Trainee trainee=(Trainee) user;
+                ApiService.apiService.getModuleByIdTrainee(trainee.getUserId()).enqueue(new Callback<List<Module>>() {
+                    @Override
+                    public void onResponse(Call<List<Module>> call, Response<List<Module>> response) {
+                        moduleList = (ArrayList<Module>) response.body();
+                        tvTitle.setText("Module List");
+
+                        moduleAdapter.setData(moduleList);
+                    }
+
+                    @Override
+                    public void onFailure(Call<List<Module>> call, Throwable t) {
+
+                    }
+                });
+            }
+            catch (Exception ex){
+                Log.e("ModuleFragment",ex.getMessage());
             }
 
-            @Override
-            public void onFailure(Call<List<Module>> call, Throwable t) {
+        }
 
-            }
-        });
     }
 
     @Override

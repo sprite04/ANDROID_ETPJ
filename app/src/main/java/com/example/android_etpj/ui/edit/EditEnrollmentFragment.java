@@ -22,8 +22,8 @@ import androidx.fragment.app.FragmentManager;
 import com.example.android_etpj.R;
 import com.example.android_etpj.SpinnerAdapter;
 import com.example.android_etpj.api.ApiService;
-import com.example.android_etpj.models.Enrollment;
 import com.example.android_etpj.models.Class;
+import com.example.android_etpj.models.Enrollment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -33,7 +33,7 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class EditEnrollmentFragment extends Fragment {
-    public static final String TAG = EditEnrollmentFragment.class.getName();
+    public static final String TAG = EditAssignmentFragment.class.getName();
 
     private TextView tvTrainerId;
     private TextView tvTrainerName;
@@ -186,6 +186,7 @@ public class EditEnrollmentFragment extends Fragment {
                             Class aClass = (Class) object;
                             enrollment.setClassId(aClass.getClassID());
                         }
+
                     }
 
                     @Override

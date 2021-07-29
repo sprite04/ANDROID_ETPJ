@@ -5,12 +5,12 @@ import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
-import android.text.Html;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
@@ -18,11 +18,10 @@ import android.widget.TextView;
 import com.example.android_etpj.R;
 import com.example.android_etpj.SpinnerAdapter;
 import com.example.android_etpj.api.ApiService;
+import com.example.android_etpj.interfaces.ExchangeResult;
 import com.example.android_etpj.models.Answer;
 import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Module;
-import com.example.android_etpj.models.Question;
-import com.example.android_etpj.models.Topic;
 import com.example.android_etpj.models.TopicAnswers;
 import com.github.mikephil.charting.charts.PieChart;
 import com.github.mikephil.charting.data.PieData;
@@ -48,12 +47,16 @@ public class TopicStatisticFragment extends Fragment {
 
     private Class clss;
     private Module module;
+    private Button btnOverview;
+    private Button btnDetail;
 
     private LinearLayout layoutMainChart;
 
     private Object user;
+    private ExchangeResult exchangeResult;
 
-    public TopicStatisticFragment(Object user) {
+    public TopicStatisticFragment(Object user,ExchangeResult exchangeResult) {
+        this.exchangeResult=exchangeResult;
         this.user = user;
     }
 
@@ -63,6 +66,21 @@ public class TopicStatisticFragment extends Fragment {
 
         clss = new Class();
         module = new Module();
+
+        btnDetail=view.findViewById(R.id.btn_detail);
+        btnDetail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exchangeResult.tranferPage(2);
+            }
+        });
+        btnOverview=view.findViewById(R.id.btn_overview);
+        btnOverview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exchangeResult.tranferPage(0);
+            }
+        });
 
         tvClassSpinner = view.findViewById(R.id.tv_title_search_1);
         tvModuleSpinner = view.findViewById(R.id.tv_title_search_2);
@@ -79,6 +97,8 @@ public class TopicStatisticFragment extends Fragment {
 
         setClassSpinnerSearch();
         setModuleSpinnerSearch();
+
+
 
         setTopicChart();
         return  view;

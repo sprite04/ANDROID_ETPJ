@@ -63,7 +63,9 @@ public class AddFeedbackFragment extends Fragment {
         mainActivity=(MainActivity)getActivity();
 
         feedback=new Feedback();
-        
+        List<Question> questionList=new ArrayList<>();
+        feedback.setQuestions(questionList);
+
         spTypeFeedback=view.findViewById(R.id.sp_type_feedback);
         edtFeedbackTitle=view.findViewById(R.id.edt_feedback_title);
 
@@ -74,7 +76,7 @@ public class AddFeedbackFragment extends Fragment {
         tvTitle.setText("Create New Feedback");
 
         layoutInsert=view.findViewById(R.id.layout_insert);
-        
+
         setSpinnerTypeFeedback();
         loadData();
 
@@ -135,6 +137,8 @@ public class AddFeedbackFragment extends Fragment {
                     return;
                 }
                 feedback.setTitle(title);
+
+                int countTopicEmpty=0;
                 for(int i=0; i<topics.size();i++){
                     int count=0;
                     for(int j=0; j<feedback.getQuestions().size();j++){
@@ -144,31 +148,34 @@ public class AddFeedbackFragment extends Fragment {
                         }
                     }
                     if(count==0){
-                        Dialog dialogFail=new Dialog(mainActivity);
-                        dialogFail.setContentView(R.layout.dialog_notification_2);
-                        dialogFail.setCancelable(false);
-
-                        Window window=dialogFail.getWindow();
-                        if(window==null)
-                            return ;
-                        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
-                        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-
-                        TextView tvTitleFail=dialogFail.findViewById(R.id.tv_title);
-                        tvTitleFail.setText("Choose at least 1 question for each topic!");
-
-                        Button btnOk=dialogFail.findViewById(R.id.btn_ok);
-                        btnOk.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialogFail.cancel();
-                            }
-                        });
-                        dialogFail.show();
-                        return;
+                        countTopicEmpty++;
                     }
 
 
+                }
+                if(countTopicEmpty>0){
+                    Dialog dialogFail=new Dialog(mainActivity);
+                    dialogFail.setContentView(R.layout.dialog_notification_2);
+                    dialogFail.setCancelable(false);
+
+                    Window window=dialogFail.getWindow();
+                    if(window==null)
+                        return ;
+                    window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+                    window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                    TextView tvTitleFail=dialogFail.findViewById(R.id.tv_title);
+                    tvTitleFail.setText("Choose at least 1 question for each topic!");
+
+                    Button btnOk=dialogFail.findViewById(R.id.btn_ok);
+                    btnOk.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            dialogFail.cancel();
+                        }
+                    });
+                    dialogFail.show();
+                    return;
                 }
 
                 mainActivity.reviewAddFeedbackFragment(feedback);

@@ -93,6 +93,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.5"
             android:text="Show Detail"
+            android:id="@+id/btn_detail"
             android:textAllCaps="false"
             android:layout_marginHorizontal="30dp"/>
 

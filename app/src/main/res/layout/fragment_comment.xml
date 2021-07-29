@@ -39,6 +39,7 @@
         android:layout_height="wrap_content"
         android:orientation="horizontal"
         android:layout_marginHorizontal="10dp"
+        android:layout_marginTop="10dp"
         android:id="@+id/search"
         android:visibility="gone"
         android:weightSum="4">
@@ -60,7 +61,7 @@
             android:textSize="14sp" />
         <Spinner
             android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:layout_height="wrap_content"
             android:background="@color/transparent"
             android:id="@+id/sp_module"/>

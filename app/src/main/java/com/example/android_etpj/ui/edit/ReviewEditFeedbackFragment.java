@@ -95,12 +95,7 @@ public class ReviewEditFeedbackFragment extends Fragment {
                     public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                         if(response.body()==true){
                             dialogSuccess();
-                            if(type==1){
-                                mainActivity.backFeedbackFragment();
-                            }
-                            else {
-                                mainActivity.backFeedbackFragmentRV();
-                            }
+
                         }
                         else {
                             dialogFail();
@@ -189,13 +184,19 @@ public class ReviewEditFeedbackFragment extends Fragment {
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         TextView tvTitleSuccess=dialogSuccess.findViewById(R.id.tv_title);
-        tvTitleSuccess.setText("Add Success!");
+        tvTitleSuccess.setText("Update Success!");
 
         Button btnOk=dialogSuccess.findViewById(R.id.btn_ok);
         btnOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 dialogSuccess.cancel();
+                if(type==1){
+                    mainActivity.backFeedbackFragment();
+                }
+                else {
+                    mainActivity.backFeedbackFragmentRV();
+                }
             }
         });
         dialogSuccess.show();
@@ -213,7 +214,7 @@ public class ReviewEditFeedbackFragment extends Fragment {
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         TextView tvTitleFail=dialogFail.findViewById(R.id.tv_title);
-        tvTitleFail.setText("Add Fail!");
+        tvTitleFail.setText("Update Fail!");
 
         Button btnOk=dialogFail.findViewById(R.id.btn_ok);
         btnOk.setOnClickListener(new View.OnClickListener() {

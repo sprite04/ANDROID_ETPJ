@@ -14,11 +14,10 @@ import android.widget.Button;
 import android.widget.TextView;
 
 import com.example.android_etpj.R;
+import com.example.android_etpj.adapter.ViewClassAdapter;
 import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.models.Class;
-import com.example.android_etpj.adapter.ViewClassAdapter;
 import com.example.android_etpj.models.Enrollment;
-import com.example.android_etpj.models.Trainee;
 
 import java.util.ArrayList;
 import java.util.List;

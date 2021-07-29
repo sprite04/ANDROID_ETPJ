@@ -1,7 +1,6 @@
 package com.example.android_etpj.ui;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,13 +13,14 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.example.android_etpj.MainActivity;
 import com.example.android_etpj.R;
-import com.example.android_etpj.adapter.StatisticViewPagerAdapter;
+import com.example.android_etpj.StatisticViewPagerAdapter;
+import com.example.android_etpj.interfaces.ExchangeResult;
 
-public class ResultFragment extends Fragment {
+public class ResultFragment extends Fragment implements ExchangeResult {
 
     private ViewPager vpStatistic;
     private Object user;
-    MainActivity mainActivity;
+    private MainActivity mainActivity;
 
 
     public ResultFragment(Object user) {
@@ -31,16 +31,31 @@ public class ResultFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_result,container,false);
-        mainActivity= mainActivity=(MainActivity)getActivity();
+        mainActivity=(MainActivity)getActivity();
 
         vpStatistic = view.findViewById(R.id.vp_statistic);
 
 
-        StatisticViewPagerAdapter statisticViewPagerAdapter = new StatisticViewPagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, user);
-
+        StatisticViewPagerAdapter statisticViewPagerAdapter = new StatisticViewPagerAdapter(getChildFragmentManager(), FragmentPagerAdapter.BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT, user,this::tranferPage);
         vpStatistic.setAdapter(statisticViewPagerAdapter);
-        vpStatistic.setCurrentItem(mainActivity.type);
-        
+
+
+
+
         return view;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if(vpStatistic!=null && mainActivity!=null){
+            vpStatistic.setCurrentItem(mainActivity.type);
+        }
+    }
+
+    @Override
+    public void tranferPage(int type) {
+        vpStatistic.setCurrentItem(type);
+    }
+
 }

@@ -29,7 +29,6 @@ import com.example.android_etpj.interfaces.ExchangeCommentResult;
 import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.CommentResult;
 import com.example.android_etpj.models.Module;
-import com.example.android_etpj.ui.add.AddClassFragment;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -39,7 +38,6 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class CommentResultFragment extends Fragment implements ExchangeCommentResult {
-
     public static final String TAG= CommentResultFragment.class.getName();
     private RecyclerView rcvComment;
     private CommentResultAdapter commentResultAdapter;
@@ -49,10 +47,9 @@ public class CommentResultFragment extends Fragment implements ExchangeCommentRe
     private MainActivity mainActivity;
     private LinearLayout spinner;
     private LinearLayout select;
+
     private Button btnShowOverView;
     private Button btnShowDetail;
-
-
 
     private Spinner spModuleName;
     private Spinner spClassName;

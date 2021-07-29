@@ -1,6 +1,5 @@
 package com.example.android_etpj.ui;
 
-import android.app.Activity;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
@@ -20,13 +19,12 @@ import com.example.android_etpj.MainActivity;
 import com.example.android_etpj.R;
 import com.example.android_etpj.SpinnerAdapter;
 import com.example.android_etpj.api.ApiService;
+import com.example.android_etpj.interfaces.ExchangeResult;
 import com.example.android_etpj.models.Admin;
 import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Module;
 import com.example.android_etpj.models.Question;
 import com.example.android_etpj.models.Statistic;
-import com.example.android_etpj.models.Topic;
-import com.example.android_etpj.models.TopicAnswers;
 import com.example.android_etpj.models.TopicStatistic;
 import com.example.android_etpj.models.Trainer;
 
@@ -47,12 +45,16 @@ public class PercentStatisticFragment extends Fragment {
     private Module module;
 
     private LinearLayout layoutMain;
-    private Button btnComment;
     private MainActivity mainActivity;
 
     private Object user;
+    private Button btnComment;
 
-    public PercentStatisticFragment(Object user) {
+    private Button btnOverview;
+    private ExchangeResult exchangeResult;
+
+    public PercentStatisticFragment(Object user, ExchangeResult exchangeResult) {
+        this.exchangeResult=exchangeResult;
         this.user = user;
     }
 
@@ -61,11 +63,11 @@ public class PercentStatisticFragment extends Fragment {
         View view =  inflater.inflate(R.layout.fragment_percent_statistic, container, false);
 
         mainActivity=(MainActivity)getActivity();
-
         clss = new Class();
         module = new Module();
 
         btnComment=view.findViewById(R.id.btn_comment);
+        btnOverview=view.findViewById(R.id.btn_overview);
 
         spClassSearch = view.findViewById(R.id.sp_search_1);
         spModuleSearch = view.findViewById(R.id.sp_search_2);
@@ -88,6 +90,14 @@ public class PercentStatisticFragment extends Fragment {
                 mainActivity.viewCommentResultFragment(user);
             }
         });
+
+        btnOverview.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                exchangeResult.tranferPage(0);
+            }
+        });
+
         layoutMain = view.findViewById(R.id.layout_percent_statistic);
         setPercentStatistic();
 
@@ -270,6 +280,7 @@ public class PercentStatisticFragment extends Fragment {
             public void onResponse(Call<List<TopicStatistic>> call, Response<List<TopicStatistic>> response) {
                 List<TopicStatistic> topicStatisticList = (ArrayList<TopicStatistic>) response.body();
                 for (int i = 0; i < topicStatisticList.size(); i++) {
+
                     View viewTopic;
                     viewTopic = getLayoutInflater().inflate(R.layout.item_topic_statistic,null,false);
 
@@ -283,63 +294,66 @@ public class PercentStatisticFragment extends Fragment {
                     layoutMain.addView(viewTopic);
 
                     for (int j = 0; j < questionList.size(); j++) {
-                        View viewQuestion;
-                        viewQuestion = getLayoutInflater().inflate(R.layout.item_question_statistic,null,false);
-
-                        TextView tvQuestion = viewQuestion.findViewById(R.id.tv_title_question);
-                        String questionString = "- " + questionList.get(j).getQuestionContent();
-                        tvQuestion.setText(Html.fromHtml(questionString,1));
-
-                        layoutMain.addView(viewQuestion);
-
                         Float sum = new Float(0.0);
 
-                        for (int value:statisticList.get(j).getAmount()) {
+                        for (int value : statisticList.get(j).getAmount()) {
                             sum = sum + value;
                         }
 
-                        List<Float> percentList = new ArrayList<>();
+                        if (sum > 0) {
 
-                        for (int k = 0; k < statisticList.get(j).getAmount().size(); k++) {
-                            if (sum!=0) {
-                                percentList.add(statisticList.get(j).getAmount().get(k) * 100 / sum);
-                            } else {
-                                percentList.add(new Float(0));
+                            View viewQuestion;
+                            viewQuestion = getLayoutInflater().inflate(R.layout.item_question_statistic, null, false);
+
+                            TextView tvQuestion = viewQuestion.findViewById(R.id.tv_title_question);
+                            String questionString = "- " + questionList.get(j).getQuestionContent();
+                            tvQuestion.setText(Html.fromHtml(questionString, 1));
+
+                            layoutMain.addView(viewQuestion);
+
+
+                            List<Float> percentList = new ArrayList<>();
+
+                            for (int k = 0; k < statisticList.get(j).getAmount().size(); k++) {
+                                if (sum != 0) {
+                                    percentList.add(statisticList.get(j).getAmount().get(k) * 100 / sum);
+                                } else {
+                                    percentList.add(new Float(0));
+                                }
+
                             }
 
-                        }
+                            View viewAnswer;
+                            viewAnswer = getLayoutInflater().inflate(R.layout.item_answer_statistic, null, false);
 
-                        View viewAnswer;
-                        viewAnswer = getLayoutInflater().inflate(R.layout.item_answer_statistic,null,false);
-
-                        for (int x=0; x < statisticList.get(j).getAmount().size(); x++) {
-                            switch (x) {
-                                case 0:
-                                    TextView tvAnswer0 = viewAnswer.findViewById(R.id.tv_answer0);
-                                    tvAnswer0.setText(String.valueOf(percentList.get(0)) + "%");
-                                    break;
-                                case 1:
-                                    TextView tvAnswer1 = viewAnswer.findViewById(R.id.tv_answer1);
-                                    tvAnswer1.setText(String.valueOf(percentList.get(1)) + "%");
-                                    break;
-                                case 2:
-                                    TextView tvAnswer2 = viewAnswer.findViewById(R.id.tv_answer2);
-                                    tvAnswer2.setText(String.valueOf(percentList.get(2)) + "%");
-                                    break;
-                                case 3:
-                                    TextView tvAnswer3 = viewAnswer.findViewById(R.id.tv_answer3);
-                                    tvAnswer3.setText(String.valueOf(percentList.get(3)) + "%");
-                                    break;
-                                case 4:
-                                    TextView tvAnswer4 = viewAnswer.findViewById(R.id.tv_answer4);
-                                    tvAnswer4.setText(String.valueOf(percentList.get(4)) + "%");
-                                    break;
+                            for (int x = 0; x < statisticList.get(j).getAmount().size(); x++) {
+                                switch (x) {
+                                    case 0:
+                                        TextView tvAnswer0 = viewAnswer.findViewById(R.id.tv_answer0);
+                                        tvAnswer0.setText(String.valueOf(percentList.get(0)) + "%");
+                                        break;
+                                    case 1:
+                                        TextView tvAnswer1 = viewAnswer.findViewById(R.id.tv_answer1);
+                                        tvAnswer1.setText(String.valueOf(percentList.get(1)) + "%");
+                                        break;
+                                    case 2:
+                                        TextView tvAnswer2 = viewAnswer.findViewById(R.id.tv_answer2);
+                                        tvAnswer2.setText(String.valueOf(percentList.get(2)) + "%");
+                                        break;
+                                    case 3:
+                                        TextView tvAnswer3 = viewAnswer.findViewById(R.id.tv_answer3);
+                                        tvAnswer3.setText(String.valueOf(percentList.get(3)) + "%");
+                                        break;
+                                    case 4:
+                                        TextView tvAnswer4 = viewAnswer.findViewById(R.id.tv_answer4);
+                                        tvAnswer4.setText(String.valueOf(percentList.get(4)) + "%");
+                                        break;
+                                }
                             }
+                            layoutMain.addView(viewAnswer);
                         }
-                        layoutMain.addView(viewAnswer);
+
                     }
-
-
                 }
             }
 

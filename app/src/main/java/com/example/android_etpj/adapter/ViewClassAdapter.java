@@ -2,11 +2,11 @@ package com.example.android_etpj.adapter;
 
 import android.app.Activity;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
-import android.widget.TableRow;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -14,7 +14,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android_etpj.R;
 import com.example.android_etpj.api.ApiService;
-import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Trainee;
 
 import java.util.List;
@@ -44,8 +43,6 @@ public class ViewClassAdapter extends RecyclerView.Adapter<ViewClassAdapter.View
     @Override
     public void onBindViewHolder(@NonNull ViewClassViewHolder holder, int position) {
 
-
-
         String traineeID = traineeIDList.get(position);
         if(traineeID==null)
             return;
@@ -54,6 +51,7 @@ public class ViewClassAdapter extends RecyclerView.Adapter<ViewClassAdapter.View
             @Override
             public void onResponse(Call<Trainee> call, Response<Trainee> response) {
                 Trainee trainee = (Trainee)response.body();
+                Log.e("traineelist",String.valueOf(trainee.getUserId()));
                 String displayText="";
                 displayText="<b>" + "Number: " + "</b> " + position + 1 +"<br>"+
                         "<b>" + "Trainee ID: " + "</b> "+ trainee.getUserId() +"<br>"+
@@ -64,7 +62,7 @@ public class ViewClassAdapter extends RecyclerView.Adapter<ViewClassAdapter.View
 
             @Override
             public void onFailure(Call<Trainee> call, Throwable t) {
-
+                Log.e("traineelist",t.getMessage());
             }
         });
     }

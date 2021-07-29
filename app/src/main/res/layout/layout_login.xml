@@ -5,7 +5,9 @@
     android:orientation="vertical"
     android:background="@color/purple_500"
     android:paddingTop="10dp"
+
     android:paddingHorizontal="40dp">
+
 
     <ImageView
         android:id="@+id/imageView"
@@ -28,6 +30,7 @@
         android:layout_marginTop="35dp"/>
 
     <EditText
+        android:id="@+id/username"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
@@ -36,6 +39,7 @@
         android:textSize="30sp"/>
 
     <TextView
+        android:id="@+id/username_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Username must have at least 1 character!"
@@ -44,14 +48,19 @@
         android:textColor="@color/white"/>
 
     <EditText
+        android:id="@+id/password"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginTop="5dp"
         android:hint="Password"
+
+        android:inputType="textPassword"
+
         android:fontFamily="@font/alternate_gothic"
         android:textSize="30sp"/>
 
     <TextView
+        android:id="@+id/password_error"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Password must have at least 1 character!"
@@ -61,7 +70,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@drawable/background_border_login_selected"
+        android:background="@drawable/background_orange"
         android:layout_marginTop="20dp"
         android:padding="10dp">
 
@@ -82,6 +91,11 @@
             android:layout_alignParentEnd="true"
             android:src="@drawable/expand"
             android:padding="5dp"/>
+        <Spinner
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/transparent"
+            android:id="@+id/sp_role"/>
 
 
 
@@ -89,6 +103,7 @@
     </RelativeLayout>
 
     <CheckBox
+        android:id="@+id/remember_me"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="30dp"
@@ -99,6 +114,7 @@
         android:textSize="30sp"/>
 
     <TextView
+        android:id="@+id/btn_login"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:paddingVertical="15dp"

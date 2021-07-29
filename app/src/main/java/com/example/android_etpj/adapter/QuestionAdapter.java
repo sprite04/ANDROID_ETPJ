@@ -18,13 +18,10 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.android_etpj.R;
-import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.interfaces.ExchangeQuestion;
-import com.example.android_etpj.models.Class;
+import com.example.android_etpj.api.ApiService;
 import com.example.android_etpj.models.Question;
-import com.google.android.material.snackbar.Snackbar;
 
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -32,7 +29,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewHolder> {
+public class    QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.QuestionViewHolder> {
     private List<Question> questionList;
     private Activity activity;
     private ExchangeQuestion exchange;
@@ -130,6 +127,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
                                 @Override
                                 public void onFailure(Call<Boolean> call, Throwable t) {
 
+                                    dialogFail();
+
                                 }
                             });
                         }
@@ -183,6 +182,8 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
                                 @Override
                                 public void onFailure(Call<Boolean> call, Throwable t) {
 
+                                    dialogFail();
+
                                 }
                             });
                         }
@@ -208,6 +209,32 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
     }
 
 
+    private void dialogFail() {
+        Dialog dialogFail=new Dialog(activity);
+        dialogFail.setContentView(R.layout.dialog_notification_2);
+        dialogFail.setCancelable(false);
+
+        Window window=dialogFail.getWindow();
+        if(window==null)
+            return ;
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView tvTitleFail=dialogFail.findViewById(R.id.tv_title);
+        tvTitleFail.setText("Add Question Fail!");
+
+        Button btnOk=dialogFail.findViewById(R.id.btn_ok);
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogFail.cancel();
+            }
+        });
+        dialogFail.show();
+    }
+
+
+
     private void dialogSuccess(){
         Dialog dialogSuccess=new Dialog(activity);
         dialogSuccess.setContentView(R.layout.dialog_notification);
@@ -220,7 +247,9 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
         window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         TextView tvTitleSuccess=dialogSuccess.findViewById(R.id.tv_title);
-        tvTitleSuccess.setText("Delete Success!");
+
+        tvTitleSuccess.setText("Add Question Success!");
+
 
         Button btnOk=dialogSuccess.findViewById(R.id.btn_ok);
         btnOk.setOnClickListener(new View.OnClickListener() {
@@ -229,6 +258,9 @@ public class QuestionAdapter extends RecyclerView.Adapter<QuestionAdapter.Questi
                 dialogSuccess.cancel();
             }
         });
+
+        dialogSuccess.show();
+
     }
 
     private void setEdit(Question question) {

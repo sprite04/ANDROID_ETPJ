@@ -16,15 +16,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
-import com.example.android_etpj.MainActivity;
 import com.example.android_etpj.adapter.QuestionAdapter;
+import com.example.android_etpj.interfaces.ExchangeQuestion;
+import com.example.android_etpj.MainActivity;
 import com.example.android_etpj.R;
 import com.example.android_etpj.SpinnerAdapter;
 import com.example.android_etpj.api.ApiService;
-import com.example.android_etpj.interfaces.ExchangeQuestion;
 import com.example.android_etpj.models.Admin;
-import com.example.android_etpj.models.Class;
 import com.example.android_etpj.models.Question;
 import com.example.android_etpj.models.Topic;
 
@@ -69,10 +67,6 @@ public class QuestionFragment extends Fragment implements ExchangeQuestion {
             @Override
             public void onResponse(Call<List<Question>> call, Response<List<Question>> response) {
                 questionList = (ArrayList<Question>) response.body();
-                for(int i=0; i<questionList.size(); i++){
-
-                    questionList.get(i).setTopicID(idTopic);
-                }
                 tvTitle.setText("Question List");
 
                 questionAdapter.setData(questionList);

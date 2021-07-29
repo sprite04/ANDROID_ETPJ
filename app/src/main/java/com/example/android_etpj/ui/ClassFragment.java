@@ -13,15 +13,13 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-
+import com.example.android_etpj.adapter.ClassAdapter;
+import com.example.android_etpj.interfaces.ExchangeClass;
 import com.example.android_etpj.MainActivity;
 import com.example.android_etpj.R;
-import com.example.android_etpj.adapter.ClassAdapter;
 import com.example.android_etpj.api.ApiService;
-import com.example.android_etpj.interfaces.ExchangeClass;
 import com.example.android_etpj.models.Admin;
 import com.example.android_etpj.models.Class;
-import com.example.android_etpj.models.Module;
 import com.example.android_etpj.models.Trainee;
 import com.example.android_etpj.models.Trainer;
 

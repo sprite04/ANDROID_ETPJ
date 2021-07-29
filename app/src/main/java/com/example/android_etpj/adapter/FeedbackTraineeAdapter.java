@@ -61,6 +61,8 @@ public class FeedbackTraineeAdapter extends RecyclerView.Adapter<FeedbackTrainee
         if(assignment==null)
             return;
 
+
+
         ApiService.apiService.checkAnswerUsed(assignment.getClassID(),assignment.getModuleID(),trainee.getUserId()).enqueue(new Callback<Boolean>() {
             @Override
             public void onResponse(Call<Boolean> call, Response<Boolean> response) {
@@ -81,8 +83,6 @@ public class FeedbackTraineeAdapter extends RecyclerView.Adapter<FeedbackTrainee
                     holder.btnEditFB.setVisibility(View.GONE);
                     holder.tvItem.setText(Html.fromHtml(displayText,1));
                     holder.tvItem.setTextSize(20f);
-
-
                 }
                 else {
                     SimpleDateFormat formatterDateTime= new SimpleDateFormat("dd/MM/yyyy HH:mm");

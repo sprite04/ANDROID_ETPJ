@@ -40,76 +40,7 @@ public class HomeFragment extends Fragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_home,container,false);
-        TextView tvTest=view.findViewById(R.id.tv_test);
-        Spinner spinner=view.findViewById(R.id.sp_test);
-        /*SpinnerAdapter spinnerAdapter=new SpinnerAdapter(getContext(),R.layout.item_sp_selected,getListCategory());
-        spinnerAdapter.setDropDownViewResource(R.layout.item_sp_category);*/
-        view1=view.findViewById(R.id.layout_home);
 
-        TextView tvRetrofit=view.findViewById(R.id.tv_retrofit);
-        TextView tvRetrofit2=view.findViewById(R.id.tv_retrofit_2);
-        Button btnAdd=view.findViewById(R.id.btn_add);
-
-        btnAdd.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
-        ApiService.apiService.getFeedbackById(1).enqueue(new Callback<Feedback>() {
-            @Override
-            public void onResponse(Call<Feedback> call, Response<Feedback> response) {
-                Feedback feedback=response.body();
-                if(feedback!=null){
-                    tvRetrofit.setText(feedback.toString());
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Feedback> call, Throwable t) {
-
-            }
-        });
-
-        /*ApiService.apiService.getModules().enqueue(new Callback<List<Module>>() {
-            @Override
-            public void onResponse(Call<List<Module>> call, Response<List<Module>> response) {
-                ArrayList<Module> modules = (ArrayList<Module>) response.body();
-                if(modules.size()>0){
-                    tvRetrofit2.setText(modules.get(0).toString());
-                }
-                else{
-                    tvRetrofit2.setText("0");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Module>> call, Throwable t) {
-
-            }
-        });*/
-
-        ApiService.apiService.getAssignmentsByTrainee("trainee2").enqueue(new Callback<List<Assignment>>() {
-            @Override
-            public void onResponse(Call<List<Assignment>> call, Response<List<Assignment>> response) {
-                ArrayList<Assignment> modules = (ArrayList<Assignment>) response.body();
-                if(modules.size()>0){
-
-                    Log.e("e",String.valueOf(modules.size()));
-                }
-                else{
-                    tvRetrofit2.setText("0");
-                }
-            }
-
-            @Override
-            public void onFailure(Call<List<Assignment>> call, Throwable t) {
-                Log.e("ee",t.getMessage());
-            }
-        });
-
-        String sourceString = "<b>" + "No: " + "</b> " + "1"+"<br>"+"<b>" + "Module Name: " + "</b> "+ "Truyền thông và mạng máy tính";
-        tvTest.setText(Html.fromHtml(sourceString,1));
         return view;
     }
 

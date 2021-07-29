@@ -1,12 +1,18 @@
 package com.example.android_etpj.ui.edit;
 
+import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.app.TimePickerDialog;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.DatePicker;
@@ -74,6 +80,7 @@ public class EditModuleFragment extends Fragment {
 
     private Button btnSave;
     private Button btnBack;
+    private Activity activity;
 
 
 
@@ -84,6 +91,7 @@ public class EditModuleFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view=inflater.inflate(R.layout.fragment_module,container,false);
 
+        activity=(Activity) container.getContext();
         Bundle bundle=getArguments();
         module= (Module) bundle.get("MODULE");
 
@@ -404,16 +412,17 @@ public class EditModuleFragment extends Fragment {
                         @Override
                         public void onResponse(Call<Boolean> call, Response<Boolean> response) {
                             if(response.body()==true){
-                                if(getActivity().getSupportFragmentManager()!=null){
-                                    FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
-                                    fragmentManager.popBackStack();
-                                }
+                                dialogSuccess();
+                            }
+                            else {
+                                dialogFail();
                             }
                         }
 
                         @Override
                         public void onFailure(Call<Boolean> call, Throwable t) {
-
+                            Log.e("ErrorEditModuleFragment",t.getMessage());
+                            dialogFail();
                         }
                     });
                 }
@@ -424,6 +433,65 @@ public class EditModuleFragment extends Fragment {
 
         return view;
     }
+
+
+    private void dialogFail() {
+        Dialog dialogFail=new Dialog(activity);
+        dialogFail.setContentView(R.layout.dialog_notification_2);
+        dialogFail.setCancelable(false);
+
+        Window window=dialogFail.getWindow();
+        if(window==null)
+            return ;
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView tvTitleFail=dialogFail.findViewById(R.id.tv_title);
+        tvTitleFail.setText("Add Fail!");
+
+        Button btnOk=dialogFail.findViewById(R.id.btn_ok);
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogFail.cancel();
+            }
+        });
+        dialogFail.show();
+    }
+
+    private void dialogSuccess(){
+
+        Dialog dialogSuccess=new Dialog(activity);
+        dialogSuccess.setContentView(R.layout.dialog_notification);
+        dialogSuccess.setCancelable(false);
+
+        Log.e("hrer",String.valueOf(activity.toString()));
+
+        Window window=dialogSuccess.getWindow();
+        Log.e("hrer",String.valueOf(window==null));
+
+        if(window==null)
+            return ;
+        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT,WindowManager.LayoutParams.WRAP_CONTENT);
+        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+        TextView tvTitleSuccess=dialogSuccess.findViewById(R.id.tv_title);
+        tvTitleSuccess.setText("Add Success!");
+
+        Button btnOk=dialogSuccess.findViewById(R.id.btn_ok);
+        btnOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialogSuccess.cancel();
+                if(getActivity().getSupportFragmentManager()!=null){
+                    FragmentManager fragmentManager=getActivity().getSupportFragmentManager();
+                    fragmentManager.popBackStack();
+                }
+            }
+        });
+        dialogSuccess.show();
+    }
+
 
     private void setSpinnerFeedback() {
         ApiService.apiService.getFeedbacks().enqueue(new Callback<List<Feedback>>() {
