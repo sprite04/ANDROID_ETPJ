@@ -1,37 +1,32 @@
 package com.example.android_etpj.api;
 
 import com.example.android_etpj.models.*;
+import com.example.android_etpj.models.Class;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.util.List;
 
-import okhttp3.RequestBody;
-import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
-import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
-import retrofit2.http.Part;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface ApiService {
 
-    Gson gson=new GsonBuilder()
+    Gson gson = new GsonBuilder()
             //.setDateFormat("yyyy-MM-dd")
             .setDateFormat("yyyy-MM-dd'T'HH:mm:ss")
             .create();
 
     ApiService apiService = new Retrofit.Builder()
-            .baseUrl("http://192.168.5.12/systemfeedback/api/")
+            .baseUrl("http://192.168.1.12/try/api/")
             .addConverterFactory(GsonConverterFactory.create(gson))
             .build()
             .create(ApiService.class);
@@ -45,16 +40,14 @@ public interface ApiService {
     Call<Feedback> getFeedbackById(@Path("id") int id);
 
     @POST("feedback")
-    Call<Boolean> addFeedback(@Body FeedbackQuestion feedbackQuestion);
+    Call<Boolean> addFeedback(@Body Feedback fb);
 
     @PUT("feedback")
-    Call<Boolean> editFeedback(@Body FeedbackQuestion feedbackQuestion);
+    Call<Boolean> editFeedback(@Body Feedback fb);
 
     @DELETE("feedback/{id}")
     Call<Boolean> deleteFeedback(@Path("id") int id);
 
-    @GET("feedback")
-    Call<Integer> checkFeedbackUsed(@Query("idUsed") int idUsed);
 
     //Module
     @GET("module")
@@ -72,33 +65,36 @@ public interface ApiService {
     @PUT("module")
     Call<Boolean> editModule(@Body Module m);
 
-    @GET("module")
-    Call<List<Module>> getModuleByIdTrainer(@Query("idTrainer") String idTrainer);
-
 
     //Admin
     @GET("admin")
     Call<List<Admin>> getAdmins();
+    @GET("admin")
+    Call<Admin> loginAdmin(
+            @Query("username") String username,
+            @Query("password") String password);
 
-    //Trainee
-    @GET("trainee")
-    Call<Trainee> getTraineeByUsername(@Query("username") String username);
+    //Assigment
+    @GET("assignment")
+    Call<List<Assignment>> getAssignments();
 
-    @GET("trainee")
-    Call<List<Trainee>> getTrainee();
+    @GET("assignment")
+    Call<List<Assignment>> searchAssignments(@Query("stringSearch") String stringSearch);
 
-    @GET("trainee")
-    Call<Trainee> loginTrainee(@Query("username") String username, @Query("password") String password);
-
+<<<<<<< Updated upstream
     //Trainer
     Call<List<Trainer>> getTrainers();
     Call<Trainer> loginTrainer(@Query("username") String username, @Query("password") String password);
 
+=======
+    @GET("assignment")
+    Call<List<Assignment>> getAssignmentByRegistrationCode(@Query("registrationCode") String registrationCode);
+>>>>>>> Stashed changes
 
-    //Assignment
     @GET("assignment")
     Call<List<Assignment>> getAssignmentsByTrainee(@Query("idTrainee") String idTrainee);
 
+<<<<<<< Updated upstream
     @GET("assignment")
     Call<List<Assignment>> getAssignments();
 
@@ -153,44 +149,30 @@ public interface ApiService {
     Call<List<TopicAnswers>> getTopicAnswersByClassModule(@Query("idClass") int idClass,@Query("idModule") int idModule);
     @GET("topicanswers")
     Call<List<TopicStatistic>> getTopicStatisticByClassModule(@Query("classID") int classID,@Query("moduleID") int moduleID);
+=======
+    @POST("assignment")
+    Call<Boolean> addAssignment(@Body Assignment a);
+>>>>>>> Stashed changes
 
+    @DELETE("assignment")
+    Call<Boolean> deleteAssignment(@Query("idClass") int idClass,
+                                   @Query("idModule") int idModule);
 
-
-
-    //TraineeComment
-    @POST("traineecomment")
-    Call<Boolean> addTraineeComment(@Body Trainee_Comment traineeComment);
-
-    @GET("traineecomment")
-    Call<Boolean> checkCommentUsed(@Query("idClass") int idClass, @Query("idModule") int idModule, @Query("idTrainee") String idTrainee);
-
+    @PUT("assignment")
+    Call<Boolean> editAssignment(@Body Assignment a);
 
     //Class
     @GET("class")
-    Call<List<com.example.android_etpj.models.Class>> getClasses();
+    Call<List<Class>> getClasses();
 
-    @GET("class/{id}")
-    Call<com.example.android_etpj.models.Class> getClassById(@Path("id") int id);
-
-    @GET("class")
-    Call<List<com.example.android_etpj.models.Class>> getClassesByTrainer(@Query("idTrainer") String idTrainer);
-
-    @GET("class")
-    Call<List<com.example.android_etpj.models.Class>> getClassesByTrainee(@Query("idTrainee") String idTrainee);
-
-    @POST("class")
-    Call<Boolean> addClass(@Body com.example.android_etpj.models.Class cl);
-
-    @PUT("class")
-    Call<Boolean> editClass(@Body com.example.android_etpj.models.Class cl);
-
-    @DELETE("class/{id}")
-    Call<Boolean> deleteClass(@Path("id") int id);
+    //Trainer
+    @GET("trainer")
+    Call<List<Trainer>> getTrainers();
+    Call<Trainer> loginTrainer(
+            @Query("username") String username,
+            @Query("password") String password);
 
     //Enrollment
-    @GET("enrollment")
-    Call<List<Enrollment>> getEnrollmentByIdClass(@Query("idClass") int idClass);
-
     @GET("enrollment")
     Call<List<Enrollment>> getEnrollment();
 
@@ -209,32 +191,16 @@ public interface ApiService {
     Call<Boolean> deleteEnrollment(@Query("classId") int classId,
                                    @Query("username") String username);
 
-
-
-    //Question
-    @GET("question")
-    Call<List<Question>> getQuestions();
-
-    @GET("question")
-    Call<List<Question>> getQuestionByIdTopic(@Query("idTopic") int idTopic);
-
-    @GET("question/{id}")
-    Call<Question> getQuestionById(@Path("id") int id);
-
-    @POST("question")
-    Call<Boolean> addQuestion(@Body Question qs);
-
-    @PUT("question")
-    Call<Boolean> editQuestion(@Body Question qs);
-
-    @DELETE("question/{id}")
-    Call<Boolean> deleteQuestion(@Path("id") int id);
-
-    @GET("question")
-    Call<Integer> checkQuestionUsed(@Query("idUsed") int idUsed);
+    //Trainee
+    @GET("trainee")
+    Call<List<Trainee>> getTrainee();
+    @GET("trainee")
+    Call<Trainee> loginTrainee(
+            @Query("username") String username,
+            @Query("password") String password);
 
     //CommentResult
     @GET("traineecomment")
     Call<List<CommentResult>> getCommentResult(@Query("classId") int classId,
-                                               @Query("moduleId") int moduleId);
+                                           @Query("moduleId") int moduleId);
 }
