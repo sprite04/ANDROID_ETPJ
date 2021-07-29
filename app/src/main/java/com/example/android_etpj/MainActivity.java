@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity implements AccessForbiddenHo
     private Object user;
 
 
-    Trainee trainer;
+    Admin trainer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,8 +55,8 @@ public class MainActivity extends AppCompatActivity implements AccessForbiddenHo
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        trainer=new Trainee();
-        trainer.setUserId("trainee1");
+        trainer=new Admin();
+       // trainer.setUserId("trainee1");
         user=trainer;
 
         drawer = findViewById(R.id.drawer_layout);
@@ -154,7 +154,7 @@ public class MainActivity extends AppCompatActivity implements AccessForbiddenHo
                     case R.id.nav_feedback:
                         checkLogin();
                         if(currentFragment!=Type.FRAGMENT_FEEDBACK){
-                            replaceFragment(new FeedbackTraineeFragment(trainer,1));
+                          //  replaceFragment(new FeedbackTraineeFragment(trainer,1));
                             currentFragment=Type.FRAGMENT_FEEDBACK;
                         }
                         /*if(currentFragment!=Type.FRAGMENT_FEEDBACK){
@@ -293,7 +293,7 @@ public class MainActivity extends AppCompatActivity implements AccessForbiddenHo
         viewEnrollmentFragment.setArguments(bundle);
 
         fragmentTransaction.replace(R.id.content_frame,viewEnrollmentFragment);
-        fragmentTransaction.addToBackStack(EditEnrollmentFragment.TAG);
+        fragmentTransaction.addToBackStack(ViewEnrollmentDetailFragment.TAG);
         fragmentTransaction.commit();
     }
 

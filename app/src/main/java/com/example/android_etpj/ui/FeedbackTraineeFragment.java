@@ -103,15 +103,18 @@ public class FeedbackTraineeFragment extends Fragment{
                     @Override
                     public void onResponse(Call<List<Assignment>> call, Response<List<Assignment>> response) {
                         assignmentsList= (ArrayList<Assignment>) response.body();
-                        if(assignmentsList!=null){
-                            assignment=assignmentList.get(0);
+                        if(assignmentsList.size()!=0){
+                            Log.e("Size",String.valueOf(assignmentsList.size()));
+                            assignment=assignmentsList.get(0);
+                            Log.e("Code",String.valueOf(assignment.getRegistrationCode()));
                             if(assignment!=null){
                                 ApiService.apiService.getAssignmentsByTrainee(trainee.getUserId().toString().trim()).enqueue(new Callback<List<Assignment>>() {
                                     @Override
                                     public void onResponse(Call<List<Assignment>> call, Response<List<Assignment>> response) {
                                         assignmentsList= (ArrayList<Assignment>) response.body();
+                                        Log.e("SizeByTrainee",String.valueOf(assignmentsList.size()));
                                         int checkk=0;//nếu đi qua vòng lặp
-                                        if(assignmentsList!=null){
+                                        if(assignmentsList.size()!=0){
                                             for(int i = 1; i <= assignmentsList.size(); i++){
                                                 if(assignmentsList.get(i).getRegistrationCode().equals(assignment.getRegistrationCode())||assignmentsList.get(i).getClassID()==assignment.getClassID()){
                                                     //hiện thông báo đã vào assignment này rồi
@@ -171,6 +174,29 @@ public class FeedbackTraineeFragment extends Fragment{
                                                             }
                                                         });
                                                         dialogSuccess.show();
+                                                    }else{
+                                                        //hiện thông báo đã vào assignment này rồi
+                                                        Dialog dialog = new Dialog(getActivity());
+                                                        dialog.setContentView(R.layout.dialog_error);
+                                                        dialog.setCancelable(false);
+
+                                                        Window window = dialog.getWindow();
+                                                        if (window == null)
+                                                            return;
+                                                        window.setLayout(WindowManager.LayoutParams.MATCH_PARENT, WindowManager.LayoutParams.WRAP_CONTENT);
+                                                        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+
+                                                        TextView tvTitleSuccess=dialog.findViewById(R.id.tv_title);
+                                                        tvTitleSuccess.setText("Sai rồi đó");
+
+                                                        Button btnOk=dialog.findViewById(R.id.btn_ok_error);
+                                                        btnOk.setOnClickListener(new View.OnClickListener() {
+                                                            @Override
+                                                            public void onClick(View v) {
+                                                                dialog.cancel();
+                                                            }
+                                                        });
+                                                        dialog.show();
                                                     }
                                                 }
                                                 @Override
